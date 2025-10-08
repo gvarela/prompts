@@ -3,7 +3,8 @@
     "allow": [
       "Bash(chmod:*)",
       "Bash(./scripts/lint:*)",
-      "Bash(./scripts/lint-hook:*)"
+      "Bash(./scripts/lint-hook:*)",
+      "WebFetch(domain:ampcode.com)"
     ],
     "deny": [],
     "ask": []
