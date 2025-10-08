@@ -11,6 +11,38 @@ AmpCode supports custom slash commands through two mechanisms:
 
 Our planning commands are designed as **Markdown commands** that provide comprehensive instructions to the AI.
 
+### Critical Difference from Claude Code
+
+**AmpCode commands are prompt templates you can edit before submitting:**
+
+When you invoke `/create_project`, AmpCode:
+1. Loads the entire command file into your input field
+2. **Lets you edit/append before hitting send**
+3. Then sends the complete message (command + your additions) to the AI
+
+This enables a powerful pattern:
+
+```bash
+# Type the command
+/create_project
+
+# AmpCode loads the full prompt into your input
+# You can now add context at the END:
+
+[...entire command prompt...]
+
+---
+Project name: payment-integration
+Directory: docs/projects
+Ticket: LINEAR-456
+```
+
+**Two approaches work:**
+1. **Append parameters**: Add context to end before submitting
+2. **Interactive**: Submit command as-is, AI asks questions, you respond next message
+
+Our commands support both patterns by ending with clear parameter prompts.
+
 ## Command Locations
 
 ### Project-Specific Commands
@@ -154,33 +186,55 @@ Our planning commands follow a sequential workflow:
    ↓ Updates: All files with current status
 ```
 
-### Passing Parameters
-
-Commands accept parameters after the command name:
-
-```bash
-# Create project with all parameters
-/create_project my-feature docs/plans LINEAR-123
-
-# Research a specific directory
-/create_research docs/plans/2025-10-08-my-feature
-
-# Update status
-/update_status docs/plans/2025-10-08-my-feature
-```
-
 ### Command Behavior in AmpCode
 
 When you invoke a markdown command:
 
 1. **Command is triggered**: You type `/create_project`
-2. **Content is inserted**: The entire markdown file content becomes the prompt
-3. **AI responds**: Following the instructions in the command file
-4. **Interactive**: You can respond to the AI's questions
+2. **Prompt loads in input**: The entire command file appears in your input field
+3. **You can edit**: Add parameters, context, or constraints before submitting
+4. **You submit**: Press enter to send the complete message
+
+**Pattern 1: Pre-fill parameters (faster)**
+
+```bash
+# Type command
+/create_project
+
+# AmpCode loads prompt in input, you add at the end:
+
+[...full command prompt...]
+
+---
+Project: payment-integration
+Directory: docs/projects
+Ticket: LINEAR-456
+
+# Submit → AI has all context immediately
+```
+
+**Pattern 2: Interactive (safer for complex decisions)**
+
+```bash
+# Type command
+/create_project
+
+# Submit as-is without additions
+
+# AI responds asking for parameters:
+"Please provide: 1. Project name 2. Directory 3. Ticket"
+
+# You respond:
+payment-integration
+docs/projects
+LINEAR-456
+```
+
+**Best practice**: For simple commands with known parameters, append them. For research/planning where you want AI guidance, submit as-is.
 
 ## Command Files
 
-Our commands are markdown files with special structure:
+Our commands are markdown files structured for flexible parameter input:
 
 ```markdown
 # Command Title
@@ -189,24 +243,45 @@ Brief description of what the command does.
 
 ## Initial Setup
 
-Instructions for how the AI should respond initially.
+When this command is invoked, respond with:
+```
+I'll help you [do the thing]. Please provide:
+1. Parameter 1
+2. Parameter 2
+```
+
+Then wait for the user's input.
 
 ## Steps to Execute
 
 Detailed workflow with barriers and checkpoints.
 
-## Templates
+[... rest of command ...]
 
-Output templates for generated files.
+---
+
+## User Input Section
+
+**If you provided parameters above, I'll use them. Otherwise, I'll ask.**
+
+Parameters:
+- Project name:
+- Directory:
+- Ticket:
 ```
+
+The structure accommodates both usage patterns:
+- **Pre-filled**: User appends parameters before submitting → AI reads and executes
+- **Interactive**: User submits empty → AI follows "Initial Setup" to ask questions
 
 ### Key Features of Our Commands
 
-1. **Explicit Barriers**: `⛔ BARRIER` markers ensure proper sequencing
-2. **Think Deeply**: Strategic analysis points
-3. **Full File Reading**: Commands always read files completely
-4. **Dual Verification**: Automated + manual checks
-5. **Status Progression**: Defined state transitions
+1. **Interactive Parameter Collection**: AI asks for inputs after command loads
+2. **Explicit Barriers**: `⛔ BARRIER` markers ensure proper sequencing
+3. **Think Deeply**: Strategic analysis points
+4. **Full File Reading**: Commands always read files completely
+5. **Dual Verification**: Automated + manual checks
+6. **Status Progression**: Defined state transitions
 
 ## Customizing Commands
 
@@ -408,40 +483,58 @@ Example `.gitignore`:
 
 ### Full Workflow Example
 
+**Approach A: Pre-fill parameters (fastest)**
+
 ```bash
 # 1. Initialize project
-/create_project payment-integration docs/projects LINEAR-456
+> /create_project
+[prompt loads, you append:]
+---
+Project: payment-integration
+Directory: docs/projects
+Ticket: LINEAR-456
+[submit]
 
-# AI creates: docs/projects/2025-10-08-LINEAR-456-payment-integration/
-#   ├── README.md
-#   ├── research.md
-#   ├── plan.md
-#   └── tasks.md
+# AI creates immediately without asking
 
 # 2. Research existing code
-/create_research docs/projects/2025-10-08-LINEAR-456-payment-integration
-> Research how we currently handle payment processing
+> /create_research
+[prompt loads, you append:]
+---
+Directory: docs/projects/2025-10-08-LINEAR-456-payment-integration
+Question: Research how we currently handle payment processing
+[submit]
 
-# AI populates research.md with findings
+# AI spawns research agents immediately
 
-# 3. Create implementation plan
-/create_plan docs/projects/2025-10-08-LINEAR-456-payment-integration
-
-# AI asks questions, creates plan.md with phases
-
-# 4. Generate task list
-/create_tasks docs/projects/2025-10-08-LINEAR-456-payment-integration
-
-# AI extracts tasks.md from plan
-
-# 5. Start implementation
-# (check off tasks as you work)
-
-# 6. Update status periodically
-/update_status docs/projects/2025-10-08-LINEAR-456-payment-integration
-
-# AI updates status across all files based on progress
+# 3-5. Continue pattern...
 ```
+
+**Approach B: Interactive (for complex decisions)**
+
+```bash
+# 1. Initialize project
+> /create_project
+[submit without additions]
+
+Claude: Please provide: 1. Project name 2. Directory 3. Ticket
+> payment-integration, docs/projects, LINEAR-456
+
+# 2. Research - want AI to help frame the question
+> /create_research
+[submit without additions]
+
+Claude: What's the project directory? What should I research?
+> docs/projects/2025-10-08-LINEAR-456-payment-integration
+> I'm not sure exactly what to research - can you suggest based on the project?
+
+Claude: Based on "payment-integration", I recommend researching:
+- Current payment processing flow
+- Error handling patterns
+- [etc...]
+```
+
+**Mixed approach**: Pre-fill simple commands, go interactive for research/planning where AI guidance helps.
 
 ### Status Tracking
 

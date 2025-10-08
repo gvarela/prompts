@@ -5,7 +5,9 @@
       "Bash(./scripts/lint:*)",
       "Bash(./scripts/lint-hook:*)",
       "WebFetch(domain:ampcode.com)",
-      "Bash(./scripts/install-commands:*)"
+      "Bash(./scripts/install-commands:*)",
+      "Bash(grep:*)",
+      "Bash(awk:*)"
     ],
     "deny": [],
     "ask": []

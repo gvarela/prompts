@@ -85,8 +85,8 @@ Utility scripts for repository management:
 
 Comprehensive guides for using this repository:
 
-- **[Claude Code Usage Guide](docs/claude-code-usage.md)** - Using commands with Claude Code
-- **[AmpCode Usage Guide](docs/ampcode-usage.md)** - Using commands with AmpCode
+- **[Claude Code README](claude-code/README.md)** - Using commands with Claude Code
+- **[AmpCode README](ampcode/README.md)** - Using commands with AmpCode
 - **[Planning Commands README](commands/planning/README.md)** - Detailed command reference
 
 ## Core Philosophy
@@ -297,6 +297,6 @@ Planning commands inspired by enterprise context engineering patterns and refine
 ## Support
 
 - **Commands**: See [Planning Commands README](commands/planning/README.md)
-- **Claude Code Integration**: See [Claude Code Usage Guide](docs/claude-code-usage.md)
-- **AmpCode Integration**: See [AmpCode Usage Guide](docs/ampcode-usage.md)
+- **Claude Code Integration**: See [Claude Code README](claude-code/README.md)
+- **AmpCode Integration**: See [AmpCode README](ampcode/README.md)
 - **Issues**: Open an issue in this repository
