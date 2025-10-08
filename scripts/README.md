@@ -36,6 +36,21 @@ Lints markdown files using markdownlint.
 - markdownlint-cli (`npm install -g markdownlint-cli` or `brew install markdownlint-cli`)
 - git (for detecting changed files)
 
+### `lint-hook`
+
+Hook script used by Claude Code to automatically lint markdown files after they are created or edited.
+
+```bash
+# This script is automatically triggered by Claude Code hooks
+# It's configured in .claude/settings.local.json
+```
+
+**Features:**
+- Automatically runs after Write or Edit tools modify markdown files
+- Attempts to auto-fix issues with markdownlint
+- Shows concise output in Claude Code interface
+- Non-blocking (won't stop operations if linting fails)
+
 ## Configuration
 
 The project uses `.markdownlintrc` for markdownlint configuration. Current settings:
@@ -43,3 +58,13 @@ The project uses `.markdownlintrc` for markdownlint configuration. Current setti
 - Inline HTML allowed
 - Emphasis as heading allowed (for "think deeply" directives)
 - Fenced code blocks without language specification allowed
+
+## Claude Code Hooks
+
+The project has automatic markdown linting configured via Claude Code hooks in `.claude/settings.local.json`:
+- **PostToolUse hooks** for Write and Edit tools
+- Automatically runs `./scripts/lint-hook` after any markdown file is created or modified
+- Attempts to auto-fix common markdown issues
+- Shows brief status messages in the Claude Code interface
+
+To disable automatic linting, remove or comment out the `hooks` section in `.claude/settings.local.json`.

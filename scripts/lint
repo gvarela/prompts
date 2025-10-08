@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
 # Lint all changed markdown files in the project
-# Usage: ./scripts/lint [--all]
+# Usage: ./scripts/lint [options] [file...]
 #
 # Options:
 #   --all    Lint all markdown files, not just changed ones
+#   --fix    Auto-fix markdown issues
 #   --help   Show this help message
+#
+# Arguments:
+#   file...  Specific markdown file(s) to lint
 
 set -euo pipefail
 
@@ -19,12 +23,15 @@ NC='\033[0m' # No Color
 show_help() {
     echo "Lint markdown files in the project"
     echo ""
-    echo "Usage: $0 [options]"
+    echo "Usage: $0 [options] [file...]"
     echo ""
     echo "Options:"
     echo "  --all     Lint all markdown files, not just changed ones"
     echo "  --fix     Auto-fix markdown issues (passes -f to markdownlint)"
     echo "  --help    Show this help message"
+    echo ""
+    echo "Arguments:"
+    echo "  file...   Specific markdown file(s) to lint"
     echo ""
     echo "By default, only lints markdown files that have been changed (git diff)"
     echo ""
@@ -32,13 +39,15 @@ show_help() {
     echo "  $0                  # Lint only changed markdown files"
     echo "  $0 --fix            # Auto-fix issues in changed markdown files"
     echo "  $0 --all            # Lint all markdown files"
-    echo "  $0 --all --fix      # Auto-fix issues in all markdown files"
+    echo "  $0 README.md        # Lint specific file"
+    echo "  $0 --fix docs/*.md  # Auto-fix specific files"
     exit 0
 }
 
 # Parse arguments
 LINT_ALL=false
 AUTO_FIX=""
+SPECIFIC_FILES=()
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -53,10 +62,15 @@ while [[ $# -gt 0 ]]; do
         --help)
             show_help
             ;;
-        *)
+        -*)
             echo -e "${RED}Unknown option: $1${NC}"
             echo "Use --help for usage information"
             exit 1
+            ;;
+        *)
+            # Assume it's a file path
+            SPECIFIC_FILES+=("$1")
+            shift
             ;;
     esac
 done
@@ -78,7 +92,24 @@ if ! git rev-parse --git-dir > /dev/null 2>&1; then
 fi
 
 # Determine which files to lint
-if [ "$LINT_ALL" = true ]; then
+if [ ${#SPECIFIC_FILES[@]} -gt 0 ]; then
+    # Lint specific files provided as arguments
+    echo -e "${GREEN}Linting specified files...${NC}"
+    FILES=""
+    for file in "${SPECIFIC_FILES[@]}"; do
+        # Check if it's a markdown file
+        if [[ "$file" == *.md ]]; then
+            if [ -f "$file" ]; then
+                FILES="${FILES}${file}\n"
+            else
+                echo -e "${YELLOW}Warning: File not found: $file${NC}"
+            fi
+        else
+            echo -e "${YELLOW}Warning: Not a markdown file: $file${NC}"
+        fi
+    done
+    FILES=$(echo -e "$FILES" | grep -v '^$' || true)
+elif [ "$LINT_ALL" = true ]; then
     echo -e "${GREEN}Linting all markdown files...${NC}"
     # Find all markdown files, excluding node_modules and other common directories
     FILES=$(find . \
