@@ -1,3 +1,8 @@
+---
+description: Update status across all project documentation files based on progress
+argument-hint: [project-directory]
+---
+
 # Update Project Status
 
 Intelligently updates status across all project documentation files (research.md, plan.md, tasks.md) based on actual progress, ensuring consistency and proper state transitions.
@@ -11,19 +16,22 @@ Intelligently updates status across all project documentation files (research.md
 - **NO REGRESSION**: Never move status backward without explicit user confirmation
 - **ATOMIC UPDATES**: Update all affected files together, not one at a time
 
-## Initial Setup
+## Initial Response
 
-When this command is invoked, respond with:
+When invoked, check for arguments:
 
-```
-I'll help you update the project status. Please provide:
-1. Path to the project documentation directory (e.g., docs/plans/2025-10-07-my-project/)
-2. (Optional) What changed that triggers this update
+1. **If directory provided** (e.g., `/planning/update_status docs/plans/2025-01-08-auth/`):
+   - Use `$1` as the project directory
+   - Read all documentation files immediately
+   - Analyze and propose status updates
 
-I'll analyze the current state and update all relevant files consistently.
-```
+2. **If no arguments**:
+   ```
+   I'll help you update the project status. Please provide:
+   1. Path to the project documentation directory
 
-Then wait for the user's input.
+   Example: /planning/update_status docs/plans/2025-01-08-auth/
+   ```
 
 ## Steps to Execute
 

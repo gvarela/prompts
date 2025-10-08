@@ -1,3 +1,8 @@
+---
+description: Extract all tasks from implementation plan into actionable checklist
+argument-hint: [project-directory]
+---
+
 # Generate Task List
 
 Breaks down the implementation plan into concrete, actionable tasks organized by phase with clear completion tracking and verification barriers.
@@ -10,18 +15,22 @@ Breaks down the implementation plan into concrete, actionable tasks organized by
 - Include explicit checkpoints between phases
 - Track both implementation and verification tasks
 
-## Initial Setup
+## Initial Response
 
-When this command is invoked, respond with:
+When invoked, check for arguments:
 
-```
-I'll help you break down the implementation plan into actionable tasks. Please provide:
-1. Path to the project documentation directory (e.g., docs/plans/2025-10-07-my-project/)
+1. **If directory provided** (e.g., `/planning/create_tasks docs/plans/2025-01-08-auth/`):
+   - Use `$1` as the project directory
+   - Read plan.md immediately
+   - Begin task extraction
 
-I'll read the plan.md file and extract all tasks with proper tracking structure.
-```
+2. **If no arguments**:
+   ```
+   I'll help you break down the implementation plan into actionable tasks. Please provide:
+   1. Path to the project documentation directory
 
-Then wait for the user's input.
+   Example: /planning/create_tasks docs/plans/2025-01-08-auth/
+   ```
 
 ## Steps to Execute
 
@@ -80,7 +89,7 @@ Analyze the plan and extract ALL tasks:
 
 Create a comprehensive task list with proper tracking:
 
-```markdown
+````markdown
 ---
 project: [from existing frontmatter]
 ticket: [from existing frontmatter]
@@ -407,7 +416,7 @@ Tasks MUST be:
 [x] Complete (with timestamp)
 [!] Blocked (move to blockers section)
 
-```
+````
 
 ### Frontmatter Updates
 Update these fields as work progresses:

@@ -76,6 +76,38 @@ When modifying or creating new documentation commands:
 6. Always read files FULLY before processing
 7. Use parallel agents for efficiency but wait for ALL to complete
 
+## Markdown Formatting Standards
+
+### Nested Fenced Code Blocks
+
+When nesting fenced code blocks within markdown, use the proper number of backticks to ensure correct rendering:
+
+- **Outer blocks**: Use 4 backticks (````)
+- **Inner blocks**: Use 3 backticks (```)
+- **Deeply nested**: Add one more backtick for each level
+
+Example:
+````markdown
+# Documentation Example
+
+Here's how to write code:
+
+```javascript
+// This is the inner code block
+function example() {
+  return true;
+}
+```
+
+And here's another example:
+
+```bash
+npm install
+```
+````
+
+This ensures that markdown processors correctly parse nested blocks and that the generated documentation renders properly.
+
 ## Status Progression
 
 Files created by commands progress through defined states:

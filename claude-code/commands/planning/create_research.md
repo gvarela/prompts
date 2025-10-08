@@ -1,30 +1,38 @@
+---
+description: Research codebase using parallel agents to document how things work
+argument-hint: [project-directory] [research-question]
+---
+
 # Generate Research Document
 
-You are tasked with conducting comprehensive research across the codebase to answer user questions by spawning parallel sub-agents and synthesizing their findings.
+Conducts comprehensive codebase research and documents findings by spawning specialized agents to work in parallel, gathering detailed information about existing implementation.
 
-## CRITICAL: YOUR ONLY JOB IS TO DOCUMENT AND EXPLAIN THE CODEBASE AS IT EXISTS TODAY
+## CRITICAL: YOUR ONLY JOB IS TO DOCUMENT THE CODEBASE AS IT EXISTS
 
-- DO NOT suggest improvements or changes unless the user explicitly asks for them
-- DO NOT perform root cause analysis unless the user explicitly asks for them
-- DO NOT propose future enhancements unless the user explicitly asks for them
-- DO NOT critique the implementation or identify problems
-- DO NOT recommend refactoring, optimization, or architectural changes
-- ONLY describe what exists, where it exists, how it works, and how components interact
-- You are creating a technical map/documentation of the existing system
+- DO NOT suggest improvements or changes
+- DO NOT identify issues or problems
+- DO NOT propose enhancements
+- DO NOT critique the implementation
+- ONLY describe what exists, how it works, and how components interact
 
-## Initial Setup
+## Initial Response
 
-When this command is invoked, respond with:
+When invoked, check for arguments:
 
-```
-I'm ready to research the codebase and document findings. Please provide:
-1. Path to the project documentation directory (e.g., docs/plans/2025-10-07-my-project/)
-2. Your research question or area of interest
+1. **If directory provided** (e.g., `/planning/create_research docs/plans/2025-01-08-auth/`):
+   - Use `$1` as the project directory
+   - If `$2+` exists, use as research question
+   - Otherwise, prompt for research focus
 
-I'll analyze it thoroughly by exploring relevant components and connections.
-```
+2. **If no arguments**:
+   ```
+   I'm ready to research the codebase and document findings. Please provide:
+   1. Path to the project documentation directory
+   2. Your research question or area of interest
 
-Then wait for the user's input.
+   Example: /planning/create_research docs/plans/2025-01-08-auth/
+   Then: "Research how authentication and session management work"
+   ```
 
 ## Steps to Execute After Receiving the Research Query
 
@@ -64,82 +72,102 @@ Then wait for the user's input.
 
 4. **Consider which specific components** to investigate
 
-### Step 4: Spawn Parallel Sub-Agent Tasks for Comprehensive Research
+### Step 4: Spawn Parallel Research Agents
 
-Create multiple Task agents to research different aspects concurrently.
-
-**IMPORTANT**: All agents are documentarians, not critics. They will describe what exists without suggesting improvements or identifying issues.
-
-#### Agent Strategy
-
-For each agent, include this directive:
+Create multiple Task agents to research different aspects concurrently using our specialized agents:
 
 ```
-You are documenting the codebase as it exists. DO NOT suggest improvements or identify issues.
-Your job is to describe WHAT exists and HOW it works, not what should be changed.
-Document what IS, not what SHOULD BE.
+## Parallel Research Strategy
+
+Based on the research question "[research-question]", I'll spawn specialized agents to investigate:
+
+1. **Locating Components** - Finding where features are implemented
+2. **Analyzing Implementation** - Understanding how code works
+3. **Finding Patterns** - Identifying conventions and similar implementations
 ```
 
-#### Types of Research Agents to Spawn
+#### Agent Spawning Examples
 
-**Code Locator Agents** - Find WHERE files and components live:
+**Agent 1: Component Locator**
+```javascript
+Task({
+  description: "Find [feature] components",
+  prompt: `Use the codebase-locator agent to find all files related to [feature].
 
-```
-Task: "Find authentication components"
-Prompt: "Spawn a subagent and search the codebase for all files related to authentication.
-Use Grep to search for keywords: auth, login, session, token, user
-Use Glob for patterns: **/auth*.*, **/*login*, **/*session*
-Focus on: code (not test or config) directories
-Return a categorized list of files with their purpose.
-Document what exists, do not evaluate quality."
-```
+  Search for:
+  - Source files implementing [feature]
+  - Test files for [feature]
+  - Configuration files
+  - Related documentation
 
-**Code Analyzer Agents** - Understand HOW specific code works:
-
-```
-Task: "Analyze user validation flow"
-Prompt: "Spawn a subagent and read and analyze the user validation implementation.
-Start with [specific files identified].
-Document:
-- How validation works step by step
-- Data flow from entry to exit
-- Key functions and their purposes
-- Integration points with other systems
-Include specific file:line references.
-Document how it works, not how it should work."
+  Focus on [specific directories if known].
+  Return specific file paths with brief descriptions.`,
+  subagent_type: "general-purpose"
+})
 ```
 
-**Pattern Finder Agents** - Find examples of existing patterns:
+**Agent 2: Implementation Analyzer**
+```javascript
+Task({
+  description: "Analyze [feature] implementation",
+  prompt: `Use the codebase-analyzer agent to understand how [feature] works.
 
-```
-Task: "Find error handling patterns"
-Prompt: "Spawn a subagent and search for existing error handling implementations.
-Look for try/catch blocks, error classes, error middleware.
-Find at least 3 different examples.
-Return code examples with file:line references.
-Document the patterns without evaluating them."
-```
+  Analyze:
+  - Entry points and main functions
+  - Data flow through the system
+  - Key algorithms and logic
+  - Error handling approaches
 
-#### Parallel Execution Example
-
-```python
-# Spawn these tasks concurrently:
-tasks = [
-    Task("Locate all user-related files", locator_prompt, subagent_type="general-purpose"),
-    Task("Analyze current authentication flow", analyzer_prompt, subagent_type="general-purpose"),
-    Task("Find existing validation patterns", pattern_prompt, subagent_type="general-purpose"),
-    Task("Document API endpoint structure", api_prompt, subagent_type="general-purpose")
-]
+  Start with [specific files if known].
+  Document what EXISTS with file:line references.`,
+  subagent_type: "general-purpose"
+})
 ```
 
-**Key instructions for all agents:**
+**Agent 3: Pattern Finder**
+```javascript
+Task({
+  description: "Find [pattern] examples",
+  prompt: `Use the pattern-finder agent to identify [pattern type] in the codebase.
 
-- Start with locator agents to find what exists
-- Then use analyzer agents on the most promising findings
-- Run multiple agents in parallel when they're searching for different things
-- Each agent knows its job - just tell it what you're looking for
-- Don't write detailed prompts about HOW to search - the agents already know
-- Remind agents they are documenting, not evaluating or improving
+  Find:
+  - Similar implementations to [feature]
+  - Naming conventions for [component type]
+  - Common patterns for [functionality]
+  - Testing approaches for [feature type]
+
+  Return examples with file references.`,
+  subagent_type: "general-purpose"
+})
+```
+
+**Additional specialized agents** based on research focus:
+- Database schema investigation
+- API endpoint analysis
+- Frontend component exploration
+- Configuration and environment analysis
+- Testing pattern discovery
+
+#### Parallel Execution
+
+```javascript
+// Spawn multiple agents concurrently:
+const agents = [
+  componentLocator,
+  implementationAnalyzer,
+  patternFinder,
+  // Add more as needed
+];
+
+// All agents work in parallel for efficiency
+```
+
+**Key Agent Instructions:**
+- Each agent is a documentarian, not a critic
+- Agents describe what exists without judgment
+- Use specific agent types for their strengths
+- Run multiple agents in parallel for speed
+- Wait for ALL agents before synthesizing
 
 **⛔ BARRIER 2**: Wait for ALL sub-agents to complete before proceeding to Step 5
 
@@ -158,7 +186,7 @@ tasks = [
 
 Update the research.md file with:
 
-```markdown
+````markdown
 ---
 project: [from existing frontmatter]
 ticket: [from existing frontmatter]
@@ -268,7 +296,7 @@ Based on the research findings:
 3. Review the research document
 4. Run `/create_plan` to create implementation plan
 
-```
+````
 
 **⛔ BARRIER 3**: Verify no placeholder values before writing. All data must be real.
 
