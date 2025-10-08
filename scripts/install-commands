@@ -1,0 +1,367 @@
+#!/usr/bin/env bash
+#
+# install-commands - Install planning commands to Claude Code and/or AmpCode
+#
+# Usage:
+#   ./scripts/install-commands --claude         # Install to Claude Code globally
+#   ./scripts/install-commands --amp            # Install to AmpCode globally
+#   ./scripts/install-commands --both           # Install to both globally
+#   ./scripts/install-commands --claude --project  # Install to Claude Code in current project
+#   ./scripts/install-commands --amp --project     # Install to AmpCode in current project
+#   ./scripts/install-commands --both --project    # Install to both in current project
+#   ./scripts/install-commands --help           # Show this help message
+
+set -euo pipefail
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+COMMANDS_DIR="$REPO_ROOT/commands/planning"
+
+# Installation targets
+INSTALL_CLAUDE=false
+INSTALL_AMP=false
+INSTALL_PROJECT=false
+PROJECT_PATH=""
+
+# Function to print colored output
+print_info() {
+    echo -e "${BLUE}ℹ${NC} $1"
+}
+
+print_success() {
+    echo -e "${GREEN}✓${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}✗${NC} $1"
+}
+
+# Function to show help
+show_help() {
+    cat << EOF
+Install planning commands to Claude Code and/or AmpCode
+
+Usage:
+  ./scripts/install-commands [OPTIONS]
+
+Options:
+  --claude          Install to Claude Code
+  --amp             Install to AmpCode
+  --both            Install to both Claude Code and AmpCode
+  --project <path>  Install to project at specified path (default: global)
+  --help            Show this help message
+
+Examples:
+  # Install globally to Claude Code
+  ./scripts/install-commands --claude
+
+  # Install globally to both
+  ./scripts/install-commands --both
+
+  # Install to a specific project's Claude Code commands
+  ./scripts/install-commands --claude --project /path/to/project
+
+  # Install to a specific project's AmpCode commands
+  ./scripts/install-commands --amp --project ~/my-project
+
+Installation Locations:
+  Claude Code (global):  ~/.claude/commands/
+  Claude Code (project): <project-path>/.claude/commands/
+  AmpCode (global):      ~/.config/amp/commands/
+  AmpCode (project):     <project-path>/.agents/commands/
+
+Notes:
+  - Commands are symlinked (not copied) for easy updates via git pull
+  - Global installations require the target directory to exist
+  - Project installations will create the directory if needed
+  - Symlinks use absolute paths to work from any directory
+
+EOF
+}
+
+# Function to validate commands directory
+validate_commands_dir() {
+    if [ ! -d "$COMMANDS_DIR" ]; then
+        print_error "Commands directory not found: $COMMANDS_DIR"
+        exit 1
+    fi
+
+    local count
+    count=$(find "$COMMANDS_DIR" -maxdepth 1 -name "*.md" -type f | wc -l)
+    if [ "$count" -eq 0 ]; then
+        print_error "No markdown files found in: $COMMANDS_DIR"
+        exit 1
+    fi
+
+    print_success "Found $count command files in $COMMANDS_DIR"
+}
+
+# Function to get target directory
+get_target_dir() {
+    local tool=$1
+    local scope=$2
+    local project_path=$3
+
+    if [ "$tool" = "claude" ]; then
+        if [ "$scope" = "global" ]; then
+            echo "$HOME/.claude/commands"
+        else
+            echo "${project_path}/.claude/commands"
+        fi
+    elif [ "$tool" = "amp" ]; then
+        if [ "$scope" = "global" ]; then
+            if [ -n "${XDG_CONFIG_HOME:-}" ]; then
+                echo "$XDG_CONFIG_HOME/amp/commands"
+            else
+                echo "$HOME/.config/amp/commands"
+            fi
+        else
+            echo "${project_path}/.agents/commands"
+        fi
+    fi
+}
+
+# Function to ensure directory exists
+ensure_directory() {
+    local dir=$1
+    local scope=$2
+
+    if [ -d "$dir" ]; then
+        print_info "Directory exists: $dir"
+        return 0
+    fi
+
+    if [ "$scope" = "global" ]; then
+        print_warning "Directory does not exist: $dir"
+        read -p "Create it? (y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            print_error "Installation cancelled"
+            return 1
+        fi
+    fi
+
+    mkdir -p "$dir"
+    print_success "Created directory: $dir"
+}
+
+# Function to install commands to a target directory
+install_to_target() {
+    local target_dir=$1
+    local tool_name=$2
+    local scope=$3
+
+    print_info "Installing to $tool_name ($scope): $target_dir"
+
+    # Ensure target directory exists
+    if ! ensure_directory "$target_dir" "$scope"; then
+        return 1
+    fi
+
+    local installed_count=0
+    local skipped_count=0
+
+    # Install each command file
+    for cmd_file in "$COMMANDS_DIR"/*.md; do
+        local basename
+        basename=$(basename "$cmd_file")
+        local target_file="$target_dir/$basename"
+
+        # Check if symlink already exists and points to correct location
+        if [ -L "$target_file" ]; then
+            local current_target
+            current_target=$(readlink "$target_file")
+            if [ "$current_target" = "$cmd_file" ]; then
+                print_info "  $basename (already installed)"
+                ((skipped_count++))
+                continue
+            else
+                print_warning "  $basename (updating symlink)"
+                rm "$target_file"
+            fi
+        elif [ -e "$target_file" ]; then
+            print_warning "  $basename (file exists, skipping)"
+            ((skipped_count++))
+            continue
+        fi
+
+        # Create symlink
+        ln -s "$cmd_file" "$target_file"
+        print_success "  $basename"
+        ((installed_count++))
+    done
+
+    echo
+    print_success "$tool_name ($scope): Installed $installed_count commands, skipped $skipped_count"
+    return 0
+}
+
+# Parse command line arguments
+if [ $# -eq 0 ]; then
+    print_error "No options specified"
+    echo
+    show_help
+    exit 1
+fi
+
+while [ $# -gt 0 ]; do
+    case $1 in
+        --claude)
+            INSTALL_CLAUDE=true
+            shift
+            ;;
+        --amp)
+            INSTALL_AMP=true
+            shift
+            ;;
+        --both)
+            INSTALL_CLAUDE=true
+            INSTALL_AMP=true
+            shift
+            ;;
+        --project)
+            INSTALL_PROJECT=true
+            shift
+            if [ $# -eq 0 ] || [[ "$1" == --* ]]; then
+                print_error "--project requires a path argument"
+                echo
+                show_help
+                exit 1
+            fi
+            PROJECT_PATH="$1"
+            shift
+            ;;
+        --help)
+            show_help
+            exit 0
+            ;;
+        *)
+            print_error "Unknown option: $1"
+            echo
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+# Validate that at least one tool was selected
+if [ "$INSTALL_CLAUDE" = false ] && [ "$INSTALL_AMP" = false ]; then
+    print_error "Must specify --claude, --amp, or --both"
+    echo
+    show_help
+    exit 1
+fi
+
+# Determine installation scope
+SCOPE="global"
+if [ "$INSTALL_PROJECT" = true ]; then
+    SCOPE="project"
+
+    # Validate and normalize project path
+    if [ -z "$PROJECT_PATH" ]; then
+        print_error "--project flag requires a path argument"
+        exit 1
+    fi
+
+    # Expand tilde if present
+    PROJECT_PATH="${PROJECT_PATH/#\~/$HOME}"
+
+    # Convert to absolute path
+    if [[ "$PROJECT_PATH" != /* ]]; then
+        PROJECT_PATH="$(cd "$PROJECT_PATH" 2>/dev/null && pwd)" || {
+            print_error "Project path does not exist: $PROJECT_PATH"
+            exit 1
+        }
+    fi
+
+    # Verify directory exists
+    if [ ! -d "$PROJECT_PATH" ]; then
+        print_error "Project path does not exist: $PROJECT_PATH"
+        exit 1
+    fi
+
+    print_info "Project path: $PROJECT_PATH"
+fi
+
+# Validate commands directory
+validate_commands_dir
+
+echo
+print_info "Installation Configuration:"
+echo "  Scope: $SCOPE"
+if [ "$SCOPE" = "project" ]; then
+    echo "  Project: $PROJECT_PATH"
+fi
+echo "  Claude Code: $INSTALL_CLAUDE"
+echo "  AmpCode: $INSTALL_AMP"
+echo
+
+# Confirm installation
+read -p "Proceed with installation? (y/n) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    print_error "Installation cancelled"
+    exit 1
+fi
+
+echo
+
+# Install to Claude Code
+if [ "$INSTALL_CLAUDE" = true ]; then
+    CLAUDE_DIR=$(get_target_dir "claude" "$SCOPE" "$PROJECT_PATH")
+    if ! install_to_target "$CLAUDE_DIR" "Claude Code" "$SCOPE"; then
+        print_error "Failed to install to Claude Code"
+        exit 1
+    fi
+    echo
+fi
+
+# Install to AmpCode
+if [ "$INSTALL_AMP" = true ]; then
+    AMP_DIR=$(get_target_dir "amp" "$SCOPE" "$PROJECT_PATH")
+    if ! install_to_target "$AMP_DIR" "AmpCode" "$SCOPE"; then
+        print_error "Failed to install to AmpCode"
+        exit 1
+    fi
+    echo
+fi
+
+# Final summary
+echo
+print_success "Installation complete!"
+echo
+print_info "Next steps:"
+
+if [ "$INSTALL_CLAUDE" = true ]; then
+    echo "  • Test Claude Code commands with: /create_project test-feature"
+    if [ "$SCOPE" = "global" ]; then
+        echo "  • Commands available in all projects using Claude Code"
+    else
+        echo "  • Commands available in this project only"
+    fi
+fi
+
+if [ "$INSTALL_AMP" = true ]; then
+    echo "  • Test AmpCode commands with: /create_project test-feature"
+    if [ "$SCOPE" = "global" ]; then
+        echo "  • Commands available in all projects using AmpCode"
+    else
+        echo "  • Commands available in this project only"
+    fi
+fi
+
+echo
+print_info "To update commands, run: cd $REPO_ROOT && git pull"
+print_info "Commands will automatically reflect updates via symlinks"

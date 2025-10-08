@@ -4,7 +4,8 @@
       "Bash(chmod:*)",
       "Bash(./scripts/lint:*)",
       "Bash(./scripts/lint-hook:*)",
-      "WebFetch(domain:ampcode.com)"
+      "WebFetch(domain:ampcode.com)",
+      "Bash(./scripts/install-commands:*)"
     ],
     "deny": [],
     "ask": []
