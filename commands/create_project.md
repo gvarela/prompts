@@ -5,6 +5,7 @@ Creates a comprehensive documentation structure for a new project or feature, se
 ## Initial Setup
 
 When this command is invoked, respond with:
+
 ```
 I'll help you set up comprehensive project documentation. Please provide:
 1. Project name (short, kebab-case preferred, e.g., auth-refactor)
@@ -21,11 +22,13 @@ Then wait for the user's input.
 ### Step 1: Gather Information
 
 Collect from user:
+
 - **Project name**: Short descriptor in kebab-case (e.g., "auth-refactor", "api-v2")
 - **Base directory**: Where to create project docs (default: `docs/plans`)
 - **Ticket reference**: Optional ticket/issue number (format: `SYSTEM-NUMBER`)
 
 Validate inputs:
+
 - Project name should be lowercase with hyphens only
 - Base directory should exist or be creatable
 - Ticket format should match: `[A-Z]+-[0-9]+`
@@ -54,16 +57,19 @@ username=$(whoami)
 ### Step 3: Create Directory Structure
 
 Create the project directory with format:
+
 ```
 [base-directory]/[YYYY-MM-DD]-[project-name]/
 ```
 
 If ticket reference provided, include it:
+
 ```
 [base-directory]/[YYYY-MM-DD]-[TICKET]-[project-name]/
 ```
 
 **Examples:**
+
 - `docs/plans/2025-10-07-auth-refactor/`
 - `docs/plans/2025-10-07-GH-123-auth-refactor/`
 - `docs/plans/2025-10-07-LINEAR-789-api-migration/`
@@ -73,6 +79,7 @@ If ticket reference provided, include it:
 Create three foundation files with comprehensive frontmatter:
 
 **1. research.md**
+
 ```markdown
 ---
 project: [project-name]
@@ -137,6 +144,7 @@ tags: [research, codebase, [project-name]]
 ```
 
 **2. plan.md**
+
 ```markdown
 ---
 project: [project-name]
@@ -241,6 +249,7 @@ estimated_phases: 0
 ```
 
 **3. tasks.md**
+
 ```markdown
 ---
 project: [project-name]
@@ -324,9 +333,11 @@ tags: [tasks, tracking, [project-name]]
 ```
 
 ### Next Steps
+
 1. Run `/create_research [directory]` to conduct research
 2. Run `/create_plan [directory]` to create implementation plan
 3. Run `/create_tasks [directory]` to generate task list
+
 ```
 
 ### Step 5: Create README for Navigation
@@ -379,6 +390,7 @@ Run these commands from the project root:
 # Generate tasks
 /create_tasks [this-directory]
 ```
+
 ```
 
 ### Step 6: Confirm Creation
@@ -386,6 +398,7 @@ Run these commands from the project root:
 Present the created structure with enhanced details:
 
 ```
+
 ✅ Project documentation initialized successfully!
 
 📁 Created at: [full-path-to-directory]
@@ -397,6 +410,7 @@ Present the created structure with enhanced details:
 └── tasks.md       - Task tracking (3 planning tasks created)
 
 📊 Metadata captured:
+
 - Git commit: [commit-hash]
 - Branch: [branch-name]
 - Repository: [repo-name]
@@ -404,17 +418,20 @@ Present the created structure with enhanced details:
 - Timestamp: [ISO-8601]
 
 🔄 Workflow sequence:
+
 1. ✅ Structure created
 2. ⏳ Run `/create_research [directory]` to research codebase
 3. ⏳ Run `/create_plan [directory]` to plan implementation
 4. ⏳ Run `/create_tasks [directory]` to break down tasks
 
 📝 Initial tasks created in tasks.md:
+
 - [ ] Complete research using /create_research
 - [ ] Create implementation plan using /create_plan
 - [ ] Generate task list using /create_tasks
 
 Ready to begin research phase!
+
 ```
 
 ## Important Notes
@@ -467,6 +484,7 @@ Format: `/create_project [project-name] [base-dir] [ticket]`
 ## Error Handling
 
 Check for and handle:
+
 - Directory already exists → Suggest different name or confirm overwrite
 - Invalid project name → Request kebab-case format
 - Git not available → Use placeholder values
@@ -475,6 +493,7 @@ Check for and handle:
 ## Synchronization Points
 
 ⛔ **Creation Order**:
+
 1. Create directory first
 2. Generate metadata second
 3. Create files with metadata third

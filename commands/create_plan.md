@@ -12,6 +12,7 @@ When this command is invoked:
    - Begin the research process
 
 2. **If no parameters provided**, respond with:
+
 ```
 I'll help you create a detailed implementation plan. Let me start by understanding what we're building.
 
@@ -68,6 +69,7 @@ Then wait for the user's input.
    - Determine true scope based on codebase reality
 
 5. **Present informed understanding and focused questions**:
+
    ```
    Based on my research of the codebase, I understand we need to [accurate summary].
 
@@ -97,6 +99,7 @@ After getting initial clarifications:
 2. **Create a research todo list** using TodoWrite to track exploration tasks
 
 3. **Spawn parallel sub-tasks for comprehensive research**:
+
    ```
    # Spawn these tasks concurrently:
    - Task: "Find database schema", db_research_prompt
@@ -115,6 +118,7 @@ After getting initial clarifications:
 4. **Wait for ALL sub-tasks to complete** before proceeding
 
 5. **Present findings and design options**:
+
    ```
    Based on my research, here's what I found:
 
@@ -140,6 +144,7 @@ After getting initial clarifications:
 Once aligned on approach:
 
 1. **Create initial plan outline**:
+
    ```
    Here's my proposed plan structure:
 
@@ -356,6 +361,7 @@ last_updated: [YYYY-MM-DD]
 ### Step 5: Review and Iterate
 
 1. **Present the draft plan location**:
+
    ```
    I've created the implementation plan at:
    `[path]/plan.md`
@@ -384,18 +390,21 @@ last_updated: [YYYY-MM-DD]
 ## Important Guidelines
 
 ### Be Skeptical
+
 - Question vague requirements
 - Identify potential issues early
 - Ask "why" and "what about"
 - Don't assume - verify with code
 
 ### Be Interactive
+
 - Don't write the full plan in one shot
 - Get buy-in at each major step
 - Allow course corrections
 - Work collaboratively
 
 ### Be Thorough
+
 - Read all context files COMPLETELY before planning
 - Research actual code patterns using parallel sub-tasks
 - Include specific file paths and line numbers
@@ -403,17 +412,20 @@ last_updated: [YYYY-MM-DD]
 - Automated steps should use standard commands whenever possible
 
 ### Be Practical
+
 - Focus on incremental, testable changes
 - Consider migration and rollback
 - Think about edge cases
 - Include "what we're NOT doing"
 
 ### Track Progress
+
 - Use TodoWrite to track planning tasks
 - Update todos as you complete research
 - Mark planning tasks complete when done
 
 ### No Open Questions in Final Plan
+
 - If you encounter open questions during planning, STOP
 - Research or ask for clarification immediately
 - Do NOT write the plan with unresolved questions
@@ -437,6 +449,7 @@ last_updated: [YYYY-MM-DD]
    - User acceptance criteria
 
 **Format example:**
+
 ```markdown
 ### Success Criteria:
 
@@ -455,21 +468,24 @@ last_updated: [YYYY-MM-DD]
 
 ## Common Patterns
 
-### For Database Changes:
+### For Database Changes
+
 1. Start with schema/migration
 2. Add data access methods
 3. Update business logic
 4. Expose via API
 5. Update clients
 
-### For New Features:
+### For New Features
+
 1. Research existing patterns first
 2. Start with data model
 3. Build backend logic
 4. Add API endpoints
 5. Implement UI last
 
-### For Refactoring:
+### For Refactoring
+
 1. Document current behavior
 2. Plan incremental changes
 3. Maintain backwards compatibility
@@ -498,6 +514,7 @@ When spawning research sub-tasks:
 ## Configuration
 
 The command accepts the directory path as a parameter:
+
 ```
 /create_plan docs/plans/2025-10-07-my-project
 ```

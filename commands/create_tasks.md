@@ -3,6 +3,7 @@
 Breaks down the implementation plan into concrete, actionable tasks organized by phase with clear completion tracking and verification barriers.
 
 ## CRITICAL: Task Extraction Philosophy
+
 - ONLY extract tasks directly from the plan - DO NOT add new scope
 - Every task must be traceable to the implementation plan
 - Maintain separation between automated and manual verification
@@ -12,6 +13,7 @@ Breaks down the implementation plan into concrete, actionable tasks organized by
 ## Initial Setup
 
 When this command is invoked, respond with:
+
 ```
 I'll help you break down the implementation plan into actionable tasks. Please provide:
 1. Path to the project documentation directory (e.g., docs/plans/2025-10-07-my-project/)
@@ -162,11 +164,14 @@ completed_tasks: 0
 
 ### ⛔ CHECKPOINT: Phase 1 Complete
 ```
+
 Before proceeding to Phase 2:
+
 1. ✅ All implementation tasks complete
 2. ✅ All automated checks passing
 3. ✅ Manual verification confirmed by human
 4. ✅ Update status in frontmatter
+
 ```
 
 ---
@@ -260,9 +265,12 @@ Move completed tasks here weekly to keep active list focused.
 ```
 
 ### File:Line References
+
 Quick jump to key code locations:
+
 - `path/to/file1.ext:123` - [What's there]
 - `path/to/file2.ext:456` - [What's there]
+
 ```
 
 ### Step 4: Update Tasks File
@@ -281,6 +289,7 @@ Quick jump to key code locations:
 ### Step 5: Present Task Summary
 
 ```
+
 ✅ Task list generated at: [path]/tasks.md
 
 Task Breakdown by Phase:
@@ -311,10 +320,12 @@ Key Features:
 ✓ File:line references preserved
 
 Next Steps:
+
 1. Review the generated task list
 2. Start with Phase 1 setup tasks
 3. Update task status as you progress
 4. Use frontmatter for overall tracking
+
 ```
 
 ## Task Management Protocol
@@ -329,10 +340,12 @@ Tasks MUST be:
 
 ### Task Status Lifecycle
 ```
+
 [ ] Not started
 [>] In progress (optional, for current task)
 [x] Complete (with timestamp)
 [!] Blocked (move to blockers section)
+
 ```
 
 ### Frontmatter Updates
@@ -345,13 +358,16 @@ last_updated: YYYY-MM-DD
 ```
 
 ### Daily Workflow
+
 1. **Morning**: Review current phase tasks
 2. **During work**: Check off completed tasks with timestamps
 3. **End of day**: Update frontmatter counts
 4. **Weekly**: Archive completed tasks
 
 ### Blocker Management
+
 When blocked:
+
 ```markdown
 ### Current Blockers
 | Blocker | Impact | Action | Owner | Due Date |
@@ -362,6 +378,7 @@ When blocked:
 ## Important Guidelines
 
 ### CRITICAL Rules
+
 - **NEVER add tasks not in the plan** - that's scope creep
 - **ALWAYS include verification steps** - both automated and manual
 - **MAINTAIN checkpoints** - enforce phase boundaries
@@ -369,6 +386,7 @@ When blocked:
 - **PRESERVE references** - keep all file:line citations
 
 ### Task Extraction Checklist
+
 - [ ] Every "Changes Required" item becomes a task
 - [ ] Every "Success Criteria" item becomes a verification task
 - [ ] Every test mentioned becomes a testing task
@@ -378,6 +396,7 @@ When blocked:
 - [ ] Checkpoints prevent skipping ahead
 
 ### Progress Tracking
+
 - Use frontmatter for high-level metrics
 - Use checkboxes for individual task status
 - Add timestamps when completing tasks
@@ -393,6 +412,7 @@ When blocked:
 ## Configuration
 
 The command accepts the directory path as a parameter:
+
 ```
 /create_tasks docs/plans/2025-10-07-my-project
 ```

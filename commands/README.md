@@ -45,6 +45,7 @@ A comprehensive set of Claude Code slash commands for managing project documenta
 Creates a comprehensive documentation structure with Git metadata tracking.
 
 **Usage**:
+
 ```bash
 /create_project my-feature
 /create_project my-feature docs/projects
@@ -52,6 +53,7 @@ Creates a comprehensive documentation structure with Git metadata tracking.
 ```
 
 **Creates**:
+
 ```
 docs/plans/2025-10-07-LINEAR-789-my-feature/
 ├── README.md     # Navigation and overview
@@ -61,6 +63,7 @@ docs/plans/2025-10-07-LINEAR-789-my-feature/
 ```
 
 **Key Features**:
+
 - Captures Git metadata (commit, branch, repo)
 - Creates timestamped directories
 - Initializes with rich frontmatter
@@ -74,6 +77,7 @@ docs/plans/2025-10-07-LINEAR-789-my-feature/
 Conducts fast research without file output - for quick answers.
 
 **Usage**:
+
 ```bash
 /research
 > How does our authentication middleware work?
@@ -90,17 +94,20 @@ Conducts fast research without file output - for quick answers.
 Conducts comprehensive research with parallel agents and saves detailed findings.
 
 **Usage**:
+
 ```bash
 /create_research docs/plans/2025-10-07-my-feature
 > Research how we handle API rate limiting and error recovery
 ```
 
 **Critical Behaviors**:
+
 - **⛔ BARRIER 1**: Reads mentioned files FULLY first
 - **⛔ BARRIER 2**: Waits for ALL agents to complete
 - **⛔ BARRIER 3**: No placeholder values in output
 
 **Agent Strategy**:
+
 ```
 Code Locator Agents → Find WHERE components live
 Code Analyzer Agents → Understand HOW code works
@@ -110,6 +117,7 @@ Pattern Finder Agents → Find similar implementations
 **All agents are told**: "Document what IS, not what SHOULD BE"
 
 **Creates**: Structured research.md with:
+
 - Research question and summary
 - Detailed findings with `file.ext:line` references
 - Architecture documentation (patterns found)
@@ -125,11 +133,13 @@ Pattern Finder Agents → Find similar implementations
 Creates detailed implementation plan through interactive discussion.
 
 **Usage**:
+
 ```bash
 /create_plan docs/plans/2025-10-07-my-feature
 ```
 
 **Interactive Process**:
+
 1. **Reads research** and spawns analysis agents
 2. **Confirms understanding** with discovered context
 3. **Asks focused questions** only about unknowns
@@ -137,6 +147,7 @@ Creates detailed implementation plan through interactive discussion.
 5. **Writes detailed plan** after approval
 
 **Plan Structure**:
+
 - Current state analysis (from research)
 - Desired end state (measurable)
 - **What We're NOT Doing** (scope protection)
@@ -147,6 +158,7 @@ Creates detailed implementation plan through interactive discussion.
 - **⛔ CHECKPOINTS** between phases
 
 **Critical Rules**:
+
 - NO open questions in final plan
 - Every decision made before writing
 - Success criteria MUST be measurable
@@ -159,11 +171,13 @@ Creates detailed implementation plan through interactive discussion.
 Extracts ALL tasks from plan into trackable format.
 
 **Usage**:
+
 ```bash
 /create_tasks docs/plans/2025-10-07-my-feature
 ```
 
 **Task Extraction**:
+
 - Every "Changes Required" → Implementation task
 - Every "Success Criteria" → Verification task
 - Every test mentioned → Testing task
@@ -171,6 +185,7 @@ Extracts ALL tasks from plan into trackable format.
 - Every file:line reference maintained
 
 **Creates**: Rich tasks.md with:
+
 ```markdown
 ## Progress Overview
 | Phase | Status | Tasks | Progress |
@@ -186,6 +201,7 @@ Before proceeding to Phase 2:
 ```
 
 **Features**:
+
 - Progress tracking tables
 - Blocker management system
 - Decision log
@@ -200,6 +216,7 @@ Before proceeding to Phase 2:
 ### 📚 File Reading Protocol
 
 **ALWAYS**:
+
 ```
 1. Read mentioned files FULLY (no limit/offset)
 2. Read BEFORE spawning agents
@@ -221,6 +238,7 @@ Commands implement explicit barriers:
 ### 🤖 Agent Instructions
 
 Every research agent receives:
+
 ```
 You are documenting the codebase as it exists.
 DO NOT suggest improvements or identify issues.
@@ -232,11 +250,13 @@ Document what IS, not what SHOULD BE.
 Plans separate verification into:
 
 **Automated** (CI can run):
+
 - Unit tests: `npm test`
 - Linting: `make lint`
 - Build: `make build`
 
 **Manual** (Human required):
+
 - UI functionality
 - Performance validation
 - Edge case testing
@@ -249,6 +269,7 @@ Plans separate verification into:
 ### Complete Project Lifecycle
 
 #### 1. Initialize Project
+
 ```bash
 /create_project add-auth-middleware docs/projects LINEAR-789
 ```
@@ -256,6 +277,7 @@ Plans separate verification into:
 Creates timestamped directory with metadata-rich files.
 
 #### 2. Research Codebase
+
 ```bash
 /create_research docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 > Research current middleware architecture, auth patterns, and session handling
@@ -264,6 +286,7 @@ Creates timestamped directory with metadata-rich files.
 Spawns parallel agents, documents findings objectively.
 
 #### 3. Plan Implementation
+
 ```bash
 /create_plan docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
@@ -271,6 +294,7 @@ Spawns parallel agents, documents findings objectively.
 Interactive discussion → Phased plan with checkpoints.
 
 #### 4. Generate Tasks
+
 ```bash
 /create_tasks docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
@@ -280,6 +304,7 @@ Extracts every task from plan, organizes by phase.
 #### 5. Execute with Tracking
 
 Work through tasks.md:
+
 ```markdown
 - [x] Review existing middleware (completed 2025-10-07 14:30)
 - [x] Set up test environment (completed 2025-10-07 15:15)
@@ -288,6 +313,7 @@ Work through tasks.md:
 ```
 
 Update frontmatter as you progress:
+
 ```yaml
 current_phase: 1
 completed_tasks: 8
@@ -301,6 +327,7 @@ total_tasks: 24
 ### Rich Frontmatter
 
 All files include:
+
 ```yaml
 ---
 # Basic tracking
@@ -346,6 +373,7 @@ Files move through defined states:
 Default: `docs/plans/YYYY-MM-DD-[TICKET-]project-name/`
 
 Customize base directory per command:
+
 ```bash
 /create_project feature custom/location
 ```
@@ -353,6 +381,7 @@ Customize base directory per command:
 ### Ticket Formats
 
 Flexible ticket support:
+
 - GitHub: `GH-123`
 - Jira: `PROJ-456`
 - Linear: `ENG-789`
@@ -376,6 +405,7 @@ commands/
 ## Best Practices
 
 ### Research Phase
+
 - **Read files FULLY** before analysis
 - **Document objectively** - what IS, not opinions
 - **Include all references** - file:line format
@@ -383,6 +413,7 @@ commands/
 - **Note connections** - how components interact
 
 ### Planning Phase
+
 - **Discuss before writing** - get alignment
 - **Define OUT of scope** - prevent creep
 - **Make it measurable** - clear success criteria
@@ -390,6 +421,7 @@ commands/
 - **Include rollback** - safety first
 
 ### Task Management
+
 - **Extract everything** - miss no tasks
 - **Maintain barriers** - checkpoints matter
 - **Track blockers** - with actions/owners
@@ -397,6 +429,7 @@ commands/
 - **Update frontmatter** - overall metrics
 
 ### Verification Strategy
+
 - **Automate what's possible** - CI/CD checks
 - **Document manual needs** - human verification
 - **Enforce checkpoints** - between phases
@@ -407,6 +440,7 @@ commands/
 ## Common Patterns
 
 ### Database Changes
+
 1. Schema/migration first
 2. Data access layer
 3. Business logic
@@ -414,6 +448,7 @@ commands/
 5. Client updates
 
 ### New Features
+
 1. Research patterns
 2. Data model
 3. Backend logic
@@ -421,6 +456,7 @@ commands/
 5. UI implementation
 
 ### Refactoring
+
 1. Document current
 2. Incremental changes
 3. Maintain compatibility
@@ -431,15 +467,19 @@ commands/
 ## Troubleshooting
 
 ### Issue: Agents not finding files
+
 **Solution**: Be specific about directories and patterns in agent prompts
 
 ### Issue: Plan has open questions
+
 **Solution**: Research more or ask user - never write with unknowns
 
 ### Issue: Tasks missing from plan
+
 **Solution**: Re-read plan.md FULLY, extract every mentioned task
 
 ### Issue: Phases too large
+
 **Solution**: Break into smaller increments with checkpoints
 
 ---
@@ -449,6 +489,7 @@ commands/
 ### Why "Document, Don't Judge"?
 
 Research should be **objective documentation** of the current system. Improvements come during planning, not research. This separation ensures:
+
 - Clear understanding of current state
 - Unbiased analysis
 - Better planning decisions
@@ -457,6 +498,7 @@ Research should be **objective documentation** of the current system. Improvemen
 ### Why Barriers and Checkpoints?
 
 Explicit synchronization prevents:
+
 - Incomplete context
 - Racing ahead
 - Skipping verification
@@ -467,6 +509,7 @@ Explicit synchronization prevents:
 
 Automated checks catch technical issues.
 Manual verification catches:
+
 - UX problems
 - Performance issues
 - Edge cases
@@ -476,6 +519,7 @@ Manual verification catches:
 ### Why No Scope Creep?
 
 Tasks ONLY from plan ensures:
+
 - Predictable delivery
 - Clear expectations
 - Controlled changes
@@ -495,6 +539,7 @@ Commands leverage Claude Code's powerful agent system while maintaining strict b
 ## Version
 
 Current Version: 2.0.0
+
 - Added comprehensive barriers and checkpoints
 - Enhanced metadata tracking
 - Strengthened agent directives

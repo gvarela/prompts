@@ -1,6 +1,9 @@
 {
   "permissions": {
-    "allow": [],
+    "allow": [
+      "Bash(chmod:*)",
+      "Bash(./scripts/lint:*)"
+    ],
     "deny": [],
     "ask": []
   }
