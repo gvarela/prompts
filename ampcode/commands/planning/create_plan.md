@@ -518,12 +518,6 @@ This command creates detailed implementation plans through interactive discussio
 
 **Fill in these parameters before submitting, or leave blank for interactive mode.**
 
-**Parameters:**
-
-- Project directory:
-- Context/Requirements: (optional)
-- Related links: (optional)
-
 **Example:**
 
 ```
@@ -531,3 +525,9 @@ This command creates detailed implementation plans through interactive discussio
 - Context/Requirements: Need to add caching layer for API responses, must support TTL
 - Related links: research.md has findings on current architecture
 ```
+
+**Parameters:**
+
+- Project directory:
+- Context/Requirements: (optional)
+- Related links: (optional)

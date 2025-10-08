@@ -115,4 +115,3 @@ When testing changes to commands:
 3. Verify all barriers and checkpoints work correctly
 4. Check that frontmatter is properly populated
 5. Ensure status progression works as expected
-

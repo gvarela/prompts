@@ -486,12 +486,12 @@ This command extracts actionable tasks from implementation plans. See the User I
 
 **Fill in these parameters before submitting, or leave blank for interactive mode.**
 
-**Parameters:**
-
-- Project directory:
-
 **Example:**
 
 ```
 - Project directory: docs/plans/2025-10-08-my-feature
 ```
+
+**Parameters:**
+
+- Project directory:

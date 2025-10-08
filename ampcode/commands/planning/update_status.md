@@ -411,14 +411,14 @@ This command analyzes and updates project status across all documentation files.
 
 **Fill in these parameters before submitting, or leave blank for interactive mode.**
 
-**Parameters:**
-
-- Project directory:
-- What changed: (optional)
-
 **Example:**
 
 ```
 - Project directory: docs/plans/2025-10-08-my-feature
 - What changed: Completed Phase 1, all tests passing
 ```
+
+**Parameters:**
+
+- Project directory:
+- What changed: (optional)

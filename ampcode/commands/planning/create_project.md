@@ -506,12 +506,6 @@ This ensures consistency and proper tracking from inception.
 
 **Fill in these parameters before submitting, or leave blank for interactive mode.**
 
-**Parameters:**
-
-- Project name:
-- Base directory: (default: docs/plans)
-- Ticket reference: (optional)
-
 **Example:**
 
 ```
@@ -519,3 +513,9 @@ This ensures consistency and proper tracking from inception.
 - Base directory: docs/plans
 - Ticket reference: LINEAR-456
 ```
+
+**Parameters:**
+
+- Project name:
+- Base directory: (default: docs/plans)
+- Ticket reference: (optional)

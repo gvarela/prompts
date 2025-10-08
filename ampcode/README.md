@@ -16,6 +16,7 @@ Our planning commands are designed as **Markdown commands** that provide compreh
 **AmpCode commands are prompt templates you can edit before submitting:**
 
 When you invoke `/create_project`, AmpCode:
+
 1. Loads the entire command file into your input field
 2. **Lets you edit/append before hitting send**
 3. Then sends the complete message (command + your additions) to the AI
@@ -38,6 +39,7 @@ Ticket: LINEAR-456
 ```
 
 **Two approaches work:**
+
 1. **Append parameters**: Add context to end before submitting
 2. **Interactive**: Submit command as-is, AI asks questions, you respond next message
 
@@ -232,6 +234,37 @@ LINEAR-456
 
 **Best practice**: For simple commands with known parameters, append them. For research/planning where you want AI guidance, submit as-is.
 
+## AmpCode Command Format Requirements
+
+**CRITICAL**: All AmpCode commands must follow this structure in the "User Input Section":
+
+1. **Example** (with filled-in values) - MUST come first
+2. **Parameters** (blank fields) - MUST come last
+
+This ordering is required because AmpCode loads commands into the user's input field, and users need to see the example format before filling in their own parameters.
+
+### Correct Format
+
+```markdown
+## User Input Section
+
+**Example:**
+\`\`\`
+- Parameter: example-value
+\`\`\`
+
+**Parameters:**
+- Parameter:
+```
+
+### Why This Matters
+
+When you type `/create_project`, AmpCode loads the entire command file. With examples first, users can:
+
+1. See the expected format immediately
+2. Scroll down to empty parameters
+3. Fill them in before submitting
+
 ## Command Files
 
 Our commands are markdown files structured for flexible parameter input:
@@ -245,9 +278,12 @@ Brief description of what the command does.
 
 When this command is invoked, respond with:
 ```
+
 I'll help you [do the thing]. Please provide:
+
 1. Parameter 1
 2. Parameter 2
+
 ```
 
 Then wait for the user's input.
@@ -271,6 +307,7 @@ Parameters:
 ```
 
 The structure accommodates both usage patterns:
+
 - **Pre-filled**: User appends parameters before submitting → AI reads and executes
 - **Interactive**: User submits empty → AI follows "Initial Setup" to ask questions
 
@@ -410,6 +447,7 @@ cat ~/.config/amp/commands/create_project.md
    ```
 
 3. Check symlinks are valid:
+
    ```bash
    ls -la ~/.config/amp/commands/
    ```
@@ -548,7 +586,9 @@ All files stay synchronized automatically.
 
 ## Command Reference
 
-Quick reference for our planning commands:
+### Planning Commands
+
+Sequential workflow for project documentation:
 
 | Command            | Purpose                          | Input                      |
 | ------------------ | -------------------------------- | -------------------------- |
@@ -558,16 +598,28 @@ Quick reference for our planning commands:
 | `/create_tasks`    | Extract tasks from plan          | project-directory          |
 | `/update_status`   | Sync status across all files     | project-directory          |
 
+### Action Commands
+
+Read-only codebase analysis commands:
+
+| Command            | Purpose                          | Input                      |
+| ------------------ | -------------------------------- | -------------------------- |
+| `/locate_code`     | Find components and files        | component-name, file-types |
+| `/analyze_code`    | Understand implementation        | component, aspect          |
+| `/find_patterns`   | Identify conventions             | pattern-type, directories  |
+
 ## Additional Resources
 
 - [AmpCode Documentation](https://ampcode.com/manual#cli-custom-slash-commands)
-- [Command Source](../commands/planning/)
-- [Command Philosophy](../commands/planning/CLAUDE.md)
+- [Planning Commands](commands/planning/)
+- [Action Commands](commands/actions/)
+- [Command Philosophy](commands/planning/CLAUDE.md)
 
 ## Support
 
 For issues with:
 
-- **Commands themselves**: Check [commands/planning/](../commands/planning/)
+- **Planning commands**: Check [commands/planning/](commands/planning/)
+- **Action commands**: Check [commands/actions/](commands/actions/)
 - **AmpCode integration**: See [AmpCode manual](https://ampcode.com/manual)
-- **General usage**: Review [commands/planning/README.md](../commands/planning/README.md)
+- **General usage**: Review command READMEs above

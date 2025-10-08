@@ -279,6 +279,7 @@ Based on the research findings:
 ### Step 7: Handle Follow-Up Questions
 
 If the user has follow-up questions:
+
 1. **DO NOT create a new research file**
 2. **Append to the existing research.md**
 3. **Add new section**: `## Follow-up Research [YYYY-MM-DD HH:MM]`
@@ -291,6 +292,7 @@ If the user has follow-up questions:
 ### Step 8: Confirm Completion
 
 Present summary to user:
+
 ```
 
 ✅ Research documented at: [path]/research.md
@@ -319,11 +321,13 @@ Next: Review the research and run `/create_plan` when ready to plan implementati
 ## Important Notes
 
 ### Critical Ordering
+
 - **ALWAYS** read mentioned files first before spawning sub-tasks (Step 1)
 - **ALWAYS** wait for all sub-agents to complete before synthesizing (Step 4)
 - **NEVER** write the research document with placeholder values
 
 ### Documentation Philosophy
+
 - **CRITICAL**: You and all sub-agents are documentarians, not evaluators
 - **REMEMBER**: Document what IS, not what SHOULD BE
 - **NO RECOMMENDATIONS**: Only describe the current state of the codebase
@@ -333,11 +337,13 @@ Next: Review the research and run `/create_plan` when ready to plan implementati
 - Document cross-component connections and how systems interact
 
 ### File Reading
+
 - **File reading**: Always read mentioned files FULLY (no limit/offset) before spawning sub-tasks
 - Have sub-agents document examples and usage patterns as they exist
 - Keep the main agent focused on synthesis, not deep file reading
 
 ### Synchronization Points
+
 1. ⛔ **BARRIER 1**: After reading mentioned files - Do not proceed until ALL files are read
 2. ⛔ **BARRIER 2**: After spawning agents - Wait for ALL agents to complete
 3. ⛔ **BARRIER 3**: Before writing output - Verify no placeholder values
@@ -352,12 +358,12 @@ This command conducts comprehensive codebase research using parallel agents. See
 
 **Fill in these parameters before submitting, or leave blank for interactive mode.**
 
-**Parameters:**
-- Project directory:
-- Research question:
-
 **Example:**
 
 - Project directory: docs/plans/2025-10-08-my-feature
 - Research question: How do we currently handle authentication and session management?
 
+**Parameters:**
+
+- Project directory:
+- Research question:
