@@ -29,6 +29,7 @@ Each command builds upon the previous one's output, creating structured document
 ### Command Structure
 
 Each command file contains:
+
 - Initial setup prompts
 - Step-by-step execution with barriers
 - Agent instructions for parallel research
@@ -47,6 +48,7 @@ When modifying commands, maintain these patterns:
 ```
 
 Agent instructions must include:
+
 ```
 You are documenting the codebase as it exists.
 DO NOT suggest improvements or identify issues.
@@ -56,6 +58,7 @@ Document what IS, not what SHOULD BE.
 ### Frontmatter Standards
 
 All generated documentation files use consistent YAML frontmatter:
+
 - Basic: `project`, `ticket`, `created`, `status`, `last_updated`
 - Git metadata: `git_commit`, `git_branch`, `repository`
 - User tracking: `researcher`, `planner`, `assignee`
@@ -76,6 +79,7 @@ When modifying or creating new documentation commands:
 ## Status Progression
 
 Files created by commands progress through defined states:
+
 - `research.md`: draft → in-progress → complete
 - `plan.md`: draft → ready → implementing → complete
 - `tasks.md`: not-started → in-progress → complete
@@ -83,22 +87,28 @@ Files created by commands progress through defined states:
 ## Command Descriptions
 
 ### `/create_project`
+
 Initializes project documentation structure with metadata tracking.
 
 ### `/create_research`
+
 Conducts comprehensive research using parallel agents, documenting what EXISTS without judgment.
 
 ### `/create_plan`
+
 Creates implementation plans through interactive discussion, with phased approach and dual verification.
 
 ### `/create_tasks`
+
 Extracts ALL tasks from plans with proper barriers and checkpoints.
 
 ## Testing Commands
 
 When testing changes to commands:
+
 1. Create a test project with `/create_project test-feature`
 2. Run through the full workflow
 3. Verify all barriers and checkpoints work correctly
 4. Check that frontmatter is properly populated
 5. Ensure status progression works as expected
+
