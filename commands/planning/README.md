@@ -26,6 +26,10 @@ A comprehensive set of Claude Code slash commands for managing project documenta
 [Structure]        [Research.md]      [Plan.md]     [Tasks.md]
                         ↓                ↓              ↓
                    [What EXISTS]    [What to BUILD]  [How to DO IT]
+                                                         ↓
+                                                  /update_status
+                                                         ↓
+                                              [Track Progress]
 ```
 
 ### Workflow Stages
@@ -35,6 +39,7 @@ A comprehensive set of Claude Code slash commands for managing project documenta
 3. **Plan**: Design implementation through discussion
 4. **Tasks**: Extract actionable items with barriers
 5. **Execute**: Implement with verification checkpoints
+6. **Update**: Keep status synchronized across all files
 
 ---
 
@@ -206,8 +211,53 @@ Before proceeding to Phase 2:
 - Blocker management system
 - Decision log
 - Completed task archive
+- Modified files tracking (code vs tests)
 - Quick reference section
 - Daily workflow guidance
+
+---
+
+### `/update_status` - Update Project Status
+
+Intelligently updates status across all documentation files based on actual progress.
+
+**Usage**:
+
+```bash
+/update_status docs/plans/2025-10-07-my-feature
+```
+
+**What It Does**:
+
+1. **Reads ALL files FULLY** - Analyzes research.md, plan.md, tasks.md
+2. **Determines actual state** - Checks content, not just frontmatter
+3. **Proposes updates** - Shows what will change and why
+4. **Applies consistently** - Updates all files atomically
+5. **Verifies consistency** - Ensures no conflicting states
+
+**Status Progressions**:
+
+```
+research.md: draft → in-progress → complete
+plan.md: draft → ready → implementing → complete
+tasks.md: not-started → in-progress → complete
+```
+
+**Smart Detection**:
+
+- Detects completion percentage from checked tasks
+- Identifies current active phase
+- Validates status transitions across files
+- Prevents invalid state changes
+- Updates git metadata for audit trail
+
+**Key Features**:
+
+- No manual status updates needed
+- Prevents status regression
+- Maintains consistency across all files
+- Provides clear transition reasoning
+- Cascading updates (plan → tasks)
 
 ---
 

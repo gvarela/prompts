@@ -100,7 +100,11 @@ Creates implementation plans through interactive discussion, with phased approac
 
 ### `/create_tasks`
 
-Extracts ALL tasks from plans with proper barriers and checkpoints.
+Extracts ALL tasks from plans with proper barriers and checkpoints. Tracks modified files per phase.
+
+### `/update_status`
+
+Intelligently updates status across all documentation files based on actual progress. Ensures consistency and validates state transitions.
 
 ## Testing Commands
 

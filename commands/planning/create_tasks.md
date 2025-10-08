@@ -58,6 +58,13 @@ Analyze the plan and extract ALL tasks:
    - Integration test creation
    - Test execution commands
 
+**IMPORTANT**: While extracting tasks, also track all modified files:
+
+- Separate code files from test files
+- Include brief description of changes for each file
+- Generate appropriate test commands for the phase
+- Make it easy to run phase-specific tests without running the entire suite
+
 4. **Verification Tasks**:
    - Automated checks (from "Automated Verification")
    - Manual tests (from "Manual Verification")
@@ -142,10 +149,34 @@ completed_tasks: 0
   - Test file: `path/to/integration.test.ts`
 - [ ] Ensure all existing tests still pass
 
+### 📝 Modified Files
+
+Track all files changed in this phase for easier testing and review.
+
+#### Code Files
+- `path/to/file1.ext` - [Brief description of changes]
+- `path/to/file2.ext` - [Brief description of changes]
+- `path/to/file3.ext` - [Brief description of changes]
+
+#### Test Files
+- `path/to/test1.spec.ts` - Tests for [component/feature]
+- `path/to/test2.test.ts` - Tests for [component/feature]
+- `path/to/integration.test.ts` - Integration tests for [scenario]
+
+**Quick test commands:**
+```bash
+# Run tests for this phase only
+npm test path/to/test1.spec.ts path/to/test2.test.ts
+# or
+go test ./path/to/package/...
+```
+
 ### ✅ Verification Tasks
 
 #### Automated Verification (CI/CD)
+
 **MUST ALL PASS before manual verification:**
+
 - [ ] Unit tests pass: `[exact command from plan]`
 - [ ] Integration tests pass: `[exact command from plan]`
 - [ ] Linting passes: `[exact command from plan]`
@@ -153,7 +184,9 @@ completed_tasks: 0
 - [ ] Build succeeds: `[exact command from plan]`
 
 #### Manual Verification (Human Testing)
+
 **Required before moving to Phase 2:**
+
 - [ ] [Specific manual test from plan]
   - Steps: [how to test]
   - Expected: [what should happen]
@@ -163,6 +196,7 @@ completed_tasks: 0
 - [ ] No regressions in [related feature]
 
 ### ⛔ CHECKPOINT: Phase 1 Complete
+
 ```
 
 Before proceeding to Phase 2:
@@ -182,6 +216,7 @@ Before proceeding to Phase 2:
 **Objective**: [What this phase accomplishes from plan]
 
 ### 🔒 Prerequisites
+
 - [ ] Phase 1 marked complete in frontmatter
 - [ ] Phase 1 manual verification confirmed
 - [ ] Review Phase 1 implementation
@@ -194,11 +229,31 @@ Before proceeding to Phase 2:
 
 [Extract all test tasks from Phase 2]
 
+### 📝 Modified Files
+
+Track all files changed in this phase for easier testing and review.
+
+#### Code Files
+
+- `path/to/file.ext` - [Brief description of changes]
+
+#### Test Files
+
+- `path/to/test.spec.ts` - Tests for [component/feature]
+
+**Quick test commands:**
+
+```bash
+# Run tests for this phase only
+[specific test command for phase 2 files]
+```
+
 ### ✅ Verification Tasks
 
 [Extract all verification tasks from Phase 2]
 
 ### ⛔ CHECKPOINT: Phase 2 Complete
+
 [Same structure as Phase 1]
 
 ---
@@ -214,6 +269,7 @@ Before proceeding to Phase 2:
 Move completed tasks here weekly to keep active list focused.
 
 ### Week of [YYYY-MM-DD]
+
 - [x] Task description (completed YYYY-MM-DD HH:MM)
 - [x] Another task (completed YYYY-MM-DD HH:MM)
 
@@ -222,16 +278,19 @@ Move completed tasks here weekly to keep active list focused.
 ## 🚧 Blockers & Notes
 
 ### Current Blockers
+
 | Blocker | Impact | Action | Owner | Due Date |
 |---------|--------|--------|-------|----------|
 | None | - | - | - | - |
 
 ### Decision Log
+
 | Date | Decision | Rationale | Impact |
 |------|----------|-----------|--------|
 | YYYY-MM-DD | [Decision made] | [Why] | [What changed] |
 
 ### Implementation Notes
+
 - [Important discovery or context from implementation]
 - [Deviation from plan and why]
 
@@ -240,6 +299,7 @@ Move completed tasks here weekly to keep active list focused.
 ## 🔗 Quick Reference
 
 ### Key Files
+
 - **Research**: [`research.md`](research.md)
 - **Plan**: [`plan.md`](plan.md)
 - **Main Entry Point**: `[from plan]`
@@ -247,6 +307,7 @@ Move completed tasks here weekly to keep active list focused.
 - **Tests**: `[test directory from plan]`
 
 ### Common Commands
+
 ```bash
 # Development
 [command from plan]
@@ -394,6 +455,8 @@ When blocked:
 - [ ] Every file:line reference is maintained
 - [ ] Phase boundaries are clearly marked
 - [ ] Checkpoints prevent skipping ahead
+- [ ] Modified Files section tracks all code and test files per phase
+- [ ] Quick test commands generated for running phase-specific tests
 
 ### Progress Tracking
 

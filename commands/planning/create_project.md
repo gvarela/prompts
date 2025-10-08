@@ -337,8 +337,9 @@ tags: [tasks, tracking, [project-name]]
 1. Run `/create_research [directory]` to conduct research
 2. Run `/create_plan [directory]` to create implementation plan
 3. Run `/create_tasks [directory]` to generate task list
-
 ```
+
+**⛔ BARRIER 1**: Ensure all three foundation files are created before proceeding
 
 ### Step 5: Create README for Navigation
 
@@ -390,14 +391,13 @@ Run these commands from the project root:
 # Generate tasks
 /create_tasks [this-directory]
 ```
-
 ```
+
+**⛔ BARRIER 2**: Verify README is created before final confirmation
 
 ### Step 6: Confirm Creation
 
 Present the created structure with enhanced details:
-
-```
 
 ✅ Project documentation initialized successfully!
 
@@ -431,8 +431,6 @@ Present the created structure with enhanced details:
 - [ ] Generate task list using /create_tasks
 
 Ready to begin research phase!
-
-```
 
 ## Important Notes
 
@@ -492,11 +490,18 @@ Check for and handle:
 
 ## Synchronization Points
 
-⛔ **Creation Order**:
+Commands use explicit barriers to ensure proper sequencing:
 
-1. Create directory first
-2. Generate metadata second
-3. Create files with metadata third
-4. Confirm creation last
+1. **⛔ BARRIER 1**: After creating foundation files (research.md, plan.md, tasks.md)
+   - Do not proceed until all three files exist with proper frontmatter
+   - Verify metadata is captured correctly
+
+2. **⛔ BARRIER 2**: After creating README.md
+   - Ensure navigation and overview is complete
+   - Verify all file links work correctly
+
+3. **Final Confirmation**: Only after all barriers pass
+   - Present complete structure overview
+   - Provide next steps for workflow
 
 This ensures consistency and proper tracking from inception.
