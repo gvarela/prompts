@@ -82,6 +82,7 @@ For each implementation task:
 **think deeply**
 
 After reading all documentation, synthesize:
+
 - What patterns should I follow from research?
 - What's the goal from the plan?
 - What specific tasks need implementation?
@@ -113,12 +114,14 @@ Tasks for Phase [N]:
 1. Create/update test file
 2. Write test that captures the requirement
 3. Run test to confirm failure:
+
    ```bash
    # Example commands (adapt to project):
    npm test path/to/test.spec.ts
    go test ./path/to/package -run TestName
    pytest tests/test_feature.py::test_name
    ```
+
 4. Confirm test fails for the right reason
 
 **B. Implementation (GREEN)**
@@ -148,6 +151,7 @@ Tasks for Phase [N]:
 After completing each task:
 
 1. Update tasks.md checkbox:
+
    ```markdown
    - [x] Task description (completed YYYY-MM-DD HH:MM)
    ```
@@ -155,6 +159,7 @@ After completing each task:
 2. Update your todo list
 
 3. Consider updating frontmatter if significant progress:
+
    ```yaml
    completed_tasks: [new count]
    last_updated: YYYY-MM-DD
@@ -252,6 +257,7 @@ Do NOT check off manual verification items until confirmed by the user.
 After phase completion and verification:
 
 1. **Update tasks.md frontmatter**:
+
    ```yaml
    current_phase: [N+1 if moving forward]
    completed_tasks: [new total]
@@ -295,6 +301,7 @@ When resuming work:
    - Review "Implementation Notes" for context
 
 2. **Verify previous work** (optional):
+
    ```bash
    # Run tests to ensure previous work is solid
    [test command from tasks.md]
@@ -317,6 +324,7 @@ When resuming work:
 ### When to Skip TDD
 
 Some tasks may not need test-first approach:
+
 - Configuration changes
 - Documentation updates
 - Refactoring with existing tests
@@ -329,6 +337,7 @@ For these, update tasks.md appropriately but skip RED phase.
 ### Modified Files Tracking
 
 Maintain the "Modified Files" section in tasks.md to help with:
+
 - Targeted test running (just phase files)
 - Code review focus
 - Rollback if needed
@@ -362,6 +371,7 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 ### Test Failures During Implementation
 
 If tests fail unexpectedly:
+
 1. Check if codebase changed since plan was written
 2. Verify test is testing the right thing
 3. Check for environment issues
@@ -370,6 +380,7 @@ If tests fail unexpectedly:
 ### Verification Failures
 
 If automated verification fails after implementation:
+
 1. Fix issues before marking phase complete
 2. Re-run full verification suite
 3. Update test commands if they've changed
@@ -377,7 +388,8 @@ If automated verification fails after implementation:
 
 ## Important Guidelines
 
-### DO:
+### DO
+
 - ✅ Follow TDD cycle: Red → Green → Refactor
 - ✅ Read ALL documentation files FULLY first
 - ✅ Update progress in both checkboxes and frontmatter
@@ -386,7 +398,8 @@ If automated verification fails after implementation:
 - ✅ Generate phase-specific test commands
 - ✅ Document any deviations from plan
 
-### DON'T:
+### DON'T
+
 - ❌ Skip writing tests first (except for noted exceptions)
 - ❌ Add scope beyond what's in tasks.md
 - ❌ Move to next phase without verification
@@ -424,3 +437,4 @@ This command implements tasks from the structured task list following TDD practi
 - Project directory:
 - Phase to implement: (number or "continue")
 - Context: (optional - testing framework, special considerations)
+
