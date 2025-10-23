@@ -29,6 +29,7 @@ INSTALL_CLAUDE=false
 INSTALL_AMP=false
 INSTALL_PROJECT=false
 PROJECT_PATH=""
+SKIP_CONFIRM=false
 
 # Function to print colored output
 print_info() {
@@ -60,6 +61,7 @@ Options:
   --amp             Install to AmpCode (uses copies)
   --both            Install to both Claude Code and AmpCode
   --project <path>  Install to project at specified path (default: global)
+  --yes, -y         Skip confirmation prompts
   --help            Show this help message
 
 Examples:
@@ -167,11 +169,13 @@ ensure_directory() {
 
     if [ "$scope" = "global" ]; then
         print_warning "Directory does not exist: $dir"
-        read -p "Create it? (y/n) " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            print_error "Installation cancelled"
-            return 1
+        if [ "$SKIP_CONFIRM" = false ]; then
+            read -p "Create it? (y/n) " -n 1 -r
+            echo
+            if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+                print_error "Installation cancelled"
+                return 1
+            fi
         fi
     fi
 
@@ -303,6 +307,10 @@ while [ $# -gt 0 ]; do
             PROJECT_PATH="$1"
             shift
             ;;
+        --yes|-y)
+            SKIP_CONFIRM=true
+            shift
+            ;;
         --help)
             show_help
             exit 0
@@ -366,11 +374,13 @@ echo "  AmpCode: $INSTALL_AMP"
 echo
 
 # Confirm installation
-read -p "Proceed with installation? (y/n) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    print_error "Installation cancelled"
-    exit 1
+if [ "$SKIP_CONFIRM" = false ]; then
+    read -p "Proceed with installation? (y/n) " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        print_error "Installation cancelled"
+        exit 1
+    fi
 fi
 
 echo
