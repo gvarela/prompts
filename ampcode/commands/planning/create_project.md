@@ -147,7 +147,7 @@ tags: [research, codebase, [project-name]]
 - Related docs: [to be added]
 ```
 
-**2. plan.md**
+**2. design.md**
 
 ```markdown
 ---
@@ -157,99 +157,79 @@ created: [YYYY-MM-DD]
 created_timestamp: [ISO-8601 timestamp]
 status: draft
 last_updated: [YYYY-MM-DD]
-planner: [username]
+designer: [username]
 git_commit: [commit-hash or "not-in-git"]
 git_branch: [branch-name or "not-in-git"]
 repository: [repo-name or "unknown"]
-tags: [plan, implementation, [project-name]]
-estimated_phases: 0
+tags: [design, architecture, [project-name]]
+depends_on: research.md
 ---
 
-# Implementation Plan: [Project Name]
+# Design: [Project Name]
 
 **Created**: [YYYY-MM-DD HH:MM UTC]
-**Planner**: [username]
+**Designer**: [username]
 **Ticket**: [ticket-reference or N/A]
 **Status**: Draft
 
-## Overview
+## Problem Statement
 
-[What we're building and why - to be filled by /create_plan]
+[What problem we're solving and why - to be filled by /create_design]
 
-## Current State Analysis
-
-[What exists today based on research - to be added]
-
-### Key Discoveries:
-- [To be added from research]
-
-## Desired End State
-
-[What success looks like - to be added]
-
-### Success means:
+### Success Metrics
 - [ ] [To be defined]
 
-## What We're NOT Doing
+## Design Approach
 
-[Scope boundaries - to be defined]
+[High-level solution approach - to be added]
 
-## Implementation Approach
+### Why This Approach
+- [To be added from design analysis]
 
-[Strategy and reasoning - to be added]
+## Technical Decisions
 
-## Implementation Phases
+### Architecture
+- [To be defined]
 
-### Phase 1: [To be defined]
+### Data Model
+- [To be defined]
 
-**Overview**: [What this phase accomplishes]
+### Integration Points
+- [To be identified]
 
-**Changes Required**:
-[To be detailed]
+## Scope Definition
 
-**Success Criteria**:
+### In Scope
+- [To be defined]
 
-#### Automated Verification:
+### Out of Scope
+- [To be defined]
+
+## Success Criteria
+
+### Functional Requirements
 - [ ] [To be defined]
 
-#### Manual Verification:
+### Non-Functional Requirements
 - [ ] [To be defined]
 
-**⛔ CHECKPOINT**: Must pass before Phase 2
-
----
-
-[Additional phases to be added by /create_plan]
-
-## Testing Strategy
-
-[To be defined]
-
-## Performance Considerations
-
-[To be analyzed]
-
-## Migration/Rollback Strategy
-
-[To be planned if applicable]
-
-## Dependencies
-
-[To be identified]
-
-## Risk Assessment
+## Risk Analysis
 
 [To be evaluated]
+
+## Rejected Alternatives
+
+[To be documented during design]
+
+## Pending Decisions
+
+[Design decisions needing input - to be identified]
 
 ## References
 
 - Research: [research.md](research.md)
 - Tasks: [tasks.md](tasks.md)
 - Related: [to be added]
-
-## Estimated Effort
-
-[To be estimated by /create_plan]
 ```
 
 **3. tasks.md**
@@ -269,21 +249,22 @@ completed_tasks: 0
 git_commit: [commit-hash or "not-in-git"]
 git_branch: [branch-name or "not-in-git"]
 repository: [repo-name or "unknown"]
-tags: [tasks, tracking, [project-name]]
+tags: [tasks, execution, [project-name]]
+depends_on: [research.md, design.md]
 ---
 
-# Tasks: [Project Name]
+# Execution Plan: [Project Name]
 
 **Created**: [YYYY-MM-DD HH:MM UTC]
 **Assignee**: [username]
 **Ticket**: [ticket-reference or N/A]
-**Current Phase**: Not started
+**Current Phase**: Planning
 
 ## Progress Overview
 
 | Phase | Status | Tasks | Progress |
 |-------|--------|-------|----------|
-| Planning | 🔄 In Progress | 3/3 | 100% |
+| Planning | 🔄 In Progress | 3/4 | 75% |
 | Implementation | ⏸️ Not Started | 0/0 | 0% |
 
 **Overall Progress**: 0/0 implementation tasks (0%)
@@ -295,14 +276,14 @@ tags: [tasks, tracking, [project-name]]
 ### 📋 Documentation Setup
 - [x] Create project structure (completed [YYYY-MM-DD HH:MM])
 - [ ] Complete research using `/create_research`
-- [ ] Create implementation plan using `/create_plan`
-- [ ] Generate task list using `/create_tasks`
+- [ ] Create design using `/create_design`
+- [ ] Generate execution plan using `/create_execution`
 
 ---
 
 ## Implementation Phases
 
-[To be populated by /create_tasks after plan is created]
+[To be populated by /create_execution after design is approved]
 
 ---
 
@@ -340,8 +321,8 @@ tags: [tasks, tracking, [project-name]]
 ### Next Steps
 
 1. Run `/create_research` to conduct research
-2. Run `/create_plan` to create implementation plan
-3. Run `/create_tasks` to generate task list
+2. Run `/create_design` to make design decisions
+3. Run `/create_execution` to generate execution plan
 
 **⛔ BARRIER 1**: Ensure all three foundation files are created before proceeding
 
@@ -363,16 +344,16 @@ This directory contains documentation for [project-name].
 ## Documentation Structure
 
 - **[research.md](research.md)** - Codebase research and findings
-- **[plan.md](plan.md)** - Detailed implementation plan
-- **[tasks.md](tasks.md)** - Task tracking and progress
+- **[design.md](design.md)** - Design decisions and architecture
+- **[tasks.md](tasks.md)** - Execution plan and task tracking
 
 ## Workflow
 
 1. ✅ Project structure created
 2. ⏳ Research phase (`/create_research`)
-3. ⏳ Planning phase (`/create_plan`)
-4. ⏳ Task breakdown (`/create_tasks`)
-5. ⏳ Implementation
+3. ⏳ Design phase (`/create_design`)
+4. ⏳ Execution planning (`/create_execution`)
+5. ⏳ Implementation (`/implement_tasks`)
 6. ⏳ Testing & Verification
 
 ## Quick Links
@@ -389,11 +370,11 @@ Run these commands from the project root:
 # Continue research
 /create_research
 
-# Create plan
-/create_plan
+# Create design
+/create_design
 
-# Generate tasks
-/create_tasks
+# Generate execution plan
+/create_execution
 ```
 ````
 
@@ -410,8 +391,8 @@ Present the created structure with enhanced details:
 📄 Files created:
 ├── README.md      - Project overview and navigation
 ├── research.md    - Research documentation (status: draft)
-├── plan.md        - Implementation plan (status: draft)
-└── tasks.md       - Task tracking (3 planning tasks created)
+├── design.md      - Design decisions (status: draft)
+└── tasks.md       - Execution plan (4 planning tasks created)
 
 📊 Metadata captured:
 
@@ -425,14 +406,14 @@ Present the created structure with enhanced details:
 
 1. ✅ Structure created
 2. ⏳ Run `/create_research [directory]` to research codebase
-3. ⏳ Run `/create_plan [directory]` to plan implementation
-4. ⏳ Run `/create_tasks [directory]` to break down tasks
+3. ⏳ Run `/create_design [directory]` to make design decisions
+4. ⏳ Run `/create_execution [directory]` to create execution plan
 
 📝 Initial tasks created in tasks.md:
 
 - [ ] Complete research using /create_research
-- [ ] Create implementation plan using /create_plan
-- [ ] Generate task list using /create_tasks
+- [ ] Create design using /create_design
+- [ ] Generate execution plan using /create_execution
 
 Ready to begin research phase!
 

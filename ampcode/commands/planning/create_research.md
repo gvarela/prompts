@@ -256,21 +256,15 @@ This pattern is also used in:
 - `other/file.ext:50` - For feature X
 - `another/file.ext:75` - For feature Y
 
-## Open Questions
+## Knowledge Gaps
 
-[Any areas that need further investigation]
+Things we couldn't determine from codebase analysis:
 
-- Question 1: [Specific thing that needs clarification]
-- Question 2: [Area that requires more research]
+- [Fact we couldn't find in code/docs]
+- [System behavior that's unclear]
+- [Configuration or dependency not documented]
 
-## Next Steps
-
-Based on the research findings:
-
-1. [Suggested next action based on findings]
-2. [Another logical next step]
-3. Review the research document
-4. Run `/create_plan` to create implementation plan
+Note: These gaps don't block design but may affect implementation details.
 
 ````
 
@@ -308,13 +302,16 @@ Key findings:
 Files analyzed: [count]
 Code references documented: [count]
 
+Knowledge gaps identified: [count]
+
 The research document has been updated with:
 
 - Detailed findings about [component 1]
 - Architecture documentation for [system]
 - [X] similar implementation examples
+- [Y] knowledge gaps that need resolution
 
-Next: Review the research and run `/create_plan` when ready to plan implementation.
+Next: Review and validate the research, then run `/create_design` to make architectural decisions.
 
 ```
 
