@@ -142,7 +142,7 @@ tags: [research, codebase, [project-name]]
 
 ## References
 
-- Plan: [plan.md](plan.md)
+- Design: [design.md](design.md)
 - Tasks: [tasks.md](tasks.md)
 - Related docs: [to be added]
 ```
@@ -310,7 +310,7 @@ depends_on: [research.md, design.md]
 
 ### Key Files
 - **Research**: [research.md](research.md)
-- **Plan**: [plan.md](plan.md)
+- **Design**: [design.md](design.md)
 
 ### Common Commands
 ```bash
@@ -430,8 +430,8 @@ Ready to begin research phase!
 
 Files progress through states:
 
-- `research.md`: draft → in-progress → complete
-- `plan.md`: draft → ready → implementing → complete
+- `research.md`: draft → in-progress → complete → validated
+- `design.md`: draft → in-review → approved
 - `tasks.md`: not-started → in-progress → complete
 
 ### Frontmatter Standards
@@ -467,7 +467,7 @@ Check for and handle:
 
 Commands use explicit barriers to ensure proper sequencing:
 
-1. **⛔ BARRIER 1**: After creating foundation files (research.md, plan.md, tasks.md)
+1. **⛔ BARRIER 1**: After creating foundation files (research.md, design.md, tasks.md)
    - Do not proceed until all three files exist with proper frontmatter
    - Verify metadata is captured correctly
 
