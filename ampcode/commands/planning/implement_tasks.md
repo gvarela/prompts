@@ -30,7 +30,7 @@ Then wait for the user's input.
 3. **Task Fidelity**: Implement exactly what's in tasks.md - no scope additions
 4. **Progress Tracking**: Update checkboxes and frontmatter as work progresses
 5. **Verification Gates**: Respect ⛔ CHECKPOINT markers between phases
-6. **Documentation First**: Read research.md and plan.md for context before starting
+6. **Documentation First**: Read research.md and design.md for context before starting
 
 ### TDD Implementation Flow
 
@@ -62,14 +62,14 @@ For each implementation task:
 
 1. **Read project structure**:
    - Check that specified directory exists
-   - Verify presence of research.md, plan.md, tasks.md
+   - Verify presence of research.md, design.md, tasks.md
 
 2. **Read research.md FULLY**:
    - Understand what currently exists in the codebase
    - Note patterns and conventions to follow
    - Identify key file:line references
 
-3. **Read plan.md FULLY**:
+3. **Read design.md FULLY**:
    - Understand the desired end state
    - Review success criteria for the phase
    - Note both automated and manual verification requirements

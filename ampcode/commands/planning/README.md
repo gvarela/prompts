@@ -21,9 +21,9 @@ A comprehensive set of Claude Code slash commands for managing project documenta
 ## Command Workflow
 
 ```mermaid
-/create_project → /create_research → /create_plan → /create_tasks
+/create_project → /create_research → /create_design → /create_execution
      ↓                   ↓                ↓              ↓
-[Structure]        [Research.md]      [Plan.md]     [Tasks.md]
+[Structure]        [Research.md]     [Design.md]     [Tasks.md]
                         ↓                ↓              ↓
                    [What EXISTS]    [What to BUILD]  [How to DO IT]
                                                          ↓
@@ -63,7 +63,7 @@ Creates a comprehensive documentation structure with Git metadata tracking.
 docs/plans/2025-10-07-LINEAR-789-my-feature/
 ├── README.md     # Navigation and overview
 ├── research.md   # Research documentation (with metadata)
-├── plan.md       # Implementation plan (with metadata)
+├── design.md       # Implementation plan (with metadata)
 └── tasks.md      # Task tracking (with initial tasks)
 ```
 
@@ -133,14 +133,14 @@ Pattern Finder Agents → Find similar implementations
 
 ---
 
-### `/create_plan` - Create Implementation Plan
+### `/create_design` - Create Design Document
 
 Creates detailed implementation plan through interactive discussion.
 
 **Usage**:
 
 ```bash
-/create_plan docs/plans/2025-10-07-my-feature
+/create_design docs/plans/2025-10-07-my-feature
 ```
 
 **Interactive Process**:
@@ -171,14 +171,14 @@ Creates detailed implementation plan through interactive discussion.
 
 ---
 
-### `/create_tasks` - Generate Task List
+### `/create_execution` - Create Execution Plan
 
 Extracts ALL tasks from plan into trackable format.
 
 **Usage**:
 
 ```bash
-/create_tasks docs/plans/2025-10-07-my-feature
+/create_execution docs/plans/2025-10-07-my-feature
 ```
 
 **Task Extraction**:
@@ -229,7 +229,7 @@ Intelligently updates status across all documentation files based on actual prog
 
 **What It Does**:
 
-1. **Reads ALL files FULLY** - Analyzes research.md, plan.md, tasks.md
+1. **Reads ALL files FULLY** - Analyzes research.md, design.md, tasks.md
 2. **Determines actual state** - Checks content, not just frontmatter
 3. **Proposes updates** - Shows what will change and why
 4. **Applies consistently** - Updates all files atomically
@@ -239,7 +239,7 @@ Intelligently updates status across all documentation files based on actual prog
 
 ```
 research.md: draft → in-progress → complete
-plan.md: draft → ready → implementing → complete
+design.md: draft → ready → implementing → complete
 tasks.md: not-started → in-progress → complete
 ```
 
@@ -338,7 +338,7 @@ Spawns parallel agents, documents findings objectively.
 #### 3. Plan Implementation
 
 ```bash
-/create_plan docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+/create_design docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
 
 Interactive discussion → Phased plan with checkpoints.
@@ -346,7 +346,7 @@ Interactive discussion → Phased plan with checkpoints.
 #### 4. Generate Tasks
 
 ```bash
-/create_tasks docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+/create_execution docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
 
 Extracts every task from plan, organizes by phase.
@@ -410,7 +410,7 @@ Files move through defined states:
 
 **research.md**: `draft` → `in-progress` → `complete`
 
-**plan.md**: `draft` → `ready` → `implementing` → `complete`
+**design.md**: `draft` → `ready` → `implementing` → `complete`
 
 **tasks.md**: `not-started` → `in-progress` → `complete`
 
@@ -446,8 +446,8 @@ All commands are markdown files - edit to customize:
 commands/
 ├── create_project.md   # Structure and metadata
 ├── create_research.md  # Research approach
-├── create_plan.md      # Planning process
-└── create_tasks.md     # Task extraction
+├── create_design.md      # Planning process
+└── create_execution.md     # Task extraction
 ```
 
 ---
@@ -526,7 +526,7 @@ commands/
 
 ### Issue: Tasks missing from plan
 
-**Solution**: Re-read plan.md FULLY, extract every mentioned task
+**Solution**: Re-read design.md FULLY, extract every mentioned task
 
 ### Issue: Phases too large
 

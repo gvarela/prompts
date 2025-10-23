@@ -11,7 +11,7 @@ This directory contains Claude Code slash commands for project documentation, re
 The commands follow a strict sequential workflow:
 
 ```
-/create_project → /create_research → /create_plan → /create_tasks
+/create_project → /create_research → /create_design → /create_execution → /implement_tasks
 ```
 
 Each command builds upon the previous one's output, creating structured documentation in timestamped directories under `docs/plans/`.
@@ -80,8 +80,8 @@ When modifying or creating new documentation commands:
 
 Files created by commands progress through defined states:
 
-- `research.md`: draft → in-progress → complete
-- `plan.md`: draft → ready → implementing → complete
+- `research.md`: draft → in-progress → complete → validated
+- `design.md`: draft → in-review → approved
 - `tasks.md`: not-started → in-progress → complete
 
 ## Command Descriptions
@@ -92,15 +92,19 @@ Initializes project documentation structure with metadata tracking.
 
 ### `/create_research`
 
-Conducts comprehensive research using parallel agents, documenting what EXISTS without judgment.
+Conducts comprehensive research using parallel agents, documenting what EXISTS without judgment. No recommendations or improvements.
 
-### `/create_plan`
+### `/create_design`
 
-Creates implementation plans through interactive discussion, with phased approach and dual verification.
+Makes architectural and design decisions based on validated research. Interactive process with explicit approach selection.
 
-### `/create_tasks`
+### `/create_execution`
 
-Extracts ALL tasks from plans with proper barriers and checkpoints. Tracks modified files per phase.
+Creates detailed execution plan with embedded tasks, phases, and verification criteria. Replaces the old create_tasks command.
+
+### `/implement_tasks`
+
+Executes the tasks from the execution plan following TDD practices. Respects phase boundaries and checkpoints.
 
 ### `/update_status`
 

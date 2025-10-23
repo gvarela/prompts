@@ -1,6 +1,6 @@
 # Update Project Status
 
-Intelligently updates status across all project documentation files (research.md, plan.md, tasks.md) based on actual progress, ensuring consistency and proper state transitions.
+Intelligently updates status across all project documentation files (research.md, design.md, tasks.md) based on actual progress, ensuring consistency and proper state transitions.
 
 ## CRITICAL: Status Update Philosophy
 
@@ -38,7 +38,7 @@ Then wait for the user's input.
 Read all documentation files to understand current state:
 
 1. **Read research.md FULLY** - Check status, completion, findings
-2. **Read plan.md FULLY** - Check status, phase progress, implementation state
+2. **Read design.md FULLY** - Check status, phase progress, implementation state
 3. **Read tasks.md FULLY** - Check current_phase, completed_tasks, total_tasks, task checkboxes
 
 **IMPORTANT**: Use Read tool WITHOUT limit/offset parameters
@@ -94,7 +94,7 @@ Based on analysis, determine appropriate status for each file:
    - `in-progress` → Has some findings but incomplete sections
    - `complete` → All sections populated with real findings, no placeholders
 
-2. **plan.md**:
+2. **design.md**:
    - `draft` → Template structure, no real phases defined
    - `ready` → All phases defined, success criteria set, ready to implement
    - `implementing` → Tasks have started (tasks.md shows progress)
@@ -124,7 +124,7 @@ Show user what will change:
 - Proposed: [new-status]
 - Reason: [why this transition is appropriate]
 
-**plan.md**
+**design.md**
 - Current: [current-status]
 - Proposed: [new-status]
 - Reason: [why this transition is appropriate]
@@ -161,7 +161,7 @@ git_commit: [current-commit]
 git_branch: [current-branch]
 ```
 
-#### Update plan.md
+#### Update design.md
 
 Update frontmatter:
 
@@ -232,7 +232,7 @@ Present summary:
 📊 Updates Applied:
 
 **research.md**: [old] → [new]
-**plan.md**: [old] → [new]
+**design.md**: [old] → [new]
 **tasks.md**: [old] → [new]
   - Phase: [number]
   - Progress: [X]/[Y] tasks ([percentage]%)
@@ -326,7 +326,7 @@ If user requests invalid transition:
 ```
 ⚠️ Invalid Status Transition
 
-Cannot transition plan.md from 'draft' to 'implementing' because:
+Cannot transition design.md from 'draft' to 'implementing' because:
 - research.md is still in 'draft' status
 - No tasks have been checked in tasks.md
 
@@ -345,7 +345,7 @@ If files don't exist:
 
 Expected files in [directory]:
 - research.md [✓/✗]
-- plan.md [✓/✗]
+- design.md [✓/✗]
 - tasks.md [✓/✗]
 
 Run /create_project first to initialize the documentation structure.
@@ -359,11 +359,11 @@ If files have conflicting status:
 ⚠️ Inconsistent Status Detected
 
 Current state:
-- plan.md: implementing
+- design.md: implementing
 - tasks.md: not-started (0 tasks completed)
 
 This is inconsistent. Suggesting correction:
-- Set plan.md back to 'ready' OR
+- Set design.md back to 'ready' OR
 - Start checking off tasks in tasks.md
 
 Which would you prefer?

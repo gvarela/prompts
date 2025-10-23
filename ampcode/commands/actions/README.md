@@ -258,19 +258,19 @@ Use actions during `/create_research`:
 # Results feed into research.md
 ```
 
-### Planning Phase
+### Design Phase
 
-Use actions during `/create_plan`:
+Use actions during `/create_design`:
 
 ```bash
-# Start planning
-/create_plan docs/plans/2025-10-08-my-project
+# Start design
+/create_design docs/plans/2025-10-08-my-project
 
 # Use actions to verify approach
 /find_patterns   # See how similar features are built
 /analyze_code    # Understand integration points
 
-# Results inform plan decisions
+# Results inform design decisions
 ```
 
 ## Best Practices

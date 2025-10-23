@@ -65,10 +65,11 @@ This ordering is **required** by AmpCode because:
 Sequential workflow for project documentation:
 
 - `/create_project` - Initialize documentation structure
-- `/create_research` - Document codebase research
-- `/create_plan` - Create implementation plan
-- `/create_tasks` - Extract actionable tasks
+- `/create_research` - Document codebase research (facts only)
+- `/create_design` - Make architectural and design decisions
+- `/create_execution` - Create detailed execution plan with tasks
 - `/update_status` - Sync status across files
+- `/implement_tasks` - Execute the plan with TDD
 
 ### Action Commands (`actions/`)
 
@@ -222,8 +223,9 @@ ampcode/commands/
 │   ├── README.md       (user documentation)
 │   ├── create_project.md
 │   ├── create_research.md
-│   ├── create_plan.md
-│   ├── create_tasks.md
+│   ├── create_design.md
+│   ├── create_execution.md
+│   ├── implement_tasks.md
 │   └── update_status.md
 └── actions/
     ├── README.md       (user documentation)
