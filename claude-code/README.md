@@ -90,11 +90,11 @@ Link commands to make them available across all projects:
 mkdir -p ~/.claude/commands
 
 # Symlink our planning commands
-ln -s /absolute/path/to/prompts/commands/planning/*.md ~/.claude/commands/
+ln -s /absolute/path/to/prompts/commands/wb/*.md ~/.claude/commands/
 
 # Or create a namespaced directory
-mkdir -p ~/.claude/commands/planning
-ln -s /absolute/path/to/prompts/commands/planning/*.md ~/.claude/commands/planning/
+mkdir -p ~/.claude/commands/wb
+ln -s /absolute/path/to/prompts/commands/wb/*.md ~/.claude/commands/wb/
 
 # Verify installation
 ls -la ~/.claude/commands/
@@ -117,11 +117,11 @@ Copy commands for a specific project:
 mkdir -p .claude/commands
 
 # Copy all planning commands
-cp /path/to/prompts/commands/planning/*.md .claude/commands/
+cp /path/to/prompts/commands/wb/*.md .claude/commands/
 
 # Or create namespaced directory
-mkdir -p .claude/commands/planning
-cp /path/to/prompts/commands/planning/*.md .claude/commands/planning/
+mkdir -p .claude/commands/wb
+cp /path/to/prompts/commands/wb/*.md .claude/commands/wb/
 ```
 
 **Benefits**:
@@ -136,11 +136,11 @@ Use global defaults with project-specific overrides:
 
 ```bash
 # Global commands (symlinked) - available everywhere
-ln -s /path/to/prompts/commands/planning/*.md ~/.claude/commands/
+ln -s /path/to/prompts/commands/wb/*.md ~/.claude/commands/
 
 # Project-specific override for customized workflow
 mkdir -p .claude/commands
-cp /path/to/prompts/commands/planning/create_plan.md .claude/commands/
+cp /path/to/prompts/commands/wb/create_plan.md .claude/commands/
 # Modify .claude/commands/create_plan.md for project needs
 ```
 
@@ -544,7 +544,7 @@ With copies:
 
 ```bash
 # Periodically re-copy updated commands
-cp /path/to/prompts/commands/planning/*.md .claude/commands/
+cp /path/to/prompts/commands/wb/*.md .claude/commands/
 ```
 
 ### 4. Document Customizations
@@ -658,10 +658,10 @@ ls ~/.claude/commands/create_plan.md
 
 ```bash
 # ❌ Wrong - relative path
-ln -s ../prompts/commands/planning/*.md ~/.claude/commands/
+ln -s ../prompts/commands/wb/*.md ~/.claude/commands/
 
 # ✅ Correct - absolute path
-ln -s /Users/yourname/projects/prompts/commands/planning/*.md ~/.claude/commands/
+ln -s /Users/yourname/projects/prompts/commands/wb/*.md ~/.claude/commands/
 ```
 
 ## Workflow Examples
@@ -788,15 +788,15 @@ Quick reference for our planning commands:
 ## Additional Resources
 
 - [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/slash-commands)
-- [Command Source Files](../commands/planning/)
-- [Command Philosophy](../commands/planning/CLAUDE.md)
-- [Planning Commands README](../commands/planning/README.md)
+- [Command Source Files](../commands/wb/)
+- [Command Philosophy](../commands/wb/CLAUDE.md)
+- [Planning Commands README](../commands/wb/README.md)
 
 ## Support
 
 For issues with:
 
-- **Commands themselves**: Check [commands/planning/](../commands/planning/)
+- **Commands themselves**: Check [commands/wb/](../commands/wb/)
 - **Claude Code integration**: See [Claude Code docs](https://docs.claude.com)
 - **Installation**: Review this guide's troubleshooting section
-- **Workflow questions**: See [commands/planning/README.md](../commands/planning/README.md)
+- **Workflow questions**: See [commands/wb/README.md](../commands/wb/README.md)

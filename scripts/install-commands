@@ -78,8 +78,8 @@ Examples:
   ./scripts/install-commands --amp --project ~/my-project
 
 Installation Locations:
-  Claude Code (global):  ~/.claude/commands/planning/ and ~/.claude/commands/agents/
-  Claude Code (project): <project-path>/.claude/commands/planning/ and agents/
+  Claude Code (global):  ~/.claude/commands/wb/ and ~/.claude/agents/wb/
+  Claude Code (project): <project-path>/.claude/commands/wb/ and agents/wb/
   AmpCode (global):      ~/.config/amp/commands/ (flat structure)
   AmpCode (project):     <project-path>/.agents/commands/ (flat structure)
 
@@ -97,8 +97,8 @@ EOF
 get_commands_dirs() {
     local tool=$1
     if [ "$tool" = "claude" ]; then
-        echo "$REPO_ROOT/claude-code/commands/planning"
-        echo "$REPO_ROOT/claude-code/agents"
+        echo "$REPO_ROOT/claude-code/commands/wb"
+        echo "$REPO_ROOT/claude-code/agents/wb"
     elif [ "$tool" = "amp" ]; then
         echo "$REPO_ROOT/ampcode/commands/planning"
         echo "$REPO_ROOT/ampcode/commands/actions"
@@ -133,11 +133,11 @@ get_target_dirs() {
 
     if [ "$tool" = "claude" ]; then
         if [ "$scope" = "global" ]; then
-            echo "$HOME/.claude/commands/planning"
-            echo "$HOME/.claude/commands/agents"
+            echo "$HOME/.claude/commands/wb"
+            echo "$HOME/.claude/agents/wb"
         else
-            echo "${project_path}/.claude/commands/planning"
-            echo "${project_path}/.claude/commands/agents"
+            echo "${project_path}/.claude/commands/wb"
+            echo "${project_path}/.claude/agents/wb"
         fi
     elif [ "$tool" = "amp" ]; then
         # AmpCode uses flat directory structure - return same dir twice for compatibility
@@ -399,20 +399,20 @@ if [ "$INSTALL_CLAUDE" = true ]; then
         CLAUDE_TARGETS+=("$line")
     done < <(get_target_dirs "claude" "$SCOPE" "$PROJECT_PATH")
 
-    # Install planning commands
-    print_info "Installing Claude Code Planning Commands..."
-    validate_commands_dir "${CLAUDE_SOURCES[0]}" "planning"
-    if ! install_to_target "${CLAUDE_TARGETS[0]}" "Claude Code Planning" "$SCOPE" true "${CLAUDE_SOURCES[0]}" ""; then
-        print_error "Failed to install Claude Code planning commands"
+    # Install workbench commands
+    print_info "Installing Claude Code Workbench Commands..."
+    validate_commands_dir "${CLAUDE_SOURCES[0]}" "workbench commands"
+    if ! install_to_target "${CLAUDE_TARGETS[0]}" "Claude Code Workbench Commands" "$SCOPE" true "${CLAUDE_SOURCES[0]}" ""; then
+        print_error "Failed to install Claude Code workbench commands"
         exit 1
     fi
     echo
 
-    # Install agents
-    print_info "Installing Claude Code Agents..."
-    validate_commands_dir "${CLAUDE_SOURCES[1]}" "agents"
-    if ! install_to_target "${CLAUDE_TARGETS[1]}" "Claude Code Agents" "$SCOPE" true "${CLAUDE_SOURCES[1]}" ""; then
-        print_error "Failed to install Claude Code agents"
+    # Install workbench agents
+    print_info "Installing Claude Code Workbench Agents..."
+    validate_commands_dir "${CLAUDE_SOURCES[1]}" "workbench agents"
+    if ! install_to_target "${CLAUDE_TARGETS[1]}" "Claude Code Workbench Agents" "$SCOPE" true "${CLAUDE_SOURCES[1]}" ""; then
+        print_error "Failed to install Claude Code workbench agents"
         exit 1
     fi
     echo
@@ -458,7 +458,7 @@ echo
 print_info "Next steps:"
 
 if [ "$INSTALL_CLAUDE" = true ]; then
-    echo "  • Test Claude Code commands with: /create_project test-feature"
+    echo "  • Test Claude Code commands with: /wb:create_project test-feature"
     if [ "$SCOPE" = "global" ]; then
         echo "  • Commands available in all projects using Claude Code"
     else

@@ -20,7 +20,7 @@ Intelligently updates status across all project documentation files (research.md
 
 When invoked, check for arguments:
 
-1. **If directory provided** (e.g., `/planning/update_status docs/plans/2025-01-08-auth/`):
+1. **If directory provided** (e.g., `/wb:update_status docs/plans/2025-01-08-auth/`):
    - Use `$1` as the project directory
    - Read all documentation files immediately
    - Analyze and propose status updates
@@ -31,7 +31,7 @@ When invoked, check for arguments:
    I'll help you update the project status. Please provide:
    1. Path to the project documentation directory
 
-   Example: /planning/update_status docs/plans/2025-01-08-auth/
+   Example: /wb:update_status docs/plans/2025-01-08-auth/
    ```
 
 ## Steps to Execute

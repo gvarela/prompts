@@ -22,7 +22,7 @@ Conducts comprehensive codebase research and documents findings by spawning spec
 
 When invoked, check for arguments:
 
-1. **If directory provided** (e.g., `/planning/create_research docs/plans/2025-01-08-auth/`):
+1. **If directory provided** (e.g., `/wb:create_research docs/plans/2025-01-08-auth/`):
    - Use `$1` as the project directory
    - If `$2+` exists, use as research question
    - Otherwise, prompt for research focus
@@ -34,7 +34,7 @@ When invoked, check for arguments:
    1. Path to the project documentation directory
    2. Your research question or area of interest
 
-   Example: /planning/create_research docs/plans/2025-01-08-auth/
+   Example: /wb:create_research docs/plans/2025-01-08-auth/
    Then: "Research how authentication and session management work"
    ```
 
