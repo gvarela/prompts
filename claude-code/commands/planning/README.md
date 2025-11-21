@@ -21,25 +21,25 @@ A comprehensive set of Claude Code slash commands for managing project documenta
 ## Command Workflow
 
 ```mermaid
-/create_project → /create_research → /create_plan → /create_tasks
-     ↓                   ↓                ↓              ↓
-[Structure]        [Research.md]      [Plan.md]     [Tasks.md]
-                        ↓                ↓              ↓
-                   [What EXISTS]    [What to BUILD]  [How to DO IT]
-                                                         ↓
-                                                  /update_status
-                                                         ↓
-                                              [Track Progress]
+/create_project → /create_research → /create_design → /create_execution → /implement_tasks → /validate_execution
+     ↓                   ↓                 ↓                 ↓                    ↓                   ↓
+[Structure]        [Research.md]      [Design.md]       [Tasks.md]         [Implementation]    [Validation]
+                        ↓                 ↓                 ↓                    ↓                   ↓
+                   [What EXISTS]    [WHAT & WHY]      [HOW to do it]      [TDD Cycle]        [Verification]
+
+For multi-session work:
+[Session 1] → /create_handoff → [Session 2] → /resume_handoff → [Continue work]
 ```
 
 ### Workflow Stages
 
 1. **Initialize**: Create project structure with metadata
-2. **Research**: Document codebase as it EXISTS today
-3. **Plan**: Design implementation through discussion
-4. **Tasks**: Extract actionable items with barriers
-5. **Execute**: Implement with verification checkpoints
-6. **Update**: Keep status synchronized across all files
+2. **Research**: Document codebase as it EXISTS today (facts only)
+3. **Design**: Decide WHAT to build and WHY (architectural decisions)
+4. **Execution**: Plan HOW to implement (phased plan with tasks)
+5. **Implement**: Execute using TDD with checkpoints
+6. **Validate**: Verify implementation matches plan
+7. **Handoff** (optional): Transfer context between sessions
 
 ---
 
@@ -63,8 +63,8 @@ Creates a comprehensive documentation structure with Git metadata tracking.
 docs/plans/2025-10-07-LINEAR-789-my-feature/
 ├── README.md     # Navigation and overview
 ├── research.md   # Research documentation (with metadata)
-├── plan.md       # Implementation plan (with metadata)
-└── tasks.md      # Task tracking (with initial tasks)
+├── design.md     # Design decisions (with metadata)
+└── tasks.md      # Execution plan with tasks (with metadata)
 ```
 
 **Key Features**:
@@ -133,87 +133,195 @@ Pattern Finder Agents → Find similar implementations
 
 ---
 
-### `/create_plan` - Create Implementation Plan
+### `/create_design` - Create Design Document
 
-Creates detailed implementation plan through interactive discussion.
+Creates architectural design decisions based on validated research. Focuses on WHAT to build and WHY.
 
 **Usage**:
 
 ```bash
-/create_plan docs/plans/2025-10-07-my-feature
+/create_design docs/plans/2025-10-07-my-feature
 ```
 
 **Interactive Process**:
 
-1. **Reads research** and spawns analysis agents
-2. **Confirms understanding** with discovered context
-3. **Asks focused questions** only about unknowns
-4. **Proposes structure** before writing
-5. **Writes detailed plan** after approval
+1. **Reads research** and spawns verification agents
+2. **Analyzes patterns** and integration points
+3. **Presents design options** with trade-offs
+4. **Discusses decisions** interactively
+5. **Documents approved design** with rationale
 
-**Plan Structure**:
+**Design Structure**:
 
-- Current state analysis (from research)
-- Desired end state (measurable)
-- **What We're NOT Doing** (scope protection)
-- Phased implementation
-- **Dual verification**:
-  - Automated checks (CI/CD)
-  - Manual verification (human)
-- **⛔ CHECKPOINTS** between phases
+- Problem statement and success metrics
+- Design approach with rationale
+- Technical decisions (architecture, data model, integrations)
+- Scope definition (in/out of scope)
+- Success criteria (functional and non-functional)
+- Risk analysis
+- Rejected alternatives
 
 **Critical Rules**:
 
-- NO open questions in final plan
-- Every decision made before writing
-- Success criteria MUST be measurable
-- Phases require verification to proceed
+- **WHAT and WHY only** - never HOW
+- NO implementation sequences or code changes
+- Explicit decisions with rationale
+- Clear scope boundaries
+- Measurable success criteria
 
 ---
 
-### `/create_tasks` - Generate Task List
+### `/create_execution` - Create Execution Plan
 
-Extracts ALL tasks from plan into trackable format.
+Transforms approved design into detailed phased execution plan with embedded tasks.
 
 **Usage**:
 
 ```bash
-/create_tasks docs/plans/2025-10-07-my-feature
+/create_execution docs/plans/2025-10-07-my-feature
 ```
 
-**Task Extraction**:
+**Planning Process**:
 
-- Every "Changes Required" → Implementation task
-- Every "Success Criteria" → Verification task
-- Every test mentioned → Testing task
-- Every command preserved exactly
-- Every file:line reference maintained
+1. **Reads research and design** completely
+2. **Spawns analysis agents** for dependencies, testing, rollback
+3. **Determines implementation strategy** from agent findings
+4. **Generates phased plan** with specific tasks
 
-**Creates**: Rich tasks.md with:
+**Execution Plan Structure**:
 
 ```markdown
-## Progress Overview
-| Phase | Status | Tasks | Progress |
-|-------|--------|-------|----------|
-| Phase 1 | 🔄 In Progress | 5/12 | 42% |
+## Phase 1: [Descriptive Name]
+
+### Changes Required
+- Specific file modifications with line numbers
+- Before/after code examples
+- Integration points
+
+### Tasks
+- [ ] Setup tasks (directories, dependencies, config)
+- [ ] Implementation tasks (specific components)
+- [ ] Testing tasks (unit, integration)
+- [ ] Integration tasks (connections)
+
+### Success Criteria
+#### Automated Verification
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] Build succeeds
+
+#### Manual Verification
+- [ ] Feature works as designed
+- [ ] No regressions
 
 ### ⛔ CHECKPOINT: Phase 1 Complete
-Before proceeding to Phase 2:
-1. ✅ All implementation tasks complete
-2. ✅ All automated checks passing
-3. ✅ Manual verification by human
-4. ✅ Update status in frontmatter
 ```
 
 **Features**:
 
-- Progress tracking tables
-- Blocker management system
-- Decision log
-- Completed task archive
-- Modified files tracking (code vs tests)
-- Quick reference section
-- Daily workflow guidance
+- Dependency-based phase ordering
+- Specific code changes with file:line references
+- Comprehensive test coverage from agent analysis
+- Rollback procedures for each phase
+- Quick test commands per phase
+- Progress tracking
+- Modified files tracking
+
+---
+
+### `/implement_tasks` - Implement with TDD
+
+Implements tasks following Test-Driven Development (Red → Green → Refactor).
+
+**Usage**:
+
+```bash
+/implement_tasks docs/plans/2025-10-07-my-feature
+```
+
+**TDD Process**:
+
+1. **Red**: Write failing test for next task
+2. **Green**: Implement minimum code to pass
+3. **Refactor**: Clean up while tests pass
+4. **Verify**: Run phase verification
+5. **Checkpoint**: Get human approval
+
+**Critical Rules**:
+
+- **ZERO SCOPE CREEP** - only implement what's in tasks.md
+- Follow TDD cycle strictly
+- Respect phase boundaries
+- Stop at checkpoints for human verification
+- Update task checkboxes as you complete work
+
+---
+
+### `/validate_execution` - Validate Implementation
+
+Validates that execution plan was correctly implemented. Run after implementation is complete.
+
+**Usage**:
+
+```bash
+/validate_execution docs/plans/2025-10-07-my-feature
+```
+
+**Validation Process**:
+
+1. **Spawns validation agents** for code changes, testing, success criteria, documentation
+2. **Compares actual vs planned** implementation
+3. **Identifies deviations** and missing items
+4. **Generates comprehensive report**
+
+**Validation Report**:
+
+- Implementation completeness
+- Success criteria verification
+- Test coverage analysis
+- Deviations from plan
+- Recommendations
+
+---
+
+### `/create_handoff` - Create Session Handoff
+
+Creates comprehensive handoff document for session transfer.
+
+**Usage**:
+
+```bash
+/create_handoff docs/plans/2025-10-07-my-feature
+```
+
+**Captures**:
+
+- Current progress and phase
+- Critical learnings not in formal docs
+- Problems solved
+- Active blockers
+- Next steps with specific recommendations
+- Git state and uncommitted changes
+
+---
+
+### `/resume_handoff` - Resume from Handoff
+
+Resumes work from a handoff document created in previous session.
+
+**Usage**:
+
+```bash
+/resume_handoff docs/plans/2025-10-07-my-feature/handoff-2025-01-08-14-30.md
+```
+
+**Restoration**:
+
+- Reads handoff and project documentation
+- Restores context and learnings
+- Applies discovered patterns
+- Continues from exact stopping point
+- Prevents repeating solved problems
 
 ---
 
@@ -229,7 +337,7 @@ Intelligently updates status across all documentation files based on actual prog
 
 **What It Does**:
 
-1. **Reads ALL files FULLY** - Analyzes research.md, plan.md, tasks.md
+1. **Reads ALL files FULLY** - Analyzes research.md, design.md, tasks.md
 2. **Determines actual state** - Checks content, not just frontmatter
 3. **Proposes updates** - Shows what will change and why
 4. **Applies consistently** - Updates all files atomically
@@ -239,7 +347,7 @@ Intelligently updates status across all documentation files based on actual prog
 
 ```
 research.md: draft → in-progress → complete
-plan.md: draft → ready → implementing → complete
+design.md: draft → ready → implementing → complete
 tasks.md: not-started → in-progress → complete
 ```
 
@@ -335,25 +443,29 @@ Creates timestamped directory with metadata-rich files.
 
 Spawns parallel agents, documents findings objectively.
 
-#### 3. Plan Implementation
+#### 3. Create Design
 
 ```bash
-/create_plan docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+/create_design docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
 
-Interactive discussion → Phased plan with checkpoints.
+Interactive discussion → Design decisions (WHAT and WHY).
 
-#### 4. Generate Tasks
+#### 4. Create Execution Plan
 
 ```bash
-/create_tasks docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+/create_execution docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
 
-Extracts every task from plan, organizes by phase.
+Generates phased plan with specific tasks (HOW to implement).
 
-#### 5. Execute with Tracking
+#### 5. Implement with TDD
 
-Work through tasks.md:
+```bash
+/implement_tasks docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+```
+
+Work through tasks.md using TDD cycle:
 
 ```markdown
 - [x] Review existing middleware (completed 2025-10-07 14:30)

@@ -1,5 +1,5 @@
 ---
-description: Initialize comprehensive project documentation with research, plan, and task files
+description: Initialize comprehensive project documentation with research, design, and task files
 argument-hint: [project-name] [base-dir] [ticket-ref]
 ---
 
@@ -20,13 +20,14 @@ When invoked, check for arguments:
 
 3. **If no arguments**:
    - Prompt for all required information:
+
    ```
    I'll help you set up comprehensive project documentation. Please provide:
    1. Project name (short, kebab-case preferred, e.g., auth-refactor)
    2. Base directory (default: docs/plans)
    3. Ticket/issue reference (optional, e.g., GH-123, JIRA-456, LINEAR-789)
 
-   I'll create a timestamped project directory with research, plan, and task tracking files.
+   I'll create a timestamped project directory with research, design, and task tracking files.
    ```
 
 ## Process Steps
@@ -72,6 +73,7 @@ Create the project directory with format:
 ```
 
 Examples:
+
 - `docs/plans/2025-01-08-auth-refactor/`
 - `docs/plans/2025-01-08-LINEAR-789-api-migration/`
 
@@ -80,6 +82,7 @@ Examples:
 Create four foundation files:
 
 **1. README.md** - Navigation hub
+
 ````markdown
 # [Project Name]
 
@@ -94,32 +97,35 @@ This directory contains documentation for [project-name].
 ## Documentation Structure
 
 - **[research.md](research.md)** - Codebase research and findings
-- **[plan.md](plan.md)** - Detailed implementation plan
-- **[tasks.md](tasks.md)** - Task tracking and progress
+- **[design.md](design.md)** - Architectural design decisions
+- **[tasks.md](tasks.md)** - Execution plan and task tracking
 
 ## Workflow
 
 1. ✅ Project structure created
-2. ⏳ Research phase (`/planning/create_research [directory]`)
-3. ⏳ Planning phase (`/planning/create_plan [directory]`)
-4. ⏳ Task breakdown (`/planning/create_tasks [directory]`)
-5. ⏳ Implementation
+2. ⏳ Research phase (`/create_research [directory]`)
+3. ⏳ Design phase (`/create_design [directory]`)
+4. ⏳ Execution planning (`/create_execution [directory]`)
+5. ⏳ Implementation (`/implement_tasks [directory]`)
 6. ⏳ Testing & Verification
 
 ## Quick Commands
 
 ```bash
 # Continue with research (analyzes codebase)
-/planning/create_research [this-directory]
+/create_research [this-directory]
 
-# Create implementation plan
-/planning/create_plan [this-directory]
+# Create design decisions
+/create_design [this-directory]
 
-# Generate task list from plan
-/planning/create_tasks [this-directory]
+# Generate execution plan with tasks
+/create_execution [this-directory]
+
+# Implement tasks with TDD
+/implement_tasks [this-directory]
 
 # Update status across all files
-/planning/update_status [this-directory]
+/update_status [this-directory]
 ```
 
 ## Git Information
@@ -130,6 +136,7 @@ This directory contains documentation for [project-name].
 ````
 
 **2. research.md** - Research documentation
+
 ````markdown
 ---
 project: [project-name]
@@ -155,7 +162,7 @@ tags: [research, codebase, [project-name]]
 
 ## Research Question
 
-[What are we trying to understand? To be filled by /planning/create_research]
+[What are we trying to understand? To be filled by /create_research]
 
 ## Summary
 
@@ -163,7 +170,7 @@ tags: [research, codebase, [project-name]]
 
 ## Detailed Findings
 
-[Research findings will be documented here by /planning/create_research]
+[Research findings will be documented here by /create_research]
 
 ### Component Analysis
 [How components work - to be added]
@@ -197,16 +204,17 @@ Quick reference to key files:
 
 ## Next Steps
 
-1. Run `/planning/create_research [directory]` to populate this document
-2. Review findings before planning
+1. Run `/create_research [directory]` to populate this document
+2. Review findings before design
 
 ## References
 
-- Plan: [plan.md](plan.md)
+- Design: [design.md](design.md)
 - Tasks: [tasks.md](tasks.md)
 ````
 
-**3. plan.md** - Implementation planning
+**3. design.md** - Design decisions
+
 ````markdown
 ---
 project: [project-name]
@@ -215,105 +223,83 @@ created: [YYYY-MM-DD]
 created_timestamp: [ISO-8601 timestamp]
 status: draft
 last_updated: [YYYY-MM-DD]
-planner: [username]
+designer: [username]
 git_commit: [commit-hash or "not-in-git"]
 git_branch: [branch-name or "not-in-git"]
 repository: [repo-name or "unknown"]
-tags: [plan, implementation, [project-name]]
-estimated_phases: 0
+tags: [design, architecture, [project-name]]
+depends_on: research.md
 ---
 
-# Implementation Plan: [Project Name]
+# Design: [Project Name]
 
 **Created**: [YYYY-MM-DD HH:MM UTC]
-**Planner**: [username]
+**Designer**: [username]
 **Ticket**: [ticket-reference or N/A]
 **Status**: Draft
 
-## Overview
+## Problem Statement
 
-[What we're building and why - to be filled by /planning/create_plan]
+[What problem we're solving and why - to be filled by /create_design]
 
-## Current State Analysis
-
-[What exists today based on research - to be added]
-
-### Key Discoveries
-- [To be added from research]
-
-## Desired End State
-
-[What success looks like - to be added]
-
-### Success Criteria
+### Success Metrics
 - [ ] [To be defined]
 
-## What We're NOT Doing
+## Design Approach
 
-[Scope boundaries - to be defined]
+[High-level solution approach - to be added]
 
-## Implementation Approach
+### Why This Approach
+- [To be added from design analysis]
 
-[Strategy and reasoning - to be added]
+## Technical Decisions
 
-## Implementation Phases
+### Architecture
+- [To be defined]
 
-### Phase 1: [To be defined]
+### Data Model
+- [To be defined]
 
-**Overview**: [What this phase accomplishes]
+### Integration Points
+- [To be identified]
 
-**Changes Required**:
-[To be detailed]
+## Scope Definition
 
-**Success Criteria**:
+### In Scope
+- [To be defined]
 
-#### Automated Verification
-- [ ] Tests pass: `[command]`
-- [ ] Lint passes: `[command]`
-- [ ] Build succeeds: `[command]`
+### Out of Scope
+- [To be defined]
 
-#### Manual Verification
-- [ ] Feature works as expected
-- [ ] Performance acceptable
-- [ ] No regressions
+## Success Criteria
 
-**⛔ CHECKPOINT**: Must pass all criteria before Phase 2
+### Functional Requirements
+- [ ] [To be defined]
 
----
+### Non-Functional Requirements
+- [ ] [To be defined]
 
-[Additional phases to be added by /planning/create_plan]
-
-## Testing Strategy
-
-[To be defined]
-
-## Performance Considerations
-
-[To be analyzed]
-
-## Migration/Rollback Strategy
-
-[To be planned if applicable]
-
-## Dependencies
-
-[To be identified]
-
-## Risk Assessment
+## Risk Analysis
 
 [To be evaluated]
+
+## Rejected Alternatives
+
+[To be documented during design]
+
+## Pending Decisions
+
+[Design decisions needing input - to be identified]
 
 ## References
 
 - Research: [research.md](research.md)
 - Tasks: [tasks.md](tasks.md)
-
-## Estimated Effort
-
-[To be estimated by /planning/create_plan]
+- Related: [to be added]
 ````
 
 **4. tasks.md** - Task tracking
+
 ````markdown
 ---
 project: [project-name]
@@ -354,15 +340,15 @@ tags: [tasks, tracking, [project-name]]
 
 ### 📋 Documentation Setup
 - [x] Create project structure (completed [YYYY-MM-DD HH:MM])
-- [ ] Complete research using `/planning/create_research [directory]`
-- [ ] Create implementation plan using `/planning/create_plan [directory]`
-- [ ] Generate task list using `/planning/create_tasks [directory]`
+- [ ] Complete research using `/create_research [directory]`
+- [ ] Create design document using `/create_design [directory]`
+- [ ] Generate execution plan using `/create_execution [directory]`
 
 ---
 
 ## Implementation Phases
 
-[To be populated by /planning/create_tasks after plan is created]
+[To be populated by /create_execution after design is approved]
 
 ---
 
@@ -377,7 +363,7 @@ tags: [tasks, tracking, [project-name]]
 ### Current Blockers
 | Blocker | Impact | Action | Owner | Due Date |
 |---------|--------|--------|-------|----------|
-| Research needed | Can't plan | Run /planning/create_research | [username] | [date] |
+| Research needed | Can't design | Run /create_research | [username] | [date] |
 
 ### Implementation Notes
 - Project initialized on [YYYY-MM-DD]
@@ -388,10 +374,10 @@ tags: [tasks, tracking, [project-name]]
 
 ### Key Files
 - **Research**: [research.md](research.md)
-- **Plan**: [plan.md](plan.md)
+- **Design**: [design.md](design.md)
 
 ### Next Action
-**Run**: `/planning/create_research [this-directory]`
+**Run**: `/create_research [this-directory]`
 ````
 
 **⛔ BARRIER 1**: Ensure all files are created with proper frontmatter before proceeding
@@ -408,8 +394,8 @@ Present the created structure:
 📄 Files created:
 ├── README.md      - Project overview and navigation
 ├── research.md    - Research documentation (status: draft)
-├── plan.md        - Implementation plan (status: draft)
-└── tasks.md       - Task tracking (1/4 tasks complete)
+├── design.md      - Design decisions (status: draft)
+└── tasks.md       - Execution plan (1/4 tasks complete)
 
 📊 Metadata captured:
 - Git commit: [commit-hash]
@@ -421,13 +407,16 @@ Present the created structure:
 🔄 Next Steps:
 
 1. Research the codebase:
-   /planning/create_research [directory]
+   /create_research [directory]
 
-2. After research, create plan:
-   /planning/create_plan [directory]
+2. After research, create design:
+   /create_design [directory]
 
-3. Then generate tasks:
-   /planning/create_tasks [directory]
+3. Then generate execution plan:
+   /create_execution [directory]
+
+4. Implement with TDD:
+   /implement_tasks [directory]
 
 Ready to begin research phase!
 ```
@@ -435,25 +424,31 @@ Ready to begin research phase!
 ## Important Notes
 
 ### Argument Usage
+
 - `$1` - Project name (required if using arguments)
 - `$2` - Base directory (optional, defaults to docs/plans)
 - `$3` - Ticket reference (optional)
 - `$ARGUMENTS` - All arguments as a single string
 
 ### Status Progression
+
 Files progress through defined states:
+
 - `research.md`: draft → in-progress → complete
-- `plan.md`: draft → ready → implementing → complete
+- `design.md`: draft → ready → implementing → complete
 - `tasks.md`: not-started → in-progress → complete
 
 ### Synchronization Points
+
 Commands use explicit barriers:
+
 1. **⛔ BARRIER 1**: After creating all files
 2. **Final Confirmation**: Present complete structure
 
 ## Error Handling
 
 Check for and handle:
+
 - Directory already exists → Suggest different name or confirm overwrite
 - Invalid project name → Request kebab-case format
 - Git not available → Use placeholder values

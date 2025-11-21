@@ -9,11 +9,14 @@ Conducts comprehensive codebase research and documents findings by spawning spec
 
 ## CRITICAL: YOUR ONLY JOB IS TO DOCUMENT THE CODEBASE AS IT EXISTS
 
-- DO NOT suggest improvements or changes
-- DO NOT identify issues or problems
-- DO NOT propose enhancements
-- DO NOT critique the implementation
-- ONLY describe what exists, how it works, and how components interact
+- **DO NOT** suggest improvements or changes unless explicitly asked
+- **DO NOT** identify issues or problems unless explicitly asked
+- **DO NOT** propose enhancements or optimizations
+- **DO NOT** critique the implementation or architecture
+- **DO NOT** perform root cause analysis unless explicitly asked
+- **ONLY** describe what exists, how it works, and how components interact
+- You are a documentarian, NOT an evaluator or consultant
+- **Document what IS, not what SHOULD BE**
 
 ## Initial Response
 
@@ -25,6 +28,7 @@ When invoked, check for arguments:
    - Otherwise, prompt for research focus
 
 2. **If no arguments**:
+
    ```
    I'm ready to research the codebase and document findings. Please provide:
    1. Path to the project documentation directory
@@ -43,7 +47,7 @@ When invoked, check for arguments:
 - **CRITICAL**: Read these files yourself in the main context before spawning any sub-tasks
 - This ensures you have full context before decomposing the research
 
-**⛔ BARRIER 1**: Do not proceed to Step 2 until ALL mentioned files are fully read
+**⛔⛔⛔ BARRIER 1: STOP! Do NOT proceed to Step 2 until ALL mentioned files are FULLY read ⛔⛔⛔**
 
 ### Step 2: Validate Project Structure
 
@@ -54,13 +58,14 @@ When invoked, check for arguments:
 
 ### Step 3: Analyze and Decompose the Research Question
 
-**think deeply**
+**think deeply about what EXISTS in the codebase**
 
 1. **Break down the user's query into composable research areas**
-2. **Take time to ultrathink about:**
-   - Underlying patterns and connections
-   - Architectural implications the user might be seeking
-   - Which directories, files, or architectural patterns are relevant
+2. **REMEMBER: Document what IS, not what SHOULD BE**
+3. **Take time to ultrathink about:**
+   - Underlying patterns and connections that EXIST
+   - Architectural implementations CURRENTLY IN PLACE
+   - Which directories, files, or patterns are ACTUALLY PRESENT
 3. **Create a research plan using TodoWrite** to track all subtasks:
 
    ```
@@ -89,6 +94,7 @@ Based on the research question "[research-question]", I'll spawn specialized age
 #### Agent Spawning Examples
 
 **Agent 1: Component Locator**
+
 ```javascript
 Task({
   description: "Find [feature] components",
@@ -102,11 +108,13 @@ Task({
 
   Focus on [specific directories if known].
   Return specific file paths with brief descriptions.`,
-  subagent_type: "general-purpose"
+  subagent_type: "general-purpose",
+  model: "haiku"  // Fast file finding task
 })
 ```
 
 **Agent 2: Implementation Analyzer**
+
 ```javascript
 Task({
   description: "Analyze [feature] implementation",
@@ -119,12 +127,20 @@ Task({
   - Error handling approaches
 
   Start with [specific files if known].
-  Document what EXISTS with file:line references.`,
-  subagent_type: "general-purpose"
+
+  CRITICAL INSTRUCTIONS:
+  - Document what EXISTS with file:line references
+  - You are documenting the codebase as it exists
+  - DO NOT suggest improvements or identify issues
+  - Document what IS, not what SHOULD BE
+  - Just describe HOW IT CURRENTLY WORKS`,
+  subagent_type: "general-purpose",
+  model: "sonnet"  // Complex analysis task
 })
 ```
 
 **Agent 3: Pattern Finder**
+
 ```javascript
 Task({
   description: "Find [pattern] examples",
@@ -137,11 +153,13 @@ Task({
   - Testing approaches for [feature type]
 
   Return examples with file references.`,
-  subagent_type: "general-purpose"
+  subagent_type: "general-purpose",
+  model: "haiku"  // Pattern matching task
 })
 ```
 
 **Additional specialized agents** based on research focus:
+
 - Database schema investigation
 - API endpoint analysis
 - Frontend component exploration
@@ -162,25 +180,32 @@ const agents = [
 // All agents work in parallel for efficiency
 ```
 
-**Key Agent Instructions:**
-- Each agent is a documentarian, not a critic
-- Agents describe what exists without judgment
-- Use specific agent types for their strengths
-- Run multiple agents in parallel for speed
-- Wait for ALL agents before synthesizing
+**CRITICAL Agent Instructions (MUST follow exactly):**
 
-**⛔ BARRIER 2**: Wait for ALL sub-agents to complete before proceeding to Step 5
+- **Each agent is a documentarian, NOT a critic or consultant**
+- **Agents MUST describe what exists without ANY judgment**
+- **Document what IS, not what SHOULD BE - NO EXCEPTIONS**
+- **Use specific agent types for their strengths**
+- **Run multiple agents in parallel for speed**
+- **ALWAYS wait for ALL agents before synthesizing**
+- **Remind EVERY agent: You are documenting the codebase AS IT EXISTS**
+
+**⛔⛔⛔ BARRIER 2: STOP! Wait for ALL sub-agents to complete - DO NOT proceed until EVERY agent returns ⛔⛔⛔**
 
 ### Step 5: Synthesize Findings
+
+**think deeply about documenting ONLY what EXISTS**
 
 **IMPORTANT**: Wait for ALL sub-agent tasks to complete before proceeding
 
 1. **Compile all sub-agent results**
-2. **Prioritize live codebase findings** as primary source of truth
-3. **Connect findings across different components**
-4. **Include specific file paths and line numbers** for reference
-5. **Highlight patterns, connections, and architectural decisions**
-6. **Answer the user's specific questions** with concrete evidence
+2. **REMEMBER: Document what IS, not what SHOULD BE**
+3. **Prioritize live codebase findings** as primary source of truth
+4. **Connect findings across different components**
+5. **Include specific file paths and line numbers** for reference
+6. **Highlight patterns, connections, and architectural decisions THAT EXIST**
+7. **Answer the user's specific questions** with concrete evidence FROM THE CURRENT CODE
+8. **DO NOT add recommendations or improvements unless explicitly requested**
 
 ### Step 6: Document Findings
 
@@ -294,15 +319,22 @@ Based on the research findings:
 1. [Suggested next action based on findings]
 2. [Another logical next step]
 3. Review the research document
-4. Run `/create_plan` to create implementation plan
+4. Run `/create_design` to create design decisions
 
 ````
 
-**⛔ BARRIER 3**: Verify no placeholder values before writing. All data must be real.
+**⛔⛔⛔ BARRIER 3: STOP! Verify NO placeholder values - ALL data MUST be from ACTUAL codebase ⛔⛔⛔**
+
+Before writing:
+- **NO** "[To be added]" or similar placeholders
+- **NO** generic examples - use REAL code from THIS codebase
+- **NO** assumptions - only documented FACTS
+- **Remember one final time: Document what IS, not what SHOULD BE**
 
 ### Step 7: Handle Follow-Up Questions
 
 If the user has follow-up questions:
+
 1. **DO NOT create a new research file**
 2. **Append to the existing research.md**
 3. **Add new section**: `## Follow-up Research [YYYY-MM-DD HH:MM]`
@@ -315,6 +347,7 @@ If the user has follow-up questions:
 ### Step 8: Confirm Completion
 
 Present summary to user:
+
 ```
 
 ✅ Research documented at: [path]/research.md
@@ -336,18 +369,20 @@ The research document has been updated with:
 - Architecture documentation for [system]
 - [X] similar implementation examples
 
-Next: Review the research and run `/create_plan` when ready to plan implementation.
+Next: Review the research and run `/create_design` when ready to create design decisions.
 
 ```
 
 ## Important Notes
 
 ### Critical Ordering
+
 - **ALWAYS** read mentioned files first before spawning sub-tasks (Step 1)
 - **ALWAYS** wait for all sub-agents to complete before synthesizing (Step 4)
 - **NEVER** write the research document with placeholder values
 
 ### Documentation Philosophy
+
 - **CRITICAL**: You and all sub-agents are documentarians, not evaluators
 - **REMEMBER**: Document what IS, not what SHOULD BE
 - **NO RECOMMENDATIONS**: Only describe the current state of the codebase
@@ -357,11 +392,13 @@ Next: Review the research and run `/create_plan` when ready to plan implementati
 - Document cross-component connections and how systems interact
 
 ### File Reading
+
 - **File reading**: Always read mentioned files FULLY (no limit/offset) before spawning sub-tasks
 - Have sub-agents document examples and usage patterns as they exist
 - Keep the main agent focused on synthesis, not deep file reading
 
 ### Synchronization Points
+
 1. ⛔ **BARRIER 1**: After reading mentioned files - Do not proceed until ALL files are read
 2. ⛔ **BARRIER 2**: After spawning agents - Wait for ALL agents to complete
 3. ⛔ **BARRIER 3**: Before writing output - Verify no placeholder values
@@ -369,6 +406,7 @@ Next: Review the research and run `/create_plan` when ready to plan implementati
 ## Configuration
 
 The command accepts the directory path as a parameter:
+
 ```
 
 /create_research docs/plans/2025-10-07-my-project
@@ -376,4 +414,3 @@ The command accepts the directory path as a parameter:
 ```
 
 Or prompts for it if not provided.
-

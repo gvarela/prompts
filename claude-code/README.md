@@ -26,8 +26,9 @@ my-project/
 │   └── commands/
 │       ├── create_project.md
 │       ├── create_research.md
-│       ├── create_plan.md
-│       ├── create_tasks.md
+│       ├── create_design.md
+│       ├── create_execution.md
+│       ├── implement_tasks.md
 │       └── update_status.md
 ├── .git/
 └── src/
@@ -51,8 +52,9 @@ Located in user config directory:
 ~/.claude/commands/
 ├── create_project.md
 ├── create_research.md
-├── create_plan.md
-├── create_tasks.md
+├── create_design.md
+├── create_execution.md
+├── implement_tasks.md
 └── update_status.md
 ```
 
@@ -67,7 +69,9 @@ Organize commands into subdirectories:
 ├── planning/
 │   ├── create_project.md
 │   ├── create_research.md
-│   └── create_plan.md
+│   ├── create_design.md
+│   ├── create_execution.md
+│   └── implement_tasks.md
 └── code-review/
     ├── review-pr.md
     └── review-changes.md

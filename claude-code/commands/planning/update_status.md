@@ -5,7 +5,7 @@ argument-hint: [project-directory]
 
 # Update Project Status
 
-Intelligently updates status across all project documentation files (research.md, plan.md, tasks.md) based on actual progress, ensuring consistency and proper state transitions.
+Intelligently updates status across all project documentation files (research.md, design.md, tasks.md) based on actual progress, ensuring consistency and proper state transitions.
 
 ## CRITICAL: Status Update Philosophy
 
@@ -26,6 +26,7 @@ When invoked, check for arguments:
    - Analyze and propose status updates
 
 2. **If no arguments**:
+
    ```
    I'll help you update the project status. Please provide:
    1. Path to the project documentation directory
@@ -42,7 +43,7 @@ When invoked, check for arguments:
 Read all documentation files to understand current state:
 
 1. **Read research.md FULLY** - Check status, completion, findings
-2. **Read plan.md FULLY** - Check status, phase progress, implementation state
+2. **Read design.md FULLY** - Check status, phase progress, implementation state
 3. **Read tasks.md FULLY** - Check current_phase, completed_tasks, total_tasks, task checkboxes
 
 **IMPORTANT**: Use Read tool WITHOUT limit/offset parameters
@@ -50,7 +51,7 @@ Read all documentation files to understand current state:
 Record current state:
 
 - Research status: [draft/in-progress/complete]
-- Plan status: [draft/ready/implementing/complete]
+- Design status: [draft/ready/implementing/complete]
 - Tasks status: [not-started/in-progress/complete]
 - Current phase: [number]
 - Completed tasks: [count]
@@ -68,11 +69,11 @@ Examine the files to determine actual state:
    - Are there still placeholder sections like "[To be added]"?
    - Determine: draft | in-progress | complete
 
-2. **Plan Analysis**:
-   - Are all phases defined with specific changes?
+2. **Design Analysis**:
+   - Are design decisions documented with rationale?
    - Are success criteria measurable and complete?
    - Is implementation started (check tasks.md)?
-   - Are all phases complete?
+   - Are all design aspects complete?
    - Determine: draft | ready | implementing | complete
 
 3. **Tasks Analysis**:
@@ -98,11 +99,11 @@ Based on analysis, determine appropriate status for each file:
    - `in-progress` → Has some findings but incomplete sections
    - `complete` → All sections populated with real findings, no placeholders
 
-2. **plan.md**:
-   - `draft` → Template structure, no real phases defined
-   - `ready` → All phases defined, success criteria set, ready to implement
+2. **design.md**:
+   - `draft` → Template structure, no real design decisions made
+   - `ready` → All design decisions documented, ready for execution planning
    - `implementing` → Tasks have started (tasks.md shows progress)
-   - `complete` → All phases implemented and verified
+   - `complete` → All design implemented and verified
 
 3. **tasks.md**:
    - `not-started` → No tasks checked off, current_phase: 0
@@ -111,9 +112,9 @@ Based on analysis, determine appropriate status for each file:
 
 **Validation Rules**:
 
-- Cannot mark plan as `ready` if research is still `draft`
-- Cannot mark tasks as `in-progress` if plan is still `draft`
-- Cannot mark plan as `complete` if tasks is not `complete`
+- Cannot mark design as `ready` if research is still `draft`
+- Cannot mark tasks as `in-progress` if design is still `draft`
+- Cannot mark design as `complete` if tasks is not `complete`
 - `implementing` requires at least one checked task in tasks.md
 
 ### Step 4: Present Status Update Plan
@@ -128,7 +129,7 @@ Show user what will change:
 - Proposed: [new-status]
 - Reason: [why this transition is appropriate]
 
-**plan.md**
+**design.md**
 - Current: [current-status]
 - Proposed: [new-status]
 - Reason: [why this transition is appropriate]
@@ -165,7 +166,7 @@ git_commit: [current-commit]
 git_branch: [current-branch]
 ```
 
-#### Update plan.md
+#### Update design.md
 
 Update frontmatter:
 
@@ -236,7 +237,7 @@ Present summary:
 📊 Updates Applied:
 
 **research.md**: [old] → [new]
-**plan.md**: [old] → [new]
+**design.md**: [old] → [new]
 **tasks.md**: [old] → [new]
   - Phase: [number]
   - Progress: [X]/[Y] tasks ([percentage]%)
@@ -330,7 +331,7 @@ If user requests invalid transition:
 ```
 ⚠️ Invalid Status Transition
 
-Cannot transition plan.md from 'draft' to 'implementing' because:
+Cannot transition design.md from 'draft' to 'implementing' because:
 - research.md is still in 'draft' status
 - No tasks have been checked in tasks.md
 
@@ -349,7 +350,7 @@ If files don't exist:
 
 Expected files in [directory]:
 - research.md [✓/✗]
-- plan.md [✓/✗]
+- design.md [✓/✗]
 - tasks.md [✓/✗]
 
 Run /create_project first to initialize the documentation structure.
@@ -363,11 +364,11 @@ If files have conflicting status:
 ⚠️ Inconsistent Status Detected
 
 Current state:
-- plan.md: implementing
+- design.md: implementing
 - tasks.md: not-started (0 tasks completed)
 
 This is inconsistent. Suggesting correction:
-- Set plan.md back to 'ready' OR
+- Set design.md back to 'ready' OR
 - Start checking off tasks in tasks.md
 
 Which would you prefer?
@@ -414,4 +415,3 @@ The command accepts the directory path as a parameter:
 ```
 
 Or prompts for it if not provided.
-

@@ -11,10 +11,23 @@ This directory contains Claude Code slash commands for project documentation, re
 The commands follow a strict sequential workflow:
 
 ```
-/create_project → /create_research → /create_plan → /create_tasks
+/create_project → /create_research → /create_design → /create_execution → /implement_tasks → /validate_execution
+```
+
+For multi-session work:
+```
+[Session 1] → /create_handoff → [Session 2] → /resume_handoff → [Continue work]
 ```
 
 Each command builds upon the previous one's output, creating structured documentation in timestamped directories under `docs/plans/`.
+
+## Workflow Philosophy
+
+The workflow separates three distinct concerns:
+
+1. **Research** (`research.md`) - Document what EXISTS (facts only, no recommendations)
+2. **Design** (`design.md`) - Document WHAT to build and WHY (architectural decisions)
+3. **Execution** (`tasks.md`) - Document HOW to build it (phased implementation plan)
 
 ## Core Command Philosophy
 
@@ -76,6 +89,38 @@ When modifying or creating new documentation commands:
 6. Always read files FULLY before processing
 7. Use parallel agents for efficiency but wait for ALL to complete
 
+## Agent Spawning with Model Selection
+
+Commands now support model hints when spawning agents for optimal cost/performance:
+
+```javascript
+Task({
+  description: "Quick file search",
+  prompt: "Find all test files...",
+  subagent_type: "general-purpose",
+  model: "haiku"  // Fast, cheap for simple tasks
+})
+
+Task({
+  description: "Complex analysis",
+  prompt: "Analyze architecture patterns...",
+  subagent_type: "general-purpose",
+  model: "sonnet"  // Better for complex reasoning
+})
+
+Task({
+  description: "Critical validation",
+  prompt: "Verify implementation correctness...",
+  subagent_type: "general-purpose",
+  model: "opus"  // Maximum capability when needed
+})
+```
+
+**Model Selection Guidelines**:
+- `haiku`: File searches, pattern matching, simple tasks
+- `sonnet`: Code analysis, integration planning, test design
+- `opus`: Complex reasoning, critical decisions (rarely needed)
+
 ## Markdown Formatting Standards
 
 ### Nested Fenced Code Blocks
@@ -87,6 +132,7 @@ When nesting fenced code blocks within markdown, use the proper number of backti
 - **Deeply nested**: Add one more backtick for each level
 
 Example:
+
 ````markdown
 # Documentation Example
 
@@ -113,30 +159,53 @@ This ensures that markdown processors correctly parse nested blocks and that the
 Files created by commands progress through defined states:
 
 - `research.md`: draft → in-progress → complete
-- `plan.md`: draft → ready → implementing → complete
+- `design.md`: draft → ready → implementing → complete
 - `tasks.md`: not-started → in-progress → complete
 
 ## Command Descriptions
 
 ### `/create_project`
 
-Initializes project documentation structure with metadata tracking.
+Initializes project documentation structure with metadata tracking. Creates research.md, design.md, and tasks.md templates.
 
 ### `/create_research`
 
-Conducts comprehensive research using parallel agents, documenting what EXISTS without judgment.
+Conducts comprehensive research using parallel agents, documenting what EXISTS without judgment. Spawns multiple agents concurrently for efficient codebase exploration.
 
-### `/create_plan`
+### `/create_design`
 
-Creates implementation plans through interactive discussion, with phased approach and dual verification.
+Creates architectural design decisions through interactive discussion. Focuses on WHAT to build and WHY. Spawns verification agents to validate design approach and find precedents.
 
-### `/create_tasks`
+### `/create_execution`
 
-Extracts ALL tasks from plans with proper barriers and checkpoints. Tracks modified files per phase.
+Transforms design decisions into detailed phased execution plan with embedded tasks. Focuses on HOW to implement. Spawns agents for dependency analysis, test coverage planning, and rollback procedures.
+
+### `/implement_tasks`
+
+Implements tasks following TDD (Red → Green → Refactor) practices. Respects phase boundaries and checkpoints. Uses TodoWrite for progress tracking.
 
 ### `/update_status`
 
 Intelligently updates status across all documentation files based on actual progress. Ensures consistency and validates state transitions.
+
+### `/validate_execution`
+
+Validates that execution plan was correctly implemented. Verifies all success criteria, identifies deviations, and provides comprehensive validation report. Run after implementation to ensure quality before deployment.
+
+### `/create_handoff`
+
+Creates comprehensive handoff document for session transfer. Captures critical context, learnings, and discoveries not in formal documentation. Enables seamless work continuation across sessions.
+
+### `/resume_handoff`
+
+Resumes work from a handoff document. Restores full context including learnings, solved problems, and next steps. Prevents repeating discoveries and maintains consistency.
+
+### Removed Commands
+
+The following commands have been removed and replaced with the improved workflow:
+
+- `/create_plan` - **REMOVED**: Replaced by `/create_design` (WHAT/WHY) and `/create_execution` (HOW)
+- `/create_tasks` - **REMOVED**: Replaced by `/create_execution` which creates detailed execution plans
 
 ## Testing Commands
 
@@ -147,4 +216,3 @@ When testing changes to commands:
 3. Verify all barriers and checkpoints work correctly
 4. Check that frontmatter is properly populated
 5. Ensure status progression works as expected
-
