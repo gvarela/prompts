@@ -10,6 +10,7 @@ Validates that an execution plan was correctly implemented, verifying all succes
 ## Purpose
 
 This command provides an objective assessment of implementation completeness by:
+
 - Verifying claimed completions match actual code changes
 - Running all automated verification checks
 - Identifying deviations from the plan
@@ -28,6 +29,7 @@ When invoked, check for arguments:
    - Begin validation process
 
 2. **If no arguments**:
+
    ```
    I'll validate the execution of your implementation plan. Please provide:
    1. Path to the project documentation directory (e.g., docs/plans/2025-01-08-my-project/)
@@ -88,7 +90,7 @@ Task({
 
   Use git diff to compare changes if needed.
   Return detailed comparison of planned vs actual.`,
-  subagent_type: "general-purpose",
+  subagent_type: "codebase-analyzer",
   model: "haiku"  // Quick file comparison task
 })
 
@@ -140,7 +142,7 @@ Task({
   - Are there any anti-patterns?
 
   Document pattern compliance.`,
-  subagent_type: "general-purpose",
+  subagent_type: "pattern-finder",
   model: "sonnet"  // Pattern analysis
 })
 ```
@@ -163,6 +165,7 @@ make build      # Build verification
 ```
 
 Document the results:
+
 - ✅ Pass: Command succeeded
 - ❌ Fail: Command failed (include error)
 - ⚠️ Partial: Some issues but not blocking
@@ -324,9 +327,11 @@ Deletions: -[Z] lines
 ```
 
 ### Test Execution Logs
+
 [Include key excerpts from test runs]
 
 ### Agent Findings
+
 [Include relevant findings from validation agents]
 
 ---
@@ -334,6 +339,7 @@ Deletions: -[Z] lines
 ## Validation Completed
 
 **Next Steps**:
+
 1. Address any critical issues identified
 2. Perform manual testing using checklist above
 3. Get approval from reviewer
@@ -341,6 +347,7 @@ Deletions: -[Z] lines
 
 **Validator Notes**:
 [Any additional context or observations about the implementation]
+
 ```
 
 ### Step 6: Update Documentation

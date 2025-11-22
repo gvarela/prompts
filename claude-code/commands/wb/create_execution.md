@@ -94,7 +94,7 @@ Task({
   - External dependencies needed
 
   Return dependency graph with specific file references.`,
-  subagent_type: "general-purpose",
+  subagent_type: "codebase-analyzer",
   model: "sonnet"  // Complex dependency analysis
 })
 
@@ -117,7 +117,7 @@ Task({
   - Test fixtures needed
 
   Return test plan with specific test scenarios.`,
-  subagent_type: "general-purpose",
+  subagent_type: "codebase-analyzer",
   model: "sonnet"  // Test planning requires careful analysis
 })
 
@@ -140,7 +140,7 @@ Task({
   - Specific commands to run
 
   Return rollback plan with step-by-step procedures.`,
-  subagent_type: "general-purpose",
+  subagent_type: "codebase-analyzer",
   model: "haiku"  // Procedural task generation
 })
 
@@ -159,7 +159,7 @@ Task({
   - Configuration patterns to follow
 
   Return examples with file:line references.`,
-  subagent_type: "general-purpose",
+  subagent_type: "pattern-finder",
   model: "haiku"  // Quick pattern search
 })
 ```

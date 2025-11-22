@@ -66,7 +66,7 @@ When invoked, check for arguments:
    - Underlying patterns and connections that EXIST
    - Architectural implementations CURRENTLY IN PLACE
    - Which directories, files, or patterns are ACTUALLY PRESENT
-3. **Create a research plan using TodoWrite** to track all subtasks:
+4. **Create a research plan using TodoWrite** to track all subtasks:
 
    ```
    - [ ] Research authentication flow
@@ -75,7 +75,7 @@ When invoked, check for arguments:
    - [ ] Analyze database schema
    ```
 
-4. **Consider which specific components** to investigate
+5. **Consider which specific components** to investigate
 
 ### Step 4: Spawn Parallel Research Agents
 
@@ -98,7 +98,7 @@ Based on the research question "[research-question]", I'll spawn specialized age
 ```javascript
 Task({
   description: "Find [feature] components",
-  prompt: `Use the codebase-locator agent to find all files related to [feature].
+  prompt: `Find all files related to [feature].
 
   Search for:
   - Source files implementing [feature]
@@ -108,7 +108,7 @@ Task({
 
   Focus on [specific directories if known].
   Return specific file paths with brief descriptions.`,
-  subagent_type: "general-purpose",
+  subagent_type: "codebase-locator",
   model: "haiku"  // Fast file finding task
 })
 ```
@@ -118,7 +118,7 @@ Task({
 ```javascript
 Task({
   description: "Analyze [feature] implementation",
-  prompt: `Use the codebase-analyzer agent to understand how [feature] works.
+  prompt: `Understand how [feature] works.
 
   Analyze:
   - Entry points and main functions
@@ -134,7 +134,7 @@ Task({
   - DO NOT suggest improvements or identify issues
   - Document what IS, not what SHOULD BE
   - Just describe HOW IT CURRENTLY WORKS`,
-  subagent_type: "general-purpose",
+  subagent_type: "codebase-analyzer",
   model: "sonnet"  // Complex analysis task
 })
 ```
@@ -144,7 +144,7 @@ Task({
 ```javascript
 Task({
   description: "Find [pattern] examples",
-  prompt: `Use the pattern-finder agent to identify [pattern type] in the codebase.
+  prompt: `Identify [pattern type] in the codebase.
 
   Find:
   - Similar implementations to [feature]
@@ -153,7 +153,7 @@ Task({
   - Testing approaches for [feature type]
 
   Return examples with file references.`,
-  subagent_type: "general-purpose",
+  subagent_type: "pattern-finder",
   model: "haiku"  // Pattern matching task
 })
 ```
@@ -326,6 +326,7 @@ Based on the research findings:
 **⛔⛔⛔ BARRIER 3: STOP! Verify NO placeholder values - ALL data MUST be from ACTUAL codebase ⛔⛔⛔**
 
 Before writing:
+
 - **NO** "[To be added]" or similar placeholders
 - **NO** generic examples - use REAL code from THIS codebase
 - **NO** assumptions - only documented FACTS

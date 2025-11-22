@@ -104,7 +104,7 @@ Task({
   Return examples with file:line references.
 
   Document what exists, do not evaluate quality.`,
-  subagent_type: "general-purpose",
+  subagent_type: "pattern-finder",
   model: "haiku"  // Quick pattern verification
 })
 
@@ -123,7 +123,7 @@ Task({
   - Potential conflicts
 
   Document what exists with file:line references.`,
-  subagent_type: "general-purpose",
+  subagent_type: "codebase-analyzer",
   model: "sonnet"  // Complex integration analysis
 })
 
@@ -138,7 +138,7 @@ Task({
   - Patterns that failed
 
   Document findings with specific references.`,
-  subagent_type: "general-purpose",
+  subagent_type: "pattern-finder",
   model: "haiku"  // Historical search task
 })
 ```

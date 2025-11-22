@@ -129,10 +129,10 @@ Document the patterns without evaluating them."
 ```python
 # Spawn these tasks concurrently:
 tasks = [
-    Task("Locate all user-related files", locator_prompt, subagent_type="general-purpose"),
-    Task("Analyze current authentication flow", analyzer_prompt, subagent_type="general-purpose"),
-    Task("Find existing validation patterns", pattern_prompt, subagent_type="general-purpose"),
-    Task("Document API endpoint structure", api_prompt, subagent_type="general-purpose")
+    Task("Locate all user-related files", locator_prompt, subagent_type="codebase-locator"),
+    Task("Analyze current authentication flow", analyzer_prompt, subagent_type="codebase-analyzer"),
+    Task("Find existing validation patterns", pattern_prompt, subagent_type="pattern-finder"),
+    Task("Document API endpoint structure", api_prompt, subagent_type="codebase-analyzer")
 ]
 ```
 
