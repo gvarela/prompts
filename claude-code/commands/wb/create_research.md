@@ -81,6 +81,8 @@ When invoked, check for arguments:
 
 Create multiple Task agents to research different aspects concurrently using our specialized agents:
 
+**CRITICAL: Sub-agents are READ-ONLY. They gather information and return findings. They do NOT write files. YOU (the main agent) will write research.md after synthesizing their findings.**
+
 ```
 ## Parallel Research Strategy
 
@@ -107,9 +109,9 @@ Task({
   - Related documentation
 
   Focus on [specific directories if known].
-  Return specific file paths with brief descriptions.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "codebase-locator",
-  model: "haiku"  // Fast file finding task
+  model: "haiku"
 })
 ```
 
@@ -133,9 +135,10 @@ Task({
   - You are documenting the codebase as it exists
   - DO NOT suggest improvements or identify issues
   - Document what IS, not what SHOULD BE
-  - Just describe HOW IT CURRENTLY WORKS`,
+  - Just describe HOW IT CURRENTLY WORKS
+  - DO NOT write any files. Return your findings as a report.`,
   subagent_type: "codebase-analyzer",
-  model: "sonnet"  // Complex analysis task
+  model: "sonnet"
 })
 ```
 
@@ -152,9 +155,9 @@ Task({
   - Common patterns for [functionality]
   - Testing approaches for [feature type]
 
-  Return examples with file references.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "pattern-finder",
-  model: "haiku"  // Pattern matching task
+  model: "haiku"
 })
 ```
 

@@ -73,8 +73,10 @@ Remember: Now you're planning HOW to build what was designed.
 
 After reading all documents, spawn specialized agents in parallel:
 
+**CRITICAL: Sub-agents are READ-ONLY. They gather information and return findings. They do NOT write files. YOU (the main agent) will write tasks.md after synthesizing their findings.**
+
 ```javascript
-// Spawn dependency analysis agents
+// Spawn analysis agents in parallel - all are read-only
 Task({
   description: "Analyze file dependencies",
   prompt: `Analyze dependencies for implementing the design.
@@ -93,9 +95,9 @@ Task({
   - Critical path dependencies
   - External dependencies needed
 
-  Return dependency graph with specific file references.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "codebase-analyzer",
-  model: "sonnet"  // Complex dependency analysis
+  model: "sonnet"
 })
 
 Task({
@@ -116,32 +118,9 @@ Task({
   - Edge cases from risk analysis
   - Test fixtures needed
 
-  Return test plan with specific test scenarios.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "codebase-analyzer",
-  model: "sonnet"  // Test planning requires careful analysis
-})
-
-Task({
-  description: "Generate rollback procedures",
-  prompt: `Create rollback procedures for each phase.
-
-  From design.md:
-  - Changes being made: [changes]
-  - Risk areas: [risks]
-
-  From research.md:
-  - Current state: [state]
-  - Existing rollback patterns: [if any]
-
-  For each major change, determine:
-  - How to undo it safely
-  - What data needs preservation
-  - Testing rollback procedures
-  - Specific commands to run
-
-  Return rollback plan with step-by-step procedures.`,
-  subagent_type: "codebase-analyzer",
-  model: "haiku"  // Procedural task generation
+  model: "sonnet"
 })
 
 Task({
@@ -158,13 +137,13 @@ Task({
   - Testing approaches for similar changes
   - Configuration patterns to follow
 
-  Return examples with file:line references.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "pattern-finder",
-  model: "haiku"  // Quick pattern search
+  model: "haiku"
 })
 ```
 
-**⛔⛔⛔ BARRIER 2: STOP! Wait for ALL agents - dependency, test, rollback, pattern agents ⛔⛔⛔**
+**⛔⛔⛔ BARRIER 2: STOP! Wait for ALL agents - dependency, test, pattern agents ⛔⛔⛔**
 
 ### Step 3: Determine Implementation Strategy
 
@@ -180,7 +159,6 @@ Based on the gap between current and target state, and agent findings:
 2. **Assess risk** (from test coverage agent):
    - What changes are highest risk?
    - What needs extra testing?
-   - Where might we need rollback?
 
 3. **Plan phases** (synthesize all findings):
    - Group related changes
@@ -380,29 +358,6 @@ Note: Update this section with findings as you implement.
 
 ---
 
-## Rollback Plan
-
-(Generated from rollback agent findings)
-
-If implementation needs to be reverted:
-
-### Phase 3 Rollback
-1. [Specific step from agent]
-2. [Command to run from agent]
-3. [Verification step]
-
-### Phase 2 Rollback
-1. [Specific step from agent]
-2. [Command to run from agent]
-3. [Verification step]
-
-### Phase 1 Rollback
-1. [Specific step from agent]
-2. [Command to run from agent]
-3. [Verification step]
-
----
-
 ## 📝 Completed Tasks Archive
 
 Move completed tasks here weekly to keep active list focused.
@@ -467,7 +422,6 @@ Verify with agent findings:
 5. **Every task is specific and executable**
 6. **Test coverage** matches test agent recommendations
 7. **Dependencies** follow agent-identified order
-8. **Rollback procedures** cover all phases
 
 ### Step 6: Present the Plan
 
@@ -484,7 +438,6 @@ Total tasks: [total count]
 Agent findings incorporated:
 - Dependency order: [key dependency from agent]
 - Test coverage: [X] unit tests, [Y] integration tests
-- Rollback procedures: Detailed steps for each phase
 - Similar patterns: [reference to pattern agent findings]
 
 Key features of the plan:
@@ -492,7 +445,6 @@ Key features of the plan:
 - Specific code changes with before/after context
 - Comprehensive test coverage from agent analysis
 - Automated and manual verification per phase
-- Detailed rollback procedures from agent findings
 - Quick test commands to avoid running full suite
 
 Next steps:
@@ -525,7 +477,6 @@ Next steps:
 4. **Enable Incremental Progress**:
    - Each phase independently valuable
    - Checkpoints prevent cascading issues
-   - Rollback possible at each phase (with agent procedures)
 
 ### What Belongs in Execution vs Design
 
@@ -536,7 +487,6 @@ Next steps:
 - ✅ File modifications with line numbers
 - ✅ Test writing tasks
 - ✅ Command sequences
-- ✅ Rollback procedures
 
 **Design (design.md)**:
 
@@ -570,9 +520,8 @@ Use agent findings throughout execution plan:
 
 1. **Dependencies**: Order phases based on dependency agent analysis
 2. **Testing**: Incorporate test coverage agent recommendations
-3. **Rollback**: Use rollback agent procedures verbatim
-4. **Patterns**: Reference similar implementations found by pattern agent
-5. **Risk mitigation**: Address risks identified by agents
+3. **Patterns**: Reference similar implementations found by pattern agent
+4. **Risk mitigation**: Address risks identified by agents
 
 ## Task Granularity
 
@@ -592,4 +541,4 @@ Tasks should be:
 
 ## Configuration
 
-This command creates an execution plan from approved research and design documents. It leverages Claude Code's agent spawning capabilities to analyze dependencies, test coverage, rollback procedures, and similar patterns.
+This command creates an execution plan from approved research and design documents. It leverages Claude Code's agent spawning capabilities to analyze dependencies, test coverage, and similar patterns.

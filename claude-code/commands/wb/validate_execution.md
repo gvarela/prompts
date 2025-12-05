@@ -73,6 +73,8 @@ const tasksFile = `${projectDir}/tasks.md`;
 
 **Use parallel agents to verify implementation comprehensively:**
 
+**CRITICAL: Sub-agents gather information and return findings. They do NOT write files. YOU (the main agent) will write the validation report after synthesizing their findings.**
+
 ```javascript
 // Spawn validation agents concurrently
 Task({
@@ -89,9 +91,9 @@ Task({
   - Were any planned changes missed?
 
   Use git diff to compare changes if needed.
-  Return detailed comparison of planned vs actual.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "codebase-analyzer",
-  model: "haiku"  // Quick file comparison task
+  model: "haiku"
 })
 
 Task({
@@ -108,9 +110,9 @@ Task({
   - Do all tests pass?
 
   Run test commands and analyze coverage.
-  Return test status and coverage analysis.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "general-purpose",
-  model: "sonnet"  // More complex analysis
+  model: "sonnet"
 })
 
 Task({
@@ -123,9 +125,9 @@ Task({
   - No performance degradation
   - No breaking changes to APIs
 
-  Return any potential regressions found.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "general-purpose",
-  model: "haiku"  // Standard checks
+  model: "haiku"
 })
 
 Task({
@@ -141,9 +143,9 @@ Task({
   - Is error handling consistent?
   - Are there any anti-patterns?
 
-  Document pattern compliance.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "pattern-finder",
-  model: "sonnet"  // Pattern analysis
+  model: "sonnet"
 })
 ```
 

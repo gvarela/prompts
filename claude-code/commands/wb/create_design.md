@@ -85,8 +85,10 @@ Remember: You are deciding WHAT and WHY, not HOW.
 
 After reading research, spawn specialized agents in parallel to gather additional context:
 
+**CRITICAL: Sub-agents are READ-ONLY. They gather information and return findings. They do NOT write files. YOU (the main agent) will write design.md after synthesizing their findings.**
+
 ```javascript
-// Spawn agents concurrently for verification
+// Spawn agents concurrently for verification - all are read-only
 Task({
   description: "Verify design patterns",
   prompt: `Based on the research findings, identify architectural patterns we should follow.
@@ -101,11 +103,10 @@ Task({
   - Patterns we should follow for consistency
   - Anti-patterns to avoid
 
-  Return examples with file:line references.
-
-  Document what exists, do not evaluate quality.`,
+  Document what exists, do not evaluate quality.
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "pattern-finder",
-  model: "haiku"  // Quick pattern verification
+  model: "haiku"
 })
 
 Task({
@@ -122,9 +123,9 @@ Task({
   - Dependencies we'll have
   - Potential conflicts
 
-  Document what exists with file:line references.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "codebase-analyzer",
-  model: "sonnet"  // Complex integration analysis
+  model: "sonnet"
 })
 
 Task({
@@ -137,9 +138,9 @@ Task({
   - Solutions that worked
   - Patterns that failed
 
-  Document findings with specific references.`,
+  DO NOT write any files. Return your findings as a report.`,
   subagent_type: "pattern-finder",
-  model: "haiku"  // Historical search task
+  model: "haiku"
 })
 ```
 
