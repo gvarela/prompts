@@ -30,48 +30,96 @@ cd prompts
 ./scripts/install-commands --claude --project ~/my-project
 ```
 
+### How Installation Works
+
+**Claude Code** (uses symlinks):
+- Commands, agents, and skills are **symlinked** to your installation directory
+- Individual `.md` files symlinked for commands and agents
+- Entire directories symlinked for skills
+- **Benefit**: Edits in this repository immediately reflect in Claude Code
+- **Updates**: Run `git pull` in this repo - changes apply automatically, no reinstall needed
+
+**AmpCode** (uses copies):
+- Files are **copied** (not symlinked) to installation directory
+- **Updates**: Re-run `./scripts/install-commands --amp` after `git pull`
+
 ### Using Commands
 
-Once installed, use the planning commands in your workflow:
+Once installed, use the workbench commands in your workflow:
 
 ```bash
 # Initialize project documentation
-/create_project my-feature docs/plans LINEAR-123
+/wb:create_project my-feature docs/plans LINEAR-123
 
 # Research existing codebase
-/create_research docs/plans/2025-10-08-LINEAR-123-my-feature
+/wb:create_research docs/plans/2025-10-08-LINEAR-123-my-feature
 
-# Create implementation plan
-/create_plan docs/plans/2025-10-08-LINEAR-123-my-feature
+# Create design decisions
+/wb:create_design docs/plans/2025-10-08-LINEAR-123-my-feature
 
-# Generate task list
-/create_tasks docs/plans/2025-10-08-LINEAR-123-my-feature
+# Create execution plan
+/wb:create_execution docs/plans/2025-10-08-LINEAR-123-my-feature
+
+# Implement with TDD
+/wb:implement_tasks docs/plans/2025-10-08-LINEAR-123-my-feature
+
+# Validate implementation
+/wb:validate_execution docs/plans/2025-10-08-LINEAR-123-my-feature
 
 # Update project status
-/update_status docs/plans/2025-10-08-LINEAR-123-my-feature
+/wb:update_status docs/plans/2025-10-08-LINEAR-123-my-feature
 ```
+
+**Skills** (automatically activated):
+- `project-structure` - Enforces document separation (research.md, design.md, tasks.md, thoughts/)
+- Activates automatically when working in `docs/plans/` directories
 
 ## What's Inside
 
-### 📋 Planning Commands
+### 📋 Workbench Commands (`/wb:*`)
 
 Enterprise-grade slash commands for project documentation and task management:
 
-- **`/create_project`** - Initialize structured documentation with rich metadata
-- **`/create_research`** - Document codebase using parallel research agents
-- **`/create_plan`** - Create phased implementation plans through interactive discussion
-- **`/create_tasks`** - Extract trackable tasks with verification checkpoints
-- **`/update_status`** - Intelligently sync status across all documentation files
+- **`/wb:create_project`** - Initialize structured documentation with rich metadata
+- **`/wb:create_research`** - Document codebase using parallel research agents
+- **`/wb:create_design`** - Create architectural design decisions (WHAT and WHY)
+- **`/wb:create_execution`** - Transform design into phased execution plan (HOW)
+- **`/wb:implement_tasks`** - Implement with TDD (Red-Green-Refactor)
+- **`/wb:validate_execution`** - Validate implementation matches plan
+- **`/wb:create_handoff`** - Create session handoff for work continuity
+- **`/wb:resume_handoff`** - Resume from handoff document
+- **`/wb:update_status`** - Intelligently sync status across all documentation files
 
 **Key Features**:
+- Three-document separation: research.md (facts), design.md (decisions), tasks.md (implementation)
 - Explicit barriers and synchronization points
 - "Document, Don't Judge" research philosophy
 - Dual verification model (automated + manual)
 - Rich frontmatter with git metadata tracking
 - Status progression with validation
 - Zero scope creep enforcement
+- Session continuity with handoff system
 
-[Full Planning Commands Documentation →](commands/planning/README.md)
+[Full Commands Documentation →](claude-code/commands/wb/README.md)
+
+### 🤖 Workbench Agents (`/wb:*`)
+
+Specialized agents for codebase analysis:
+
+- **`/wb:codebase-locator`** - Find specific components and files
+- **`/wb:codebase-analyzer`** - Analyze implementation details with file:line references
+- **`/wb:pattern-finder`** - Find similar patterns and implementations
+
+### 🧠 Skills (auto-activated)
+
+Background capabilities that Claude automatically invokes:
+
+- **`project-structure`** - Enforces document separation philosophy
+  - Guides where information belongs (research.md vs design.md vs tasks.md)
+  - Introduces `thoughts/` directory for explorations
+  - Activates when working in `docs/plans/` directories
+
+[Skills Guide →](docs/claude-code-skills-guide.md)
 
 ### 🛠️ Development Scripts
 

@@ -83,12 +83,24 @@ Installation Locations:
   AmpCode (global):      ~/.config/amp/commands/ (flat structure)
   AmpCode (project):     <project-path>/.agents/commands/ (flat structure)
 
-Notes:
-  - Claude Code: Commands are symlinked in subdirectories for easy updates via git pull
-  - AmpCode: Commands are copied flat (no subdirectories, doesn't follow symlinks)
-  - Global installations require the target directory to exist
-  - Project installations will create the directory if needed
-  - Update AmpCode commands by re-running the install script
+Symlinks vs Copies:
+
+  Claude Code (uses symlinks):
+    • Commands: Individual .md files symlinked from claude-code/commands/wb/*.md
+    • Agents:   Individual .md files symlinked from claude-code/agents/wb/*.md
+    • Skills:   Entire directories symlinked from claude-code/skills/*/
+    • Benefit:  Edits to source files immediately reflect in installation
+    • Updates:  Automatic via 'git pull' - no reinstall needed
+
+  AmpCode (uses copies):
+    • Commands: Files copied (not symlinked) to flat directory structure
+    • Updates:  Re-run ./scripts/install-commands --amp to update
+    • Why:      AmpCode doesn't follow symlinks
+
+  Installation Notes:
+    • Global installations require target directory to exist (or confirm creation)
+    • Project installations create directories automatically
+    • Symlinks point to absolute paths in this repository
 
 EOF
 }
