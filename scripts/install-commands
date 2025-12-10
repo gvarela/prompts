@@ -78,8 +78,8 @@ Examples:
   ./scripts/install-commands --amp --project ~/my-project
 
 Installation Locations:
-  Claude Code (global):  ~/.claude/commands/wb/ and ~/.claude/agents/wb/
-  Claude Code (project): <project-path>/.claude/commands/wb/ and agents/wb/
+  Claude Code (global):  ~/.claude/commands/wb/, ~/.claude/agents/wb/, ~/.claude/skills/
+  Claude Code (project): <project-path>/.claude/commands/wb/, agents/wb/, skills/
   AmpCode (global):      ~/.config/amp/commands/ (flat structure)
   AmpCode (project):     <project-path>/.agents/commands/ (flat structure)
 
@@ -99,6 +99,7 @@ get_commands_dirs() {
     if [ "$tool" = "claude" ]; then
         echo "$REPO_ROOT/claude-code/commands/wb"
         echo "$REPO_ROOT/claude-code/agents/wb"
+        echo "$REPO_ROOT/claude-code/skills"
     elif [ "$tool" = "amp" ]; then
         echo "$REPO_ROOT/ampcode/commands/planning"
         echo "$REPO_ROOT/ampcode/commands/actions"
@@ -135,9 +136,11 @@ get_target_dirs() {
         if [ "$scope" = "global" ]; then
             echo "$HOME/.claude/commands/wb"
             echo "$HOME/.claude/agents/wb"
+            echo "$HOME/.claude/skills"
         else
             echo "${project_path}/.claude/commands/wb"
             echo "${project_path}/.claude/agents/wb"
+            echo "${project_path}/.claude/skills"
         fi
     elif [ "$tool" = "amp" ]; then
         # AmpCode uses flat directory structure - return same dir twice for compatibility
@@ -269,6 +272,70 @@ install_to_target() {
 
     echo
     print_success "$tool_name ($scope): Installed $installed_count commands, skipped $skipped_count"
+    return 0
+}
+
+# Function to install skills to a target directory
+install_skills_to_target() {
+    local target_dir=$1
+    local tool_name=$2
+    local scope=$3
+    local skills_dir=$4
+
+    print_info "Installing to $tool_name ($scope): $target_dir"
+
+    # Ensure target directory exists
+    if ! ensure_directory "$target_dir" "$scope"; then
+        return 1
+    fi
+
+    local installed_count=0
+    local skipped_count=0
+
+    # Install each skill directory
+    for skill_dir in "$skills_dir"/*; do
+        # Skip if not a directory
+        if [ ! -d "$skill_dir" ]; then
+            continue
+        fi
+
+        local skill_name
+        skill_name=$(basename "$skill_dir")
+
+        # Skip if SKILL.md doesn't exist
+        if [ ! -f "$skill_dir/SKILL.md" ]; then
+            print_warning "  $skill_name (no SKILL.md, skipping)"
+            continue
+        fi
+
+        local target_skill="$target_dir/$skill_name"
+
+        # Check if symlink already exists and points to correct location
+        if [ -L "$target_skill" ]; then
+            local current_target
+            current_target=$(readlink "$target_skill")
+            if [ "$current_target" = "$skill_dir" ]; then
+                print_info "  $skill_name (already installed)"
+                ((skipped_count++))
+                continue
+            else
+                print_warning "  $skill_name (updating symlink)"
+                rm "$target_skill"
+            fi
+        elif [ -e "$target_skill" ]; then
+            print_warning "  $skill_name (directory exists, skipping)"
+            ((skipped_count++))
+            continue
+        fi
+
+        # Create symlink to skill directory
+        ln -s "$skill_dir" "$target_skill"
+        print_success "  $skill_name"
+        ((installed_count++))
+    done
+
+    echo
+    print_success "$tool_name ($scope): Installed $installed_count skills, skipped $skipped_count"
     return 0
 }
 
@@ -414,6 +481,18 @@ if [ "$INSTALL_CLAUDE" = true ]; then
     if ! install_to_target "${CLAUDE_TARGETS[1]}" "Claude Code Workbench Agents" "$SCOPE" true "${CLAUDE_SOURCES[1]}" ""; then
         print_error "Failed to install Claude Code workbench agents"
         exit 1
+    fi
+    echo
+
+    # Install skills
+    print_info "Installing Claude Code Skills..."
+    if [ -d "${CLAUDE_SOURCES[2]}" ]; then
+        if ! install_skills_to_target "${CLAUDE_TARGETS[2]}" "Claude Code Skills" "$SCOPE" "${CLAUDE_SOURCES[2]}"; then
+            print_error "Failed to install Claude Code skills"
+            exit 1
+        fi
+    else
+        print_warning "Skills directory not found: ${CLAUDE_SOURCES[2]}"
     fi
     echo
 fi
