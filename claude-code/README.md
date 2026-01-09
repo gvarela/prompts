@@ -785,6 +785,37 @@ Quick reference for our planning commands:
 | plan.md      | `draft` → `ready` → `implementing` → `complete` |
 | tasks.md     | `not-started` → `in-progress` → `complete`      |
 
+## Skills
+
+Skills are background capabilities that Claude automatically activates based on context. Unlike slash commands which you invoke explicitly, skills are triggered by Claude when relevant.
+
+### Available Skills
+
+| Skill | Description | Activates When |
+|-------|-------------|----------------|
+| `project-structure` | Document separation philosophy | Working in `docs/plans/` directories |
+| `tdd-discipline` | RED-GREEN-REFACTOR enforcement | Implementing features or fixing bugs |
+| `verification-before-completion` | Evidence before claims | About to claim work is done |
+| `status-sync` | Status drift detection | Completing tasks or phases |
+| `review-prep` | Interactive code review | Reviewing changes or preparing PRs |
+
+### Skill Locations
+
+Skills are installed to:
+
+- **Personal**: `~/.claude/skills/<skill-name>/SKILL.md`
+- **Project**: `.claude/skills/<skill-name>/SKILL.md`
+
+### Skills vs Commands
+
+| Aspect | Slash Commands | Skills |
+|--------|---------------|--------|
+| Invocation | User types `/command` | Claude activates automatically |
+| Control | Explicit user control | Context-based discovery |
+| Use Case | Explicit workflow steps | Background capabilities |
+
+See the [Skills Guide](../docs/claude-code-skills-guide.md) for detailed information.
+
 ## Additional Resources
 
 - [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code/slash-commands)

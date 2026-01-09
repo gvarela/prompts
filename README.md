@@ -71,8 +71,12 @@ Once installed, use the workbench commands in your workflow:
 ```
 
 **Skills** (automatically activated):
-- `project-structure` - Enforces document separation (research.md, design.md, tasks.md, thoughts/)
-- Activates automatically when working in `docs/plans/` directories
+
+- `project-structure` - Document separation (research.md, design.md, tasks.md, thoughts/)
+- `tdd-discipline` - RED-GREEN-REFACTOR enforcement
+- `verification-before-completion` - Evidence before completion claims
+- `status-sync` - Status drift detection
+- `review-prep` - Interactive tmux/nvim code review
 
 ## What's Inside
 
@@ -114,10 +118,11 @@ Specialized agents for codebase analysis:
 
 Background capabilities that Claude automatically invokes:
 
-- **`project-structure`** - Enforces document separation philosophy
-  - Guides where information belongs (research.md vs design.md vs tasks.md)
-  - Introduces `thoughts/` directory for explorations
-  - Activates when working in `docs/plans/` directories
+- **`project-structure`** - Enforces document separation (research.md, design.md, tasks.md, thoughts/)
+- **`tdd-discipline`** - Enforces RED-GREEN-REFACTOR cycle before writing production code
+- **`verification-before-completion`** - Requires running verification commands before claiming work is done
+- **`status-sync`** - Monitors for status drift and reminds to run `/wb:update_status`
+- **`review-prep`** - Interactive code review walkthrough using tmux and nvim for pair programming
 
 [Skills Guide →](docs/claude-code-skills-guide.md)
 
