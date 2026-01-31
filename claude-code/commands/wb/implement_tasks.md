@@ -121,57 +121,33 @@ After reading all documentation, synthesize:
 
 ### Step 2: Set Up Task Tracking
 
-#### Check for Beads Integration
+#### Claim Phase in Beads
 
-First, check if beads is initialized in this project:
+Check the phase from tasks.md frontmatter (`beads_phases`) and claim it:
 
 ```bash
-ls .beads/beads.db 2>/dev/null && echo "BEADS_ENABLED=true" || echo "BEADS_ENABLED=false"
+bd show [phase-id-from-frontmatter]   # Review phase details
+bd update [phase-id] --status in_progress  # Claim the phase
+bd blocked  # Verify nothing blocking this phase
 ```
-
-Note: This checks if beads is initialized in THIS project, not just if `bd` CLI is installed.
-
-**If beads is enabled AND tasks.md has `beads_phases` frontmatter:**
-
-1. Check current phase's beads issue:
-   ```bash
-   bd show [phase-id-from-frontmatter]
-   ```
-
-2. Claim the phase if not already in progress:
-   ```bash
-   bd update [phase-id] --status in_progress
-   ```
-
-3. Check for blocking issues:
-   ```bash
-   bd blocked
-   ```
 
 #### Set Up Session Tracking
 
-**Always use TodoWrite** for within-session task tracking:
+Use TodoWrite for granular within-session progress:
 
 ```javascript
-// Example todo list
 TodoWrite([
   { content: "Review existing code at [file:line from research]", status: "pending" },
-  { content: "Set up test environment", status: "pending" },
   { content: "[First unchecked task from tasks.md]", status: "pending" },
   { content: "[Second unchecked task]", status: "pending" },
-  { content: "Run automated verification", status: "pending" },
-  { content: "Request manual verification", status: "pending" }
+  { content: "Run automated verification", status: "pending" }
 ])
 ```
-
-**Additionally, if beads is enabled**, use beads for cross-session phase tracking.
 
 | Tool | Scope | Use For |
 |------|-------|---------|
 | TodoWrite | Session | Granular task progress within current session |
 | Beads | Cross-session | Phase milestones that survive compaction |
-
-They complement each other - always use TodoWrite, additionally use beads when available.
 
 ### Step 3: Implement Phase Tasks
 
@@ -406,7 +382,7 @@ When resuming work (phase = "continue"):
    - Look for [x] checkmarks in tasks.md
    - Check current_phase in frontmatter
    - Review "Implementation Notes" for context
-   - **If beads enabled**: `bd ready` shows what phases are available
+   - `bd ready` shows what phases are available
 
 2. **Check beads state** (if enabled):
 
@@ -432,7 +408,7 @@ When resuming work (phase = "continue"):
    - Trust completed work unless tests fail
    - Pick up with TDD cycle for next task
    - Update TodoWrite with remaining tasks
-   - **If beads enabled**: Claim phase if not already in progress
+   - Claim phase if not already in progress
 
 ## TDD Best Practices
 
@@ -482,14 +458,14 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 
 ```
 1. Read current state from tasks.md
-2. If beads enabled: `bd ready` to see available phases, claim with `bd update`
+2. `bd ready` to see available phases, claim with `bd update`
 3. Set up today's todo list with TodoWrite
 4. Implement with TDD cycle
 5. Update checkboxes as you go
 6. Run verification at natural breakpoints
 7. If phase complete: `bd close` the phase issue
 8. Update frontmatter and TodoWrite before stopping
-9. If beads enabled: `bd sync` to persist state
+9. `bd sync` to persist state
 ```
 
 ## Error Handling
@@ -519,13 +495,13 @@ If automated verification fails after implementation:
 - ✅ Follow TDD cycle: Red → Green → Refactor
 - ✅ Read ALL documentation files FULLY first
 - ✅ Use TodoWrite to track session progress
-- ✅ If beads enabled: Use `bd update`/`bd close` for phase tracking
+- ✅ Use `bd update`/`bd close` for phase tracking
 - ✅ Update progress in both checkboxes and frontmatter
 - ✅ Respect phase boundaries and checkpoints
 - ✅ Track modified files for easier testing
 - ✅ Generate phase-specific test commands
 - ✅ Document any deviations from design
-- ✅ Run `bd sync` at session end (if beads enabled)
+- ✅ Run `bd sync` at session end
 
 ### DON'T (ABSOLUTELY FORBIDDEN)
 

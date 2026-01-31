@@ -40,15 +40,7 @@ When invoked, check for arguments:
 
 **⛔ BARRIER 1**: Read ALL files FULLY before proceeding
 
-#### Check for Beads Integration
-
-First, determine if this project uses beads:
-
-```bash
-ls .beads/beads.db 2>/dev/null && echo "BEADS_ENABLED" || echo "MARKDOWN_ONLY"
-```
-
-**If beads enabled**, also check beads state:
+#### Check Beads State
 
 ```bash
 bd stats                        # Overall counts
@@ -85,7 +77,7 @@ Record current state:
 - Current phase: [number]
 - Completed tasks: [count]
 - Total tasks: [count]
-- **If beads**: Phase issues status (open/in_progress/closed)
+- Beads phase issues status (open/in_progress/closed)
 
 ### Step 2: Analyze Actual Progress
 
@@ -106,28 +98,19 @@ Examine the files to determine actual state:
    - Are all design aspects complete?
    - Determine: draft | ready | implementing | complete
 
-3. **Tasks Analysis**:
-
-   **If beads enabled** (preferred source of truth):
+3. **Tasks Analysis** (beads is source of truth):
    - Check beads phase issues: `bd show [phase-id]` for each phase
    - Closed phases = complete
    - In-progress phases = active
    - Open phases with closed blockers = ready
-   - Use beads status as authoritative
-
-   **If markdown-only** (or to cross-check):
-   - Count checked vs unchecked tasks
-   - Identify current phase based on which phase has active work
-   - Check if phase checkpoints were met
-   - Are all tasks complete?
+   - Cross-check against markdown checkboxes if needed
 
    Determine: not-started | in-progress | complete
 
 4. **Progress Calculation**:
-   - **If beads**: Count closed phase issues vs total
-   - **If markdown-only**: Calculate from checkboxes
+   - Count closed phase issues vs total from beads
    - Identify which phase is currently active
-   - Check if blocked (beads: `bd blocked`, markdown: blockers section)
+   - Check if blocked: `bd blocked`
 
 ### Step 3: Determine Status Transitions
 
@@ -343,9 +326,9 @@ in-progress → complete
 
 The command should intelligently detect status based on actual content.
 
-**If beads is enabled**: Beads is the source of truth for task/phase status. Use `bd show [phase-id]` to get authoritative status. Markdown checkboxes may lag behind beads state.
+**Beads is the source of truth** for task/phase status. Use `bd show [phase-id]` to get authoritative status. Markdown checkboxes may lag behind beads state.
 
-**If markdown-only**: Use checkbox counting and content analysis below.
+For research and design status (not tracked in beads), use content analysis:
 
 ### Research Detection
 

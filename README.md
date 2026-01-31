@@ -167,18 +167,13 @@ Plans separate verification into:
 
 Tasks come ONLY from plans - no additions during implementation. This maintains predictable delivery and traceable work.
 
-### Beads Integration (Optional)
+### Beads Integration (Required)
 
-Projects can optionally use [beads](https://github.com/steveyegge/beads) for cross-session task tracking:
+The wb commands require [beads](https://github.com/steveyegge/beads) for task tracking:
 
 ```bash
 # Initialize beads in your project
 bd init
-
-# The wb commands automatically detect beads and:
-# - Create phase issues with dependencies
-# - Track progress across sessions
-# - Survive conversation compaction
 ```
 
 **Beads provides**:
@@ -187,9 +182,9 @@ bd init
 - **Git-backed**: Syncs with your repository
 - **Source of truth**: Authoritative status for phases
 
-**Without beads**, commands fall back to markdown-only tracking (checkboxes in tasks.md).
-
 See [AGENTS.md](AGENTS.md) for the beads workflow protocol.
+
+**Note**: For markdown-only tracking, use the `v1.0.0` tag.
 
 ## Repository Structure
 

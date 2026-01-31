@@ -411,17 +411,9 @@ Quick lookup of key design decisions:
 
 **⛔⛔⛔ BARRIER 3: STOP! Verify NO placeholder values - ALL tasks MUST be specific and executable ⛔⛔⛔**
 
-### Step 5: Create Beads Issues (if beads is initialized)
+### Step 5: Create Beads Issues
 
-Check if beads is initialized in this project:
-
-```bash
-ls .beads/beads.db 2>/dev/null && echo "BEADS_AVAILABLE=true" || echo "BEADS_AVAILABLE=false"
-```
-
-Note: This checks if beads is initialized in THIS project, not just if `bd` CLI is installed.
-
-**If beads is available**, create issues for task tracking:
+Create beads issues to track phases across sessions.
 
 #### 5a. Create Epic for the Project
 
@@ -495,11 +487,9 @@ This project uses beads for task tracking across sessions.
 - `bd close [id]` - Complete a phase
 ```
 
-**If beads is NOT available**, skip this step and rely on markdown checkboxes only.
-
 ### Step 6: Validate Completeness
 
-Verify with agent findings (applies whether using beads or not):
+Verify with agent findings:
 
 1. **All success criteria** from design.md have corresponding tasks
 2. **All scope items** from design.md are addressed
@@ -526,7 +516,7 @@ Agent findings incorporated:
 - Test coverage: [X] unit tests, [Y] integration tests
 - Similar patterns: [reference to pattern agent findings]
 
-Beads tracking (if enabled):
+Beads tracking:
 - Epic: [epic-id]
 - Phase issues created with dependencies
 - Use `bd ready` to find available work
@@ -537,7 +527,7 @@ Key features of the plan:
 - Comprehensive test coverage from agent analysis
 - Automated and manual verification per phase
 - Quick test commands to avoid running full suite
-- Beads integration for multi-session tracking (if available)
+- Beads integration for multi-session tracking
 
 Next steps:
 1. Review the execution plan
@@ -629,7 +619,7 @@ Tasks should be:
 1. **⛔ BARRIER 1**: After reading documents - ensure full context
 2. **⛔ BARRIER 2**: After spawning agents - wait for ALL agents
 3. **⛔ BARRIER 3**: Before writing tasks.md - verify no placeholders
-4. **Step 5**: Create beads issues if beads is initialized (optional)
+4. **Step 5**: Create beads issues for phase tracking
 5. **⛔ CHECKPOINT**: Between phases - require human verification
 
 ## Configuration
