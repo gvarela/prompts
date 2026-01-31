@@ -284,18 +284,11 @@ npm test path/to/test1.spec.ts path/to/test2.test.ts
 
 When all phase tasks are complete and automated verification passes:
 
-#### Close Beads Phase Issue (if enabled)
-
-If using beads tracking:
+#### Close Beads Phase Issue
 
 ```bash
 bd close [phase-id] --reason "Phase [N] complete: [summary of what was implemented]"
-```
-
-This automatically unblocks the next phase. Check what's now ready:
-
-```bash
-bd ready
+bd ready  # Check what's now unblocked
 ```
 
 #### Report Completion
@@ -310,7 +303,7 @@ bd ready
 - ✅ Build successful: [build command]
 - ✅ [Other automated checks]
 
-**Beads tracking** (if enabled):
+**Beads tracking**:
 - ✅ Closed: [phase-id]
 - 🔓 Unblocked: [next-phase-id]
 
@@ -384,7 +377,7 @@ When resuming work (phase = "continue"):
    - Review "Implementation Notes" for context
    - `bd ready` shows what phases are available
 
-2. **Check beads state** (if enabled):
+2. **Check beads state**:
 
    ```bash
    # See overall progress

@@ -166,7 +166,7 @@ Show user what will change:
 - Proposed Phase: [phase-number]
 - Reason: [why this transition is appropriate]
 
-**Beads Status** (if enabled):
+**Beads Status**:
 - Epic: [epic-id] - [status]
 - Phase 1: [phase1-id] - [open/in_progress/closed]
 - Phase 2: [phase2-id] - [open/in_progress/closed]

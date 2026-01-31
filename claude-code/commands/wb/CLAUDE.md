@@ -38,6 +38,17 @@ The workflow separates three distinct concerns:
 3. **File Reading Protocol**: ALWAYS read files FULLY (no limit/offset) before analysis
 4. **Dual Verification**: Separate automated checks from manual verification
 5. **Zero Scope Creep**: Tasks only come from plans, no additions
+6. **Beads Required**: These commands require beads for task tracking (`bd init`)
+
+### Beads Error Handling
+
+If any `bd` command fails:
+
+1. **Diagnose**: Run `bd doctor` to check for issues
+2. **Report**: Tell the user the specific error
+3. **Document**: Note the failure in tasks.md Implementation Notes
+4. **Continue**: Don't block the workflow - proceed with markdown tracking as backup
+5. **Retry**: After fixing, re-run the failed command
 
 ### Command Structure
 
