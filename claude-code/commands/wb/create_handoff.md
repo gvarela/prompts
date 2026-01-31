@@ -67,6 +67,14 @@ const tasksFile = `${projectDir}/tasks.md`;
    - What was attempted
    - What remains
 
+4. **Check beads state** to capture:
+   ```bash
+   bd stats                        # Overall project progress
+   bd list --status=in_progress    # Active work
+   bd blocked                      # Any blocked phases
+   bd ready                        # What's available next
+   ```
+
 **think deeply about what context would be lost if starting fresh**
 
 ### Step 2: Analyze Work State
@@ -94,9 +102,12 @@ Determine the current implementation state:
    - What's been tried
    - Potential solutions identified
 
-### Step 3: Check for Uncommitted Changes
+### Step 3: Sync Beads and Check Git State
 
 ```bash
+# Sync beads state before handoff (important!)
+bd sync
+
 # Check git status for work in progress
 git status
 
@@ -124,6 +135,8 @@ last_task: [description of last task worked on]
 git_commit: [current HEAD commit]
 git_branch: [current branch]
 repository: [repository name]
+beads_epic: [epic-id if exists]
+beads_in_progress: [phase-id if actively working]
 ---
 
 # Handoff: [Project Name] - [Brief Status]
@@ -175,6 +188,21 @@ To resume this work:
 - ✅ Tests passing: `npm test` (45/45 pass)
 - ⚠️ Linting: 2 warnings at `src/utils.ts:34,89`
 - ✅ Build successful: `npm run build`
+
+### Beads Tracking State
+```bash
+# bd stats output
+[total] open, [n] in_progress, [m] closed, [b] blocked
+
+# Active phases (in_progress)
+[phase-id]: [description]
+
+# Blocked phases (if any)
+[phase-id]: blocked by [blocker-id]
+
+# Ready to work (next available)
+[phase-id]: [description]
+```
 
 ## Critical Learnings
 

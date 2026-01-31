@@ -64,6 +64,16 @@ const handoffPath = $1 || /* prompt for it */;
    # Warn if different - work may have progressed
    ```
 
+4. **Sync and check beads state**:
+   ```bash
+   bd sync                         # Pull latest beads state
+   bd stats                        # Compare with handoff's beads state
+   bd list --status=in_progress    # Check active work
+   bd ready                        # See what's available
+   ```
+
+   Compare with handoff's `beads_in_progress` - if different, work may have progressed.
+
 **think deeply about the context and discoveries documented**
 
 ### Step 2: Read Project Documentation
@@ -96,6 +106,19 @@ const tasksFile = `${projectDir}/tasks.md`;
    - Success verification steps
 
 ### Step 3: Restore Working Context
+
+**Restore beads tracking state:**
+
+```bash
+# If handoff shows an in_progress phase, verify it's still claimed
+bd show [phase-id-from-handoff]
+
+# If phase was released (no longer in_progress), reclaim it
+bd update [phase-id] --status in_progress
+
+# If phase was completed by another session, find next work
+bd ready
+```
 
 **Set up TodoWrite based on handoff next steps:**
 
@@ -242,6 +265,8 @@ Current State:
 - Git: [branch] at [commit]
 - Uncommitted changes: [YES/NO]
 - Tests: [PASSING/FAILING]
+- Beads: [N] open, [M] in_progress, [X] closed
+- Active phase: [phase-id] or "none"
 
 Ready to continue with:
 [Next immediate task from handoff]
