@@ -57,15 +57,47 @@ bd close [phase-id] --reason "Done"   # Complete it
 bd sync                               # Save to git
 ```
 
-### Common Commands
-| Command | Purpose |
-|---------|---------|
-| `bd ready` | Show phases ready to work (no blockers) |
-| `bd list` | Show all issues |
-| `bd show [id]` | Details for one issue |
-| `bd stats` | Project progress summary |
-| `bd blocked` | Show blocked phases |
-| `bd sync` | Export to JSONL for git |
+### Beads Slash Commands
+
+Use these instead of CLI when working in Claude Code:
+
+| Command | When to Use |
+|---------|-------------|
+| `/beads:ready` | Start of session - find available work |
+| `/beads:list` | See all issues with filters |
+| `/beads:show [id]` | Review issue details before starting |
+| `/beads:create` | Create new issue (task, bug, feature, epic) |
+| `/beads:update [id]` | Change status, priority, or assignee |
+| `/beads:close [id]` | Mark issue complete |
+| `/beads:blocked` | See what's stuck and why |
+| `/beads:dep` | Manage dependencies between issues |
+| `/beads:stats` | Project health and progress |
+| `/beads:sync` | End of session - save to git |
+
+**Less Common:**
+| Command | When to Use |
+|---------|-------------|
+| `/beads:init` | First time setup in a project |
+| `/beads:search` | Find issues by text |
+| `/beads:epic` | Manage epics and their children |
+| `/beads:reopen` | Reopen a closed issue |
+| `/beads:comments` | Add notes to an issue |
+| `/beads:compact` | Archive old closed issues |
+| `/beads:workflow` | Show the full workflow guide |
+
+### CLI vs Slash Commands
+
+Both work - use whichever fits your flow:
+
+```bash
+# CLI (in terminal or scripts)
+bd ready
+bd close prompts-abc --reason "Done"
+
+# Slash commands (in Claude Code conversation)
+/beads:ready
+/beads:close prompts-abc
+```
 
 ### Beads + Git Workflow
 ```bash
