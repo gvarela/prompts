@@ -321,6 +321,8 @@ feature: [feature name]
 created: [YYYY-MM-DD]
 current_version: 1
 status: iterating
+project_directory: [full path to project directory]
+last_updated: [YYYY-MM-DD]
 ---
 
 # Mockup Iteration Log
@@ -335,6 +337,15 @@ status: iterating
 - **Status**: In Review
 - **Key decisions**: [brief summary]
 - **Feedback needed**: [what to validate]
+
+## UI Research Reference
+
+_From initial research - apply to all versions:_
+
+- **Layout pattern**: [pattern from research]
+- **Component library**: [location]
+- **Styling system**: [approach]
+- **Similar features**: [references]
 
 ## Running Requirements
 
