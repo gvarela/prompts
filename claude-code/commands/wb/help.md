@@ -39,6 +39,14 @@ Quick reference for the wb workflow commands and beads integration.
 /wb:update_status     → Sync status across all files
 ```
 
+**UI Mockup Workflow:**
+```
+/wb:create_mockup     → Research UI patterns + create v001
+[iterate with feedback] → Keep/remove/change decisions captured
+[mockup-iteration skill] → Creates versioned mockups automatically
+finalize              → Compile requirements into design.md
+```
+
 ## Beads Integration
 
 Beads tracks phases across sessions. Required for this workflow.
@@ -134,6 +142,9 @@ Verifies implementation matches plan. Run after completing work.
 
 ### `/wb:update_status [directory]`
 Syncs status across all files. Uses beads as source of truth.
+
+### `/wb:create_mockup [directory] [feature]`
+Researches existing UI patterns, asks clarifying questions, creates versioned mockup. Use mockup-iteration skill to refine.
 
 ### `/wb:create_handoff [directory] [reason]`
 Captures context for session transfer. Includes beads state.
