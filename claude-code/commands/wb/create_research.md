@@ -310,10 +310,18 @@ This pattern is also used in:
 
 ## Open Questions
 
-[Any areas that need further investigation]
+[Any areas that need further investigation - track in beads to ensure resolution]
 
-- Question 1: [Specific thing that needs clarification]
-- Question 2: [Area that requires more research]
+| Question | Beads ID | Blocks |
+|----------|----------|--------|
+| [Specific thing that needs clarification] | `[id]` | design decisions about [area] |
+| [Area that requires more research] | `[id]` | [what it blocks] |
+
+```bash
+# Create beads issues for questions that block progress:
+bd create --title="Q: [brief question]" --type=task --priority=2 \
+  --description="From research. Blocks: [what can't proceed without answer]"
+```
 
 ## Next Steps
 

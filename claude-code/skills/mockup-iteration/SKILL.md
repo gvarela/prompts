@@ -59,12 +59,24 @@ When user provides mockup feedback:
    - **KEEP**: Confirmed requirement - add to "Confirmed" in mockup-log.md
    - **REMOVE**: Rejected idea - add to "Rejected" with rationale
    - **CHANGE**: Modification needed - note for next version
-   - **QUESTION**: Needs clarification - ask before proceeding
+   - **QUESTION**: Needs clarification - create beads issue, ask before proceeding
+   - **ASSUMPTION**: Unvalidated belief - create beads issue for validation
 
    **Compound feedback** (contains multiple types):
    - Split into separate entries
    - "Keep header but make it blue" → KEEP: header layout + CHANGE: header color to blue
    - Each part gets its own log entry
+
+   **Questions and assumptions** → Create beads issues:
+   ```bash
+   # For questions that need answers:
+   bd create --title="UI Q: [question]" --type=task --priority=2 \
+     --description="From mockup iteration. Blocks: finalization"
+
+   # For assumptions that need validation:
+   bd create --title="UI Assumption: [assumption]" --type=task --priority=3 \
+     --description="Assuming [X]. If wrong: [impact]. Validate before implementation."
+   ```
 
 2. **Update mockup-log.md** immediately:
    ```markdown
@@ -199,9 +211,33 @@ _All confirmed requirements through this version:_
 
 When user says "finalize" or "ready for design":
 
+### Pre-finalization Check
+
+```bash
+# Check for unresolved questions/assumptions:
+bd list --status=open | grep -E "UI Q:|UI Assumption:"
+```
+
+If open issues exist:
+```
+⚠️ Cannot finalize - unresolved items:
+
+| Issue | Status |
+|-------|--------|
+| UI Q: [question] | Open |
+| UI Assumption: [assumption] | Open |
+
+Options:
+1. Resolve these first (answer questions, validate assumptions)
+2. Close as "deferred to implementation" if acceptable
+3. Close as "out of scope" if not needed
+```
+
+### After All Resolved
+
 1. **Compile all KEEP decisions** from mockup-log.md
 2. **List all REMOVE decisions** as "Out of Scope"
-3. **Identify remaining OPEN questions**
+3. **Verify no open questions** (all UI Q: and UI Assumption: closed)
 4. **Generate design.md section**:
 
 ```markdown

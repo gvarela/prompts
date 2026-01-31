@@ -43,6 +43,16 @@ When invoked, check for arguments:
 - Research should be validated (facts confirmed accurate)
 - Knowledge gaps from research should be reviewed
 
+### Check for Blocking Questions
+
+Before starting design, check if research left unresolved questions:
+
+```bash
+bd list --status=open | grep "Q:"   # Find open questions from research
+```
+
+If critical questions block design decisions, resolve them first or document as assumptions.
+
 ## Process Steps
 
 ### Step 1: Read and Analyze Research
@@ -288,9 +298,19 @@ design_approach: [selected option name]
 | [Risk 1] | High/Med/Low | High/Med/Low | [Strategy] |
 
 ### Assumptions
-Based on knowledge gaps from research:
-- Assuming [gap 1] works as [description]
-- Assuming [gap 2] can be resolved by [approach]
+
+Based on knowledge gaps from research - track in beads to ensure validation:
+
+| Assumption | Beads ID | Validated? |
+|------------|----------|------------|
+| [gap 1] works as [description] | `[id]` | Pending |
+| [gap 2] can be resolved by [approach] | `[id]` | Pending |
+
+```bash
+# Create beads issues for assumptions that need validation:
+bd create --title="Validate: [assumption]" --type=task --priority=2 \
+  --description="Assumption from design. If wrong: [impact]"
+```
 
 ## Rejected Alternatives
 
@@ -301,11 +321,20 @@ Based on knowledge gaps from research:
 
 ## Pending Decisions
 
-Design decisions that need stakeholder input:
-- [Decision 1]: [What needs to be decided]
-- [Decision 2]: [Options and trade-offs]
+Design decisions that need stakeholder input - track in beads:
 
-Note: These don't block execution planning but should be resolved before implementation.
+| Decision Needed | Beads ID | Blocks |
+|-----------------|----------|--------|
+| [What needs to be decided] | `[id]` | [phase or "execution start"] |
+| [Options and trade-offs] | `[id]` | [what can't proceed] |
+
+```bash
+# Create beads issues for pending decisions:
+bd create --title="Decide: [brief decision]" --type=task --priority=1 \
+  --description="Options: [A, B, C]. Trade-offs: [summary]. Blocks: [what]"
+```
+
+Note: Decisions blocking execution should be resolved before `/create_execution`.
 
 ## References
 

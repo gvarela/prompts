@@ -49,14 +49,32 @@ finalize              → Compile requirements into design.md
 
 ## Beads Integration
 
-Beads tracks phases across sessions. Required for this workflow.
+Beads tracks work across sessions. Required for this workflow.
+
+### Planning Phase (Questions & Decisions)
+
+Beads helps ensure nothing falls through the cracks during planning:
+
+| What to Track | When | Why |
+|---------------|------|-----|
+| `Q: [question]` | Research finds unknowns | Blocks design until answered |
+| `Decide: [choice]` | Design needs stakeholder input | Blocks execution until decided |
+| `Validate: [assumption]` | Design assumes something | Must verify during implementation |
+| `UI Q: [question]` | Mockup iteration raises issue | Blocks finalization |
+
+```bash
+# Before moving to next phase, check for blockers:
+bd list --status=open | grep -E "Q:|Decide:|Validate:|UI Q:"
+```
+
+### Execution Phase (Phases & Tasks)
 
 ### Initialize (once per project)
 ```bash
 bd init
 ```
 
-### Daily Workflow
+### Execution Workflow
 ```bash
 bd ready                              # Find available work
 bd update [phase-id] --status in_progress  # Claim it

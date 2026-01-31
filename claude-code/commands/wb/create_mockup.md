@@ -269,8 +269,17 @@ based_on: [similar feature from research]
 
 ## Open Questions
 
-- [ ] [Question needing resolution]
-- [ ] [Question needing resolution]
+Track in beads to ensure resolution before finalizing:
+
+| Question | Beads ID | Blocks |
+|----------|----------|--------|
+| [Question needing resolution] | `[id]` | finalization |
+
+```bash
+# Create beads issues for UI questions:
+bd create --title="UI Q: [brief question]" --type=task --priority=2 \
+  --description="From mockup v001. Blocks: [what can't proceed]"
+```
 ````
 
 Create `mockups/v001/decisions.md`:
