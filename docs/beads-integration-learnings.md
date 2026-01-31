@@ -195,3 +195,40 @@ The wb workflow now supports beads with graceful degradation:
 **Without beads**: Everything still works using markdown checkboxes.
 
 **With beads**: Cross-session persistence, dependency tracking, authoritative status.
+
+---
+
+## Code Review Findings (Post-Integration)
+
+### Critical Fix: Beads Detection Method
+
+**Problem**: Inconsistent detection across files:
+- Some used `bd stats 2>/dev/null` (tests if CLI works)
+- Some used `ls .beads/beads.db` (tests if project initialized)
+
+**Resolution**: Standardized on `ls .beads/beads.db 2>/dev/null`
+
+**Rationale**: Tests actual project state. A globally installed `bd` CLI shouldn't trigger beads workflow in a non-beads project.
+
+### Clarification: TodoWrite + Beads
+
+**Problem**: Mixed signals about whether TodoWrite is fallback or complement.
+
+**Resolution**: Made explicit:
+- **Always use TodoWrite** for session tracking
+- **Additionally use beads** (if available) for cross-session tracking
+- They are complementary, not mutually exclusive
+
+### Verified: bd dep add Syntax
+
+Confirmed `bd dep add <blocked-id> <blocker-id>` is correct:
+- `bd dep add phase2 phase1` = "phase2 depends on phase1"
+- Phase 2 is blocked by Phase 1 ✓
+
+### Remaining Token Optimization (prompts-qh5)
+
+Not addressed yet:
+1. README.md duplicates wb/README.md beads section (~400 tokens)
+2. Step 5 in create_execution.md could reference external doc (~1000 tokens)
+3. Beads command syntax repeated in 3+ places
+4. Consider extracting common patterns to references

@@ -123,11 +123,13 @@ After reading all documentation, synthesize:
 
 #### Check for Beads Integration
 
-First, check if this project uses beads for tracking:
+First, check if beads is initialized in this project:
 
 ```bash
-bd stats 2>/dev/null && echo "BEADS_ENABLED=true" || echo "BEADS_ENABLED=false"
+ls .beads/beads.db 2>/dev/null && echo "BEADS_ENABLED=true" || echo "BEADS_ENABLED=false"
 ```
+
+Note: This checks if beads is initialized in THIS project, not just if `bd` CLI is installed.
 
 **If beads is enabled AND tasks.md has `beads_phases` frontmatter:**
 
@@ -146,11 +148,9 @@ bd stats 2>/dev/null && echo "BEADS_ENABLED=true" || echo "BEADS_ENABLED=false"
    bd blocked
    ```
 
-**If beads is NOT available**, use TodoWrite as fallback (session-only tracking).
-
 #### Set Up Session Tracking
 
-**Use TodoWrite for within-session progress** (works alongside beads):
+**Always use TodoWrite** for within-session task tracking:
 
 ```javascript
 // Example todo list
@@ -164,7 +164,14 @@ TodoWrite([
 ])
 ```
 
-**Note**: TodoWrite tracks session progress. Beads tracks cross-session/phase progress. Use both together - they serve different purposes.
+**Additionally, if beads is enabled**, use beads for cross-session phase tracking.
+
+| Tool | Scope | Use For |
+|------|-------|---------|
+| TodoWrite | Session | Granular task progress within current session |
+| Beads | Cross-session | Phase milestones that survive compaction |
+
+They complement each other - always use TodoWrite, additionally use beads when available.
 
 ### Step 3: Implement Phase Tasks
 

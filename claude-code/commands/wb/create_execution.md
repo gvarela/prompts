@@ -413,11 +413,13 @@ Quick lookup of key design decisions:
 
 ### Step 5: Create Beads Issues (if beads is initialized)
 
-Check if beads is available in the project:
+Check if beads is initialized in this project:
 
 ```bash
-bd stats 2>/dev/null && echo "BEADS_AVAILABLE=true" || echo "BEADS_AVAILABLE=false"
+ls .beads/beads.db 2>/dev/null && echo "BEADS_AVAILABLE=true" || echo "BEADS_AVAILABLE=false"
 ```
+
+Note: This checks if beads is initialized in THIS project, not just if `bd` CLI is installed.
 
 **If beads is available**, create issues for task tracking:
 
