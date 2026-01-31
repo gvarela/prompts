@@ -105,20 +105,23 @@ Determine the current implementation state:
 ### Step 3: Sync Beads and Check Git State
 
 ```bash
-# Sync beads state before handoff (important!)
+# Export beads state to JSONL (does NOT auto-commit)
 bd sync
 
-# Check git status for work in progress
+# Check git status - will show .beads/issues.jsonl as modified
 git status
 
-# Check for uncommitted changes
+# Check for uncommitted code changes
 git diff
 
 # Note any staged changes
 git diff --staged
+
+# Capture current HEAD for frontmatter AFTER reviewing status
+git rev-parse HEAD
 ```
 
-Document any uncommitted work and its purpose.
+Document any uncommitted work and its purpose. Note: `bd sync` exports to JSONL but does not commit - the handoff may include uncommitted beads state.
 
 ### Step 4: Create Handoff Document
 
@@ -135,8 +138,8 @@ last_task: [description of last task worked on]
 git_commit: [current HEAD commit]
 git_branch: [current branch]
 repository: [repository name]
-beads_epic: [epic-id if exists]
-beads_in_progress: [phase-id if actively working]
+beads_epic: [epic-id from tasks.md]
+beads_active_phase: [phase-id if in_progress]
 ---
 
 # Handoff: [Project Name] - [Brief Status]

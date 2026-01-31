@@ -45,10 +45,15 @@ The workflow separates three distinct concerns:
 If any `bd` command fails:
 
 1. **Diagnose**: Run `bd doctor` to check for issues
-2. **Report**: Tell the user the specific error
+2. **Report**: Tell the user the specific error and suggest fixes
 3. **Document**: Note the failure in tasks.md Implementation Notes
-4. **Continue**: Don't block the workflow - proceed with markdown tracking as backup
+4. **Fix**: Common fixes:
+   - "beads not initialized" → `bd init`
+   - "issue not found" → `bd list` to find correct ID
+   - "database locked" → wait and retry
 5. **Retry**: After fixing, re-run the failed command
+
+**Do NOT** proceed without beads - it is required for phase tracking.
 
 ### Command Structure
 

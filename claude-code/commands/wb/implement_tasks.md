@@ -125,6 +125,16 @@ After reading all documentation, synthesize:
 
 Check the phase from tasks.md frontmatter (`beads_phases`) and claim it:
 
+```yaml
+# tasks.md frontmatter should have:
+beads_epic: [epic-id]
+beads_phases:
+  phase1: [phase1-id]
+  phase2: [phase2-id]
+```
+
+**If beads_phases is missing**: Tell user "Beads tracking not configured. Run `/wb:create_execution` to set up phase tracking, or use `v1.0.0` tag for markdown-only workflow."
+
 ```bash
 bd show [phase-id-from-frontmatter]   # Review phase details
 bd update [phase-id] --status in_progress  # Claim the phase
@@ -146,8 +156,8 @@ TodoWrite([
 
 | Tool | Scope | Use For |
 |------|-------|---------|
-| TodoWrite | Session | Granular task progress within current session |
-| Beads | Cross-session | Phase milestones that survive compaction |
+| TodoWrite | Session | Granular task progress within current session (Claude Code built-in) |
+| Beads | Cross-session | Phase milestones that survive compaction (persisted to git) |
 
 ### Step 3: Implement Phase Tasks
 

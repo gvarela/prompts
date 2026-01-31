@@ -575,10 +575,15 @@ All commands are markdown files - edit to customize:
 
 ```
 commands/
-├── create_project.md   # Structure and metadata
-├── create_research.md  # Research approach
-├── create_plan.md      # Planning process
-└── create_tasks.md     # Task extraction
+├── create_project.md    # Structure and metadata
+├── create_research.md   # Research approach
+├── create_design.md     # Design decisions (WHAT & WHY)
+├── create_execution.md  # Execution plan (HOW)
+├── implement_tasks.md   # TDD implementation
+├── validate_execution.md # Implementation validation
+├── create_handoff.md    # Session handoff
+├── resume_handoff.md    # Resume from handoff
+└── update_status.md     # Status synchronization
 ```
 
 ---

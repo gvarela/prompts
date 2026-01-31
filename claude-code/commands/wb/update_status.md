@@ -240,6 +240,15 @@ Add implementation notes if status changes:
 - [Reason for status change]
 ```
 
+#### Reconcile Beads State
+
+If markdown shows phases complete that beads shows open, sync them:
+
+```bash
+# For each phase marked complete in markdown but open in beads:
+bd close [phase-id] --reason "Reconciliation: marked complete in tasks.md"
+```
+
 ### Step 6: Verify Consistency
 
 **⛔ BARRIER 3**: Verify all updates were applied correctly

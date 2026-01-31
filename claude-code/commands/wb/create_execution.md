@@ -415,7 +415,15 @@ Quick lookup of key design decisions:
 
 Create beads issues to track phases across sessions.
 
-#### 5a. Create Epic for the Project
+#### 5a. Verify Beads is Initialized
+
+```bash
+bd doctor    # Check beads is working
+```
+
+If beads is not initialized, prompt user: "Run `bd init` to initialize beads tracking for this project."
+
+#### 5b. Create Epic for the Project
 
 ```bash
 bd create --title="[Project Name] Implementation" \
@@ -426,7 +434,7 @@ bd create --title="[Project Name] Implementation" \
 
 Note the epic ID (e.g., `prompts-abc`).
 
-#### 5b. Create Phase Issues
+#### 5c. Create Phase Issues
 
 For each phase in the execution plan, create a milestone issue:
 
@@ -454,7 +462,7 @@ bd create --title="Phase 2: [Phase Name]" \
 bd dep add [phase2-id] [phase1-id]
 ```
 
-#### 5c. Update tasks.md with Issue References
+#### 5d. Update tasks.md with Issue References
 
 Add a beads tracking section to tasks.md frontmatter:
 
