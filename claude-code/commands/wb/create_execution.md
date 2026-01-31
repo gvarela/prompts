@@ -426,41 +426,38 @@ If beads is not initialized, prompt user: "Run `bd init` to initialize beads tra
 #### 5b. Create Epic for the Project
 
 ```bash
-bd create --title="[Project Name] Implementation" \
+bd create "[Project Name] Implementation" \
   --type=epic \
   --priority=2 \
-  --description="Implementation tracking for [project]. See tasks.md for detailed plan."
+  -d "Implementation tracking for [project]. See tasks.md for detailed plan."
 ```
 
-Note the epic ID (e.g., `prompts-abc`).
+**Capture the epic ID** from the output (e.g., `Created prompts-abc`). You'll need it for phase dependencies.
 
 #### 5c. Create Phase Issues
 
 For each phase in the execution plan, create a milestone issue:
 
 ```bash
-# Phase 1
-bd create --title="Phase 1: [Phase Name]" \
+# Phase 1 - capture the ID from output
+bd create "Phase 1: [Phase Name]" \
   --type=task \
   --priority=2 \
-  --description="[Phase objective]. See tasks.md Phase 1 for details.
+  -d "[Phase objective]. See tasks.md Phase 1 for details."
+# → Created prompts-xyz (save this as PHASE1_ID)
 
-Tasks:
-- [List key tasks from phase]
-
-Success criteria:
-- [Key automated checks]
-- [Key manual verification]"
-
-# Phase 2 (depends on Phase 1)
-bd create --title="Phase 2: [Phase Name]" \
+# Phase 2 - capture the ID from output
+bd create "Phase 2: [Phase Name]" \
   --type=task \
   --priority=2 \
-  --description="[Phase objective]. See tasks.md Phase 2 for details."
+  -d "[Phase objective]. See tasks.md Phase 2 for details."
+# → Created prompts-abc (save this as PHASE2_ID)
 
-# Set up dependency
-bd dep add [phase2-id] [phase1-id]
+# Set up dependency: Phase 2 depends on Phase 1
+bd dep add [PHASE2_ID] [PHASE1_ID]
 ```
+
+**Important**: Capture each ID as it's created. You'll need them for dependencies and to record in tasks.md frontmatter.
 
 #### 5d. Update tasks.md with Issue References
 

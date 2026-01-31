@@ -308,8 +308,8 @@ Based on knowledge gaps from research - track in beads to ensure validation:
 
 ```bash
 # Create beads issues for assumptions that need validation:
-bd create --title="Validate: [assumption]" --type=task --priority=2 \
-  --description="Assumption from design. If wrong: [impact]"
+bd create "Validate: [assumption]" --type=task --priority=2 \
+  -d "Assumption from design. If wrong: [impact]"
 ```
 
 ## Rejected Alternatives
@@ -330,8 +330,8 @@ Design decisions that need stakeholder input - track in beads:
 
 ```bash
 # Create beads issues for pending decisions:
-bd create --title="Decide: [brief decision]" --type=task --priority=1 \
-  --description="Options: [A, B, C]. Trade-offs: [summary]. Blocks: [what]"
+bd create "Decide: [brief decision]" --type=task --priority=1 \
+  -d "Options: [A, B, C]. Trade-offs: [summary]. Blocks: [what]"
 ```
 
 Note: Decisions blocking execution should be resolved before `/create_execution`.

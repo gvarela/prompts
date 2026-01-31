@@ -277,8 +277,8 @@ Track in beads to ensure resolution before finalizing:
 
 ```bash
 # Create beads issues for UI questions:
-bd create --title="UI Q: [brief question]" --type=task --priority=2 \
-  --description="From mockup v001. Blocks: [what can't proceed]"
+bd create "UI Q: [brief question]" --type=task --priority=2 \
+  -d "From mockup v001. Blocks: [what can't proceed]"
 ```
 ````
 

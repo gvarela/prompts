@@ -319,8 +319,8 @@ This pattern is also used in:
 
 ```bash
 # Create beads issues for questions that block progress:
-bd create --title="Q: [brief question]" --type=task --priority=2 \
-  --description="From research. Blocks: [what can't proceed without answer]"
+bd create "Q: [brief question]" --type=task --priority=2 \
+  -d "From research. Blocks: [what can't proceed without answer]"
 ```
 
 ## Next Steps

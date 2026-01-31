@@ -70,12 +70,12 @@ When user provides mockup feedback:
    **Questions and assumptions** → Create beads issues:
    ```bash
    # For questions that need answers:
-   bd create --title="UI Q: [question]" --type=task --priority=2 \
-     --description="From mockup iteration. Blocks: finalization"
+   bd create "UI Q: [question]" --type=task --priority=2 \
+     -d "From mockup iteration. Blocks: finalization"
 
    # For assumptions that need validation:
-   bd create --title="UI Assumption: [assumption]" --type=task --priority=3 \
-     --description="Assuming [X]. If wrong: [impact]. Validate before implementation."
+   bd create "UI Assumption: [assumption]" --type=task --priority=3 \
+     -d "Assuming [X]. If wrong: [impact]. Validate before implementation."
    ```
 
 2. **Update mockup-log.md** immediately:

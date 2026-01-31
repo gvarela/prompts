@@ -143,20 +143,22 @@ bd blocked  # Verify nothing blocking this phase
 
 #### Set Up Session Tracking
 
-Use TodoWrite for granular within-session progress:
+Use Claude Code's built-in task tools (`TaskCreate`/`TaskUpdate`) for session progress:
 
 ```javascript
-TodoWrite([
-  { content: "Review existing code at [file:line from research]", status: "pending" },
-  { content: "[First unchecked task from tasks.md]", status: "pending" },
-  { content: "[Second unchecked task]", status: "pending" },
-  { content: "Run automated verification", status: "pending" }
-])
+// Create tasks for this session
+TaskCreate({ subject: "Review existing code", description: "At [file:line from research]" })
+TaskCreate({ subject: "[First unchecked task from tasks.md]", description: "..." })
+TaskCreate({ subject: "Run automated verification", description: "..." })
+
+// Update as you complete work
+TaskUpdate({ taskId: "1", status: "in_progress" })
+TaskUpdate({ taskId: "1", status: "completed" })
 ```
 
 | Tool | Scope | Use For |
 |------|-------|---------|
-| TodoWrite | Session | Granular task progress within current session (Claude Code built-in) |
+| TaskCreate/TaskUpdate | Session | Granular progress within session (not persisted across sessions) |
 | Beads | Cross-session | Phase milestones that survive compaction (persisted to git) |
 
 ### Step 3: Implement Phase Tasks
@@ -214,10 +216,10 @@ After completing each task:
    - [x] Task description (completed YYYY-MM-DD HH:MM)
    ```
 
-2. Update your TodoWrite list:
+2. Update your TaskCreate/TaskUpdate list:
 
    ```javascript
-   TodoWrite([
+   TaskCreate/TaskUpdate([
      { content: "Task 1", status: "completed" },
      { content: "Task 2", status: "in_progress" },
      ...
@@ -354,7 +356,7 @@ After phase completion and verification:
 
 3. **Update any blockers** if encountered
 
-4. **Update TodoWrite** to reflect completion
+4. **Update TaskCreate/TaskUpdate** to reflect completion
 
 ## Handling Mismatches
 
@@ -410,7 +412,7 @@ When resuming work (phase = "continue"):
 4. **Continue from next unchecked task**:
    - Trust completed work unless tests fail
    - Pick up with TDD cycle for next task
-   - Update TodoWrite with remaining tasks
+   - Update TaskCreate/TaskUpdate with remaining tasks
    - Claim phase if not already in progress
 
 ## TDD Best Practices
@@ -462,12 +464,12 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 ```
 1. Read current state from tasks.md
 2. `bd ready` to see available phases, claim with `bd update`
-3. Set up today's todo list with TodoWrite
+3. Set up today's todo list with TaskCreate/TaskUpdate
 4. Implement with TDD cycle
 5. Update checkboxes as you go
 6. Run verification at natural breakpoints
 7. If phase complete: `bd close` the phase issue
-8. Update frontmatter and TodoWrite before stopping
+8. Update frontmatter and TaskCreate/TaskUpdate before stopping
 9. `bd sync` to persist state
 ```
 
@@ -497,7 +499,7 @@ If automated verification fails after implementation:
 
 - ✅ Follow TDD cycle: Red → Green → Refactor
 - ✅ Read ALL documentation files FULLY first
-- ✅ Use TodoWrite to track session progress
+- ✅ Use TaskCreate/TaskUpdate to track session progress
 - ✅ Use `bd update`/`bd close` for phase tracking
 - ✅ Update progress in both checkboxes and frontmatter
 - ✅ Respect phase boundaries and checkpoints
@@ -528,4 +530,4 @@ If automated verification fails after implementation:
 
 ## Configuration
 
-This command implements tasks from the structured task list following TDD practices. It leverages Claude Code's TodoWrite tool for progress tracking and provides systematic implementation guidance.
+This command implements tasks from the structured task list following TDD practices. It leverages Claude Code's TaskCreate/TaskUpdate tool for progress tracking and provides systematic implementation guidance.

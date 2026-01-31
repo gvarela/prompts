@@ -75,6 +75,12 @@ const tasksFile = `${projectDir}/tasks.md`;
    bd ready                        # What's available next
    ```
 
+5. **Check for mockup state** (if mockups/ exists):
+   ```bash
+   ls mockups/                     # Check for mockup directory
+   # If exists, read mockups/mockup-log.md for current version and pending feedback
+   ```
+
 **think deeply about what context would be lost if starting fresh**
 
 ### Step 2: Analyze Work State
@@ -331,6 +337,18 @@ npm test
 - ⚠️ [Gotcha 1]: [What to be careful about]
 - ⚠️ [Gotcha 2]: [Another thing to watch]
 - ⚠️ [Gotcha 3]: [Performance/security concern]
+
+## Mockup State (if applicable)
+
+_Include this section if mockups/ directory exists:_
+
+- **Current version**: v00[N]
+- **Mockup log**: `mockups/mockup-log.md`
+- **Pending feedback** (not yet versioned):
+  - [feedback 1]
+  - [feedback 2]
+- **Open UI questions** (beads):
+  - `[id]`: [question]
 
 ## Artifacts and References
 

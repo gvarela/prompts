@@ -120,18 +120,16 @@ bd update [phase-id] --status in_progress
 bd ready
 ```
 
-**Set up TodoWrite based on handoff next steps:**
+**Set up session tasks based on handoff next steps:**
 
 ```javascript
-// Create todo list from handoff's next steps
-TodoWrite([
-  {
-    content: "[Task from handoff next steps]",
-    status: "pending",
-    activeForm: "Working on [task]"
-  },
-  // ... more tasks from handoff
-])
+// Create tasks from handoff's next steps
+TaskCreate({
+  subject: "[Task from handoff next steps]",
+  description: "From handoff",
+  activeForm: "Working on [task]"
+})
+// ... more tasks from handoff
 ```
 
 **Check for uncommitted changes** mentioned in handoff:
