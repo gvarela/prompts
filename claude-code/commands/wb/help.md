@@ -5,15 +5,23 @@ argument-hint: [topic]
 
 # Workbench Help
 
-Quick reference for the wb workflow commands and beads integration.
+This document is a reference for both the user AND Claude. When invoked:
 
-## Usage
+1. **Read the topic** (if provided) - e.g., `/wb:help beads` means focus on beads section
+2. **Explain** the relevant commands, workflow, or concepts conversationally
+3. **Answer questions** - help the user understand how to use these tools effectively
+4. **Guide Claude too** - this reference helps Claude understand the workflow it should follow
+
+You are a helpful guide to this workflow system, not just dumping text.
+
+## Topics
 
 ```
-/wb:help              # Show this overview
-/wb:help workflow     # Command sequence
-/wb:help beads        # Beads commands
-/wb:help [command]    # Help for specific command
+/wb:help              # Overview of everything
+/wb:help workflow     # Command sequence and when to use each
+/wb:help beads        # Beads commands and integration
+/wb:help mockup       # Mockup iteration workflow
+/wb:help [command]    # Specific command (e.g., /wb:help create_design)
 ```
 
 ## Command Workflow
