@@ -41,6 +41,25 @@ For multi-session work:
 6. **Validate**: Verify implementation matches plan
 7. **Handoff** (optional): Transfer context between sessions
 
+### Beads Integration (Optional)
+
+If [beads](https://github.com/steveyegge/beads) is initialized in your project (`bd init`), commands automatically:
+
+- **`/create_execution`**: Creates beads issues for each phase with dependencies
+- **`/implement_tasks`**: Uses `bd ready`/`bd update`/`bd close` to track phases
+- **`/update_status`**: Reads beads state as source of truth
+
+**Beads workflow**:
+```bash
+bd ready                              # Find available phases
+bd update [phase-id] --status in_progress  # Claim phase
+# ... implement ...
+bd close [phase-id] --reason "..."    # Complete phase
+bd sync                               # Persist to git
+```
+
+**Without beads**: Commands fall back to markdown-only tracking (checkboxes in tasks.md).
+
 ---
 
 ## Commands Reference

@@ -411,9 +411,93 @@ Quick lookup of key design decisions:
 
 **⛔⛔⛔ BARRIER 3: STOP! Verify NO placeholder values - ALL tasks MUST be specific and executable ⛔⛔⛔**
 
-### Step 5: Validate Completeness
+### Step 5: Create Beads Issues (if beads is initialized)
 
-Verify with agent findings:
+Check if beads is available in the project:
+
+```bash
+bd stats 2>/dev/null && echo "BEADS_AVAILABLE=true" || echo "BEADS_AVAILABLE=false"
+```
+
+**If beads is available**, create issues for task tracking:
+
+#### 5a. Create Epic for the Project
+
+```bash
+bd create --title="[Project Name] Implementation" \
+  --type=epic \
+  --priority=2 \
+  --description="Implementation tracking for [project]. See tasks.md for detailed plan."
+```
+
+Note the epic ID (e.g., `prompts-abc`).
+
+#### 5b. Create Phase Issues
+
+For each phase in the execution plan, create a milestone issue:
+
+```bash
+# Phase 1
+bd create --title="Phase 1: [Phase Name]" \
+  --type=task \
+  --priority=2 \
+  --description="[Phase objective]. See tasks.md Phase 1 for details.
+
+Tasks:
+- [List key tasks from phase]
+
+Success criteria:
+- [Key automated checks]
+- [Key manual verification]"
+
+# Phase 2 (depends on Phase 1)
+bd create --title="Phase 2: [Phase Name]" \
+  --type=task \
+  --priority=2 \
+  --description="[Phase objective]. See tasks.md Phase 2 for details."
+
+# Set up dependency
+bd dep add [phase2-id] [phase1-id]
+```
+
+#### 5c. Update tasks.md with Issue References
+
+Add a beads tracking section to tasks.md frontmatter:
+
+```yaml
+beads_epic: [epic-id]
+beads_phases:
+  phase1: [phase1-id]
+  phase2: [phase2-id]
+  phase3: [phase3-id]
+```
+
+And add a quick reference section:
+
+```markdown
+## Beads Issue Tracking
+
+This project uses beads for task tracking across sessions.
+
+| Phase | Beads ID | Status |
+|-------|----------|--------|
+| Epic | [epic-id] | Open |
+| Phase 1 | [phase1-id] | Not Started |
+| Phase 2 | [phase2-id] | Blocked by Phase 1 |
+| Phase 3 | [phase3-id] | Blocked by Phase 2 |
+
+**Commands**:
+- `bd ready` - See what's ready to work on
+- `bd show [id]` - View phase details
+- `bd update [id] --status in_progress` - Start a phase
+- `bd close [id]` - Complete a phase
+```
+
+**If beads is NOT available**, skip this step and rely on markdown checkboxes only.
+
+### Step 6: Validate Completeness
+
+Verify with agent findings (applies whether using beads or not):
 
 1. **All success criteria** from design.md have corresponding tasks
 2. **All scope items** from design.md are addressed
@@ -423,7 +507,7 @@ Verify with agent findings:
 6. **Test coverage** matches test agent recommendations
 7. **Dependencies** follow agent-identified order
 
-### Step 6: Present the Plan
+### Step 7: Present the Plan
 
 ```
 ✅ Execution plan created at: [path]/tasks.md
@@ -440,17 +524,23 @@ Agent findings incorporated:
 - Test coverage: [X] unit tests, [Y] integration tests
 - Similar patterns: [reference to pattern agent findings]
 
+Beads tracking (if enabled):
+- Epic: [epic-id]
+- Phase issues created with dependencies
+- Use `bd ready` to find available work
+
 Key features of the plan:
 - Clear implementation sequence based on dependency analysis
 - Specific code changes with before/after context
 - Comprehensive test coverage from agent analysis
 - Automated and manual verification per phase
 - Quick test commands to avoid running full suite
+- Beads integration for multi-session tracking (if available)
 
 Next steps:
 1. Review the execution plan
 2. Run `/implement_tasks` to begin implementation with TDD
-3. Update progress using checkboxes as you work
+3. Track progress with beads (`bd update`, `bd close`) or markdown checkboxes
 ```
 
 ## Important Guidelines
@@ -536,8 +626,9 @@ Tasks should be:
 
 1. **⛔ BARRIER 1**: After reading documents - ensure full context
 2. **⛔ BARRIER 2**: After spawning agents - wait for ALL agents
-3. **⛔ BARRIER 3**: Before writing - verify no placeholders
-4. **⛔ CHECKPOINT**: Between phases - require human verification
+3. **⛔ BARRIER 3**: Before writing tasks.md - verify no placeholders
+4. **Step 5**: Create beads issues if beads is initialized (optional)
+5. **⛔ CHECKPOINT**: Between phases - require human verification
 
 ## Configuration
 

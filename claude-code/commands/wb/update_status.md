@@ -40,6 +40,35 @@ When invoked, check for arguments:
 
 **⛔ BARRIER 1**: Read ALL files FULLY before proceeding
 
+#### Check for Beads Integration
+
+First, determine if this project uses beads:
+
+```bash
+ls .beads/beads.db 2>/dev/null && echo "BEADS_ENABLED" || echo "MARKDOWN_ONLY"
+```
+
+**If beads enabled**, also check beads state:
+
+```bash
+bd stats                        # Overall counts
+bd list                         # All issues with status
+bd list --status=in_progress    # Active work
+bd list --status=closed         # Completed work
+```
+
+Check tasks.md for beads phase IDs:
+
+```yaml
+# Look for these in frontmatter:
+beads_epic: [epic-id]
+beads_phases:
+  phase1: [phase1-id]
+  phase2: [phase2-id]
+```
+
+#### Read Documentation Files
+
 Read all documentation files to understand current state:
 
 1. **Read research.md FULLY** - Check status, completion, findings
@@ -56,6 +85,7 @@ Record current state:
 - Current phase: [number]
 - Completed tasks: [count]
 - Total tasks: [count]
+- **If beads**: Phase issues status (open/in_progress/closed)
 
 ### Step 2: Analyze Actual Progress
 
@@ -77,16 +107,27 @@ Examine the files to determine actual state:
    - Determine: draft | ready | implementing | complete
 
 3. **Tasks Analysis**:
+
+   **If beads enabled** (preferred source of truth):
+   - Check beads phase issues: `bd show [phase-id]` for each phase
+   - Closed phases = complete
+   - In-progress phases = active
+   - Open phases with closed blockers = ready
+   - Use beads status as authoritative
+
+   **If markdown-only** (or to cross-check):
    - Count checked vs unchecked tasks
    - Identify current phase based on which phase has active work
    - Check if phase checkpoints were met
    - Are all tasks complete?
-   - Determine: not-started | in-progress | complete
+
+   Determine: not-started | in-progress | complete
 
 4. **Progress Calculation**:
-   - Calculate actual completion percentage
+   - **If beads**: Count closed phase issues vs total
+   - **If markdown-only**: Calculate from checkboxes
    - Identify which phase is currently active
-   - Check if blocked (are there blockers listed?)
+   - Check if blocked (beads: `bd blocked`, markdown: blockers section)
 
 ### Step 3: Determine Status Transitions
 
@@ -141,6 +182,12 @@ Show user what will change:
 - Proposed: [new-status]
 - Proposed Phase: [phase-number]
 - Reason: [why this transition is appropriate]
+
+**Beads Status** (if enabled):
+- Epic: [epic-id] - [status]
+- Phase 1: [phase1-id] - [open/in_progress/closed]
+- Phase 2: [phase2-id] - [open/in_progress/closed]
+- ...
 
 **Git Metadata Update**:
 - New git_commit: [current commit hash]
@@ -294,7 +341,11 @@ in-progress → complete
 
 ## Smart Status Detection
 
-The command should intelligently detect status based on actual content:
+The command should intelligently detect status based on actual content.
+
+**If beads is enabled**: Beads is the source of truth for task/phase status. Use `bd show [phase-id]` to get authoritative status. Markdown checkboxes may lag behind beads state.
+
+**If markdown-only**: Use checkbox counting and content analysis below.
 
 ### Research Detection
 

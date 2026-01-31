@@ -103,6 +103,7 @@ Enterprise-grade slash commands for project documentation and task management:
 - Status progression with validation
 - Zero scope creep enforcement
 - Session continuity with handoff system
+- **Beads integration** for cross-session task tracking (optional)
 
 [Full Commands Documentation →](claude-code/commands/wb/README.md)
 
@@ -165,6 +166,30 @@ Plans separate verification into:
 ### Zero Scope Creep
 
 Tasks come ONLY from plans - no additions during implementation. This maintains predictable delivery and traceable work.
+
+### Beads Integration (Optional)
+
+Projects can optionally use [beads](https://github.com/steveyegge/beads) for cross-session task tracking:
+
+```bash
+# Initialize beads in your project
+bd init
+
+# The wb commands automatically detect beads and:
+# - Create phase issues with dependencies
+# - Track progress across sessions
+# - Survive conversation compaction
+```
+
+**Beads provides**:
+- **Persistent memory**: Task state survives compaction and new sessions
+- **Dependency tracking**: Phases block/unblock automatically
+- **Git-backed**: Syncs with your repository
+- **Source of truth**: Authoritative status for phases
+
+**Without beads**, commands fall back to markdown-only tracking (checkboxes in tasks.md).
+
+See [AGENTS.md](AGENTS.md) for the beads workflow protocol.
 
 ## Repository Structure
 

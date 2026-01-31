@@ -8,12 +8,8 @@
       "Bash(./scripts/install-commands:*)",
       "Bash(grep:*)",
       "Bash(awk:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git push:*)",
-      "Bash(bd list:*)",
-      "Bash(bd doctor)",
-      "Bash(git tag:*)"
+      "Bash(git:*)",
+      "Bash(bd:*)"
     ],
     "deny": [],
     "ask": []

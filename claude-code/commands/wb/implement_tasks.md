@@ -121,9 +121,36 @@ After reading all documentation, synthesize:
 
 ### Step 2: Set Up Task Tracking
 
-**Use TodoWrite to track implementation progress:**
+#### Check for Beads Integration
 
-Create a todo list for the implementation session based on tasks.md:
+First, check if this project uses beads for tracking:
+
+```bash
+bd stats 2>/dev/null && echo "BEADS_ENABLED=true" || echo "BEADS_ENABLED=false"
+```
+
+**If beads is enabled AND tasks.md has `beads_phases` frontmatter:**
+
+1. Check current phase's beads issue:
+   ```bash
+   bd show [phase-id-from-frontmatter]
+   ```
+
+2. Claim the phase if not already in progress:
+   ```bash
+   bd update [phase-id] --status in_progress
+   ```
+
+3. Check for blocking issues:
+   ```bash
+   bd blocked
+   ```
+
+**If beads is NOT available**, use TodoWrite as fallback (session-only tracking).
+
+#### Set Up Session Tracking
+
+**Use TodoWrite for within-session progress** (works alongside beads):
 
 ```javascript
 // Example todo list
@@ -137,7 +164,7 @@ TodoWrite([
 ])
 ```
 
-Update the todo list as you progress through implementation.
+**Note**: TodoWrite tracks session progress. Beads tracks cross-session/phase progress. Use both together - they serve different purposes.
 
 ### Step 3: Implement Phase Tasks
 
@@ -274,8 +301,23 @@ npm test path/to/test1.spec.ts path/to/test2.test.ts
 
 When all phase tasks are complete and automated verification passes:
 
+#### Close Beads Phase Issue (if enabled)
+
+If using beads tracking:
+
+```bash
+bd close [phase-id] --reason "Phase [N] complete: [summary of what was implemented]"
 ```
 
+This automatically unblocks the next phase. Check what's now ready:
+
+```bash
+bd ready
+```
+
+#### Report Completion
+
+```
 ✅ Phase [N] Implementation Complete
 
 **Automated verification passed:**
@@ -284,6 +326,10 @@ When all phase tasks are complete and automated verification passes:
 - ✅ Linting clean: [lint command]
 - ✅ Build successful: [build command]
 - ✅ [Other automated checks]
+
+**Beads tracking** (if enabled):
+- ✅ Closed: [phase-id]
+- 🔓 Unblocked: [next-phase-id]
 
 **Ready for manual verification:**
 
@@ -353,18 +399,33 @@ When resuming work (phase = "continue"):
    - Look for [x] checkmarks in tasks.md
    - Check current_phase in frontmatter
    - Review "Implementation Notes" for context
+   - **If beads enabled**: `bd ready` shows what phases are available
 
-2. **Verify previous work** (optional):
+2. **Check beads state** (if enabled):
+
+   ```bash
+   # See overall progress
+   bd stats
+
+   # Find what's ready to work on
+   bd ready
+
+   # Check if a phase is in progress
+   bd list --status=in_progress
+   ```
+
+3. **Verify previous work** (optional):
 
    ```bash
    # Run tests to ensure previous work is solid
    [test command from tasks.md]
    ```
 
-3. **Continue from next unchecked task**:
+4. **Continue from next unchecked task**:
    - Trust completed work unless tests fail
    - Pick up with TDD cycle for next task
    - Update TodoWrite with remaining tasks
+   - **If beads enabled**: Claim phase if not already in progress
 
 ## TDD Best Practices
 
@@ -414,11 +475,14 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 
 ```
 1. Read current state from tasks.md
-2. Set up today's todo list with TodoWrite
-3. Implement with TDD cycle
-4. Update checkboxes as you go
-5. Run verification at natural breakpoints
-6. Update frontmatter and TodoWrite before stopping
+2. If beads enabled: `bd ready` to see available phases, claim with `bd update`
+3. Set up today's todo list with TodoWrite
+4. Implement with TDD cycle
+5. Update checkboxes as you go
+6. Run verification at natural breakpoints
+7. If phase complete: `bd close` the phase issue
+8. Update frontmatter and TodoWrite before stopping
+9. If beads enabled: `bd sync` to persist state
 ```
 
 ## Error Handling
@@ -447,12 +511,14 @@ If automated verification fails after implementation:
 
 - ✅ Follow TDD cycle: Red → Green → Refactor
 - ✅ Read ALL documentation files FULLY first
-- ✅ Use TodoWrite to track progress
+- ✅ Use TodoWrite to track session progress
+- ✅ If beads enabled: Use `bd update`/`bd close` for phase tracking
 - ✅ Update progress in both checkboxes and frontmatter
 - ✅ Respect phase boundaries and checkpoints
 - ✅ Track modified files for easier testing
 - ✅ Generate phase-specific test commands
 - ✅ Document any deviations from design
+- ✅ Run `bd sync` at session end (if beads enabled)
 
 ### DON'T (ABSOLUTELY FORBIDDEN)
 

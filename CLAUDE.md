@@ -94,3 +94,29 @@ When creating new prompts or commands:
 - Run `./scripts/lint` before committing markdown files
 - Keep the repository organized by category
 
+## Beads Issue Tracking
+
+This repository uses [beads](https://github.com/steveyegge/beads) for task tracking across sessions.
+
+### Quick Reference
+
+```bash
+bd ready              # Find available work (no blockers)
+bd show <id>          # View issue details
+bd update <id> --status in_progress  # Claim work
+bd close <id>         # Complete work
+bd sync               # Sync with git (run at session end)
+```
+
+### Session Protocol
+
+See [AGENTS.md](AGENTS.md) for the full session close protocol. Key points:
+
+1. **Before ending**: Close completed issues with `bd close`
+2. **Sync**: Run `bd sync` to persist changes
+3. **Push**: Commit and push to remote
+
+### Integration with wb Commands
+
+The workbench commands (`/wb:*`) automatically detect beads and use it for phase tracking. See [wb/README.md](claude-code/commands/wb/README.md) for details.
+
