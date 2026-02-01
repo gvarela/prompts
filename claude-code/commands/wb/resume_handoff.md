@@ -120,16 +120,19 @@ bd update [phase-id] --status in_progress
 bd ready
 ```
 
-**Set up session tasks based on handoff next steps:**
+**Review beads issues for next steps:**
 
-```javascript
-// Create tasks from handoff's next steps
-TaskCreate({
-  subject: "[Task from handoff next steps]",
-  description: "From handoff",
-  activeForm: "Working on [task]"
-})
-// ... more tasks from handoff
+The handoff document may reference specific beads issue IDs. Check them:
+
+```bash
+# Review next tasks mentioned in handoff
+bd show [issue-id-from-handoff]
+
+# See what's ready to work on
+bd ready
+
+# Claim the next task
+bd update [task-id] --status in_progress
 ```
 
 **Check for uncommitted changes** mentioned in handoff:

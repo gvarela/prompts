@@ -259,33 +259,35 @@ Based on dependency analysis:
 
 ### Tasks
 
+**Note**: Checkboxes below are for DOCUMENTATION only. Actual task status is tracked in beads. See frontmatter `beads_tasks` for task IDs.
+
 #### Setup Tasks
-- [ ] Create new directory structure at `path/to/new/`
-- [ ] Install dependencies: `npm install [package]`
-- [ ] Set up configuration in `config/feature.json`
+- [ ] Create new directory structure at `path/to/new/` → `[beads:phase1_setup_1]`
+- [ ] Install dependencies: `npm install [package]` → `[beads:phase1_setup_2]`
+- [ ] Set up configuration in `config/feature.json` → `[beads:phase1_setup_3]`
 
 #### Implementation Tasks
-- [ ] Create [Component] class at `src/component.ts`
+- [ ] Create [Component] class at `src/component.ts` → `[beads:phase1_impl_1]`
   - Implement constructor with dependency injection
   - Add [method1] for [purpose]
   - Add [method2] for [purpose]
-- [ ] Modify [ExistingComponent] at `src/existing.ts:45`
+- [ ] Modify [ExistingComponent] at `src/existing.ts:45` → `[beads:phase1_impl_2]`
   - Add integration with new component
   - Update error handling
 
 #### Testing Tasks
 (Generated from test coverage agent findings)
-- [ ] Write unit tests for [Component] at `tests/component.test.ts`
+- [ ] Write unit tests for [Component] at `tests/component.test.ts` → `[beads:phase1_test_1]`
   - Test [scenario 1 from agent]
   - Test [edge case from agent]
   - Test [error condition from agent]
-- [ ] Write integration tests at `tests/integration/feature.test.ts`
+- [ ] Write integration tests at `tests/integration/feature.test.ts` → `[beads:phase1_test_2]`
   - Test [integration scenario from agent]
 
 #### Integration Tasks
-- [ ] Connect [Component] to [ExistingSystem]
-- [ ] Update API endpoint at `api/routes.ts:78`
-- [ ] Add database migration for new table
+- [ ] Connect [Component] to [ExistingSystem] → `[beads:phase1_integration_1]`
+- [ ] Update API endpoint at `api/routes.ts:78` → `[beads:phase1_integration_2]`
+- [ ] Add database migration for new table → `[beads:phase1_integration_3]`
 
 ### Success Criteria
 
@@ -324,10 +326,13 @@ npm test src/component.test.ts tests/integration/feature.test.ts
 ### ⛔ CHECKPOINT: Phase 1 Complete
 
 Before proceeding to Phase 2:
-1. ✅ All tasks checked off
-2. ✅ All automated verification passing
-3. ✅ Manual verification confirmed by human
-4. ✅ Update frontmatter: `current_phase: 2`
+1. ✅ All Phase 1 task beads issues closed (`bd list --status=closed`)
+2. ✅ Phase 1 milestone beads issue closed
+3. ✅ All automated verification passing
+4. ✅ Manual verification confirmed by human
+5. ✅ Update frontmatter: `current_phase: 2`
+
+**Verification**: Run `bd show [phase1-milestone-id]` to confirm all blocking tasks are closed.
 
 **Do not proceed without human confirmation of manual tests.**
 
@@ -413,7 +418,9 @@ Quick lookup of key design decisions:
 
 ### Step 5: Create Beads Issues
 
-Create beads issues to track phases across sessions.
+Create beads issues to track ALL work (phases AND granular tasks) across sessions.
+
+**Critical**: Beads is the source of truth for status. Every task checkbox in tasks.md gets a corresponding beads issue.
 
 #### 5a. Verify Beads is Initialized
 
@@ -432,64 +439,167 @@ bd create "[Project Name] Implementation" \
   -d "Implementation tracking for [project]. See tasks.md for detailed plan."
 ```
 
-**Capture the epic ID** from the output (e.g., `Created prompts-abc`). You'll need it for phase dependencies.
+**Capture the epic ID** from the output (e.g., `Created prompts-abc`). You'll need it for task references.
 
-#### 5c. Create Phase Issues
+#### 5c. Create Phase Milestone Issues
 
 For each phase in the execution plan, create a milestone issue:
 
 ```bash
 # Phase 1 - capture the ID from output
-bd create "Phase 1: [Phase Name]" \
+bd create "Phase 1 Milestone: [Phase Name]" \
   --type=task \
   --priority=2 \
-  -d "[Phase objective]. See tasks.md Phase 1 for details."
-# → Created prompts-xyz (save this as PHASE1_ID)
+  -d "All Phase 1 tasks complete. Objective: [phase objective]. See tasks.md Phase 1 for details."
+# → Created prompts-xyz (save this as PHASE1_MILESTONE_ID)
 
 # Phase 2 - capture the ID from output
-bd create "Phase 2: [Phase Name]" \
+bd create "Phase 2 Milestone: [Phase Name]" \
   --type=task \
   --priority=2 \
-  -d "[Phase objective]. See tasks.md Phase 2 for details."
-# → Created prompts-abc (save this as PHASE2_ID)
+  -d "All Phase 2 tasks complete. Objective: [phase objective]. See tasks.md Phase 2 for details."
+# → Created prompts-abc (save this as PHASE2_MILESTONE_ID)
 
-# Set up dependency: Phase 2 depends on Phase 1
-bd dep add [PHASE2_ID] [PHASE1_ID]
+# Set up dependency: Phase 2 milestone depends on Phase 1 milestone
+bd dep add [PHASE2_MILESTONE_ID] [PHASE1_MILESTONE_ID]
 ```
 
-**Important**: Capture each ID as it's created. You'll need them for dependencies and to record in tasks.md frontmatter.
+**Important**: Capture each ID as it's created. You'll need them for dependencies.
 
-#### 5d. Update tasks.md with Issue References
+#### 5d. Create Task Issues for Each Task
 
-Add a beads tracking section to tasks.md frontmatter:
+**CRITICAL**: Create a beads issue for EVERY task checkbox in the execution plan.
+
+For each task in each phase:
+
+```bash
+# Setup task example
+bd create "Create new directory structure at path/to/new/" \
+  --type=task \
+  --priority=2 \
+  -d "Phase 1 setup task. Create directory structure for new component."
+# → Created prompts-def (save as TASK1_ID)
+
+# Implementation task example
+bd create "Create [Component] class at src/component.ts" \
+  --type=task \
+  --priority=2 \
+  -d "Phase 1 implementation. Create component with constructor, method1 for [purpose], method2 for [purpose]."
+# → Created prompts-ghi (save as TASK2_ID)
+
+# Testing task example
+bd create "Write unit tests for [Component] at tests/component.test.ts" \
+  --type=task \
+  --priority=2 \
+  -d "Phase 1 testing. Test scenario 1, edge case X, error condition Y."
+# → Created prompts-jkl (save as TASK3_ID)
+
+# Integration task example
+bd create "Connect [Component] to [ExistingSystem]" \
+  --type=task \
+  --priority=2 \
+  -d "Phase 1 integration. Update API endpoint at api/routes.ts:78."
+# → Created prompts-mno (save as TASK4_ID)
+```
+
+**Task Creation Guidelines**:
+- Title should match the task description from tasks.md
+- Description includes phase, task type (setup/implementation/testing/integration), and key details
+- All tasks start with priority 2 (medium)
+- Use --type=task for all granular tasks
+
+#### 5e. Set Up Task Dependencies
+
+Link tasks to their phase milestone and to each other:
+
+```bash
+# All Phase 1 tasks block the Phase 1 milestone
+bd dep add [PHASE1_MILESTONE_ID] [TASK1_ID]
+bd dep add [PHASE1_MILESTONE_ID] [TASK2_ID]
+bd dep add [PHASE1_MILESTONE_ID] [TASK3_ID]
+bd dep add [PHASE1_MILESTONE_ID] [TASK4_ID]
+
+# Implementation tasks depend on setup tasks being done
+bd dep add [TASK2_ID] [TASK1_ID]
+
+# Testing tasks depend on implementation
+bd dep add [TASK3_ID] [TASK2_ID]
+
+# Integration depends on both implementation and testing
+bd dep add [TASK4_ID] [TASK2_ID]
+bd dep add [TASK4_ID] [TASK3_ID]
+```
+
+**Dependency Principles**:
+- Setup tasks have no dependencies (start immediately)
+- Implementation depends on setup
+- Testing depends on implementation
+- Integration depends on implementation and testing
+- Phase milestone depends on ALL phase tasks
+- Next phase milestone depends on previous phase milestone
+
+**Tip**: Use parallel task creation for efficiency:
+- Spawn multiple `bd create` commands using parallel agents
+- Capture all IDs, then set up dependencies in a second pass
+
+**Important**: Capture ALL task IDs. You'll need them for frontmatter tracking.
+
+#### 5f. Update tasks.md with Issue References
+
+Add beads tracking to tasks.md frontmatter for ALL issues:
 
 ```yaml
 beads_epic: [epic-id]
 beads_phases:
-  phase1: [phase1-id]
-  phase2: [phase2-id]
-  phase3: [phase3-id]
+  phase1_milestone: [phase1-milestone-id]
+  phase2_milestone: [phase2-milestone-id]
+  phase3_milestone: [phase3-milestone-id]
+beads_tasks:
+  # Phase 1 tasks
+  phase1_setup_1: [task-id]
+  phase1_setup_2: [task-id]
+  phase1_impl_1: [task-id]
+  phase1_impl_2: [task-id]
+  phase1_test_1: [task-id]
+  phase1_test_2: [task-id]
+  phase1_integration_1: [task-id]
+  # Phase 2 tasks
+  phase2_setup_1: [task-id]
+  phase2_impl_1: [task-id]
+  # ... etc for all tasks
 ```
 
-And add a quick reference section:
+**Frontmatter Guidelines**:
+- Use descriptive keys that match the task structure
+- Format: `phaseN_category_number` (e.g., `phase1_setup_1`, `phase2_impl_3`)
+- Keep the same order as tasks appear in the plan
+- This enables easy lookup: "What's the beads ID for Phase 2 implementation task 1?"
+
+Add a quick reference section with key commands:
 
 ```markdown
 ## Beads Issue Tracking
 
-This project uses beads for task tracking across sessions.
+This project uses beads for ALL task tracking across sessions.
 
-| Phase | Beads ID | Status |
-|-------|----------|--------|
-| Epic | [epic-id] | Open |
-| Phase 1 | [phase1-id] | Not Started |
-| Phase 2 | [phase2-id] | Blocked by Phase 1 |
-| Phase 3 | [phase3-id] | Blocked by Phase 2 |
+**Epic**: [epic-id]
 
-**Commands**:
-- `bd ready` - See what's ready to work on
-- `bd show [id]` - View phase details
-- `bd update [id] --status in_progress` - Start a phase
-- `bd close [id]` - Complete a phase
+**Phase Milestones**:
+- Phase 1: [phase1-milestone-id] (all Phase 1 tasks must complete)
+- Phase 2: [phase2-milestone-id] (all Phase 2 tasks must complete)
+- Phase 3: [phase3-milestone-id] (all Phase 3 tasks must complete)
+
+**Granular Tasks**: See frontmatter `beads_tasks` section for all task IDs.
+
+**Essential Commands**:
+- `bd ready` - See what's ready to work on (no blockers)
+- `bd show [id]` - View task details and dependencies
+- `bd update [id] --status in_progress` - Claim a task
+- `bd close [id]` - Complete a task
+- `bd blocked` - See what's currently blocked
+- `bd list --status=in_progress` - See your active work
+
+**Status Source**: Beads is the source of truth for all task status. Do NOT use markdown checkboxes for tracking.
 ```
 
 ### Step 6: Validate Completeness
@@ -523,8 +633,11 @@ Agent findings incorporated:
 
 Beads tracking:
 - Epic: [epic-id]
-- Phase issues created with dependencies
+- Phase milestone issues created with dependencies
+- ALL granular tasks created as beads issues
+- Task dependencies set up (setup → impl → test → integration)
 - Use `bd ready` to find available work
+- Total beads issues: [count] ([X] phase milestones + [Y] granular tasks)
 
 Key features of the plan:
 - Clear implementation sequence based on dependency analysis
@@ -532,12 +645,15 @@ Key features of the plan:
 - Comprehensive test coverage from agent analysis
 - Automated and manual verification per phase
 - Quick test commands to avoid running full suite
-- Beads integration for multi-session tracking
+- Complete beads integration for ALL task tracking (no markdown checkboxes)
+- Survives session boundaries and context compaction
 
 Next steps:
-1. Review the execution plan
-2. Run `/implement_tasks` to begin implementation with TDD
-3. Track progress with beads (`bd update`, `bd close`) or markdown checkboxes
+1. Review the execution plan in tasks.md (documentation)
+2. Run `bd ready` to see available work (first tasks with no dependencies)
+3. Run `/implement_tasks` to begin implementation with TDD
+4. Track ALL progress with beads (`bd update [id] --status in_progress`, `bd close [id]`)
+5. Never use markdown checkboxes for status - beads is source of truth
 ```
 
 ## Important Guidelines

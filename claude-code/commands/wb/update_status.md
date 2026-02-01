@@ -65,7 +65,7 @@ Read all documentation files to understand current state:
 
 1. **Read research.md FULLY** - Check status, completion, findings
 2. **Read design.md FULLY** - Check status, phase progress, implementation state
-3. **Read tasks.md FULLY** - Check current_phase, completed_tasks, total_tasks, task checkboxes
+3. **Read tasks.md FULLY** - Check current_phase, beads_tasks frontmatter (for reference only)
 
 **IMPORTANT**: Use Read tool WITHOUT limit/offset parameters
 
@@ -98,19 +98,24 @@ Examine the files to determine actual state:
    - Are all design aspects complete?
    - Determine: draft | ready | implementing | complete
 
-3. **Tasks Analysis** (beads is source of truth):
-   - Check beads phase issues: `bd show [phase-id]` for each phase
-   - Closed phases = complete
-   - In-progress phases = active
-   - Open phases with closed blockers = ready
-   - Cross-check against markdown checkboxes if needed
+3. **Tasks Analysis** (beads is ONLY source of truth):
+   - Check beads issues: `bd stats`, `bd list --status=closed`, `bd list --status=in_progress`
+   - Check phase milestones: `bd show [phase-milestone-id]` for each phase
+   - Check all task issues: `bd list` to see task status
+   - Closed phase milestone = all phase tasks complete
+   - In-progress tasks = active work
+   - Open tasks with no blockers = ready to start
+   - DO NOT check markdown checkboxes (documentation only, not tracking)
 
    Determine: not-started | in-progress | complete
 
 4. **Progress Calculation**:
-   - Count closed phase issues vs total from beads
-   - Identify which phase is currently active
-   - Check if blocked: `bd blocked`
+   - Count closed task issues: `bd list --status=closed | wc -l`
+   - Count total task issues from tasks.md frontmatter `beads_tasks`
+   - Identify active phase: check which phase milestone has open tasks
+   - Check current work: `bd list --status=in_progress`
+   - Check blockers: `bd blocked`
+   - Calculate percentage: (closed_tasks / total_tasks) * 100
 
 ### Step 3: Determine Status Transitions
 
@@ -130,16 +135,16 @@ Based on analysis, determine appropriate status for each file:
    - `complete` → All design implemented and verified
 
 3. **tasks.md**:
-   - `not-started` → No tasks checked off, current_phase: 0
-   - `in-progress` → Some tasks checked, actively working
-   - `complete` → All tasks checked, all phases verified
+   - `not-started` → No beads task issues closed, current_phase: 0
+   - `in-progress` → Some beads task issues closed or in_progress
+   - `complete` → All beads task issues AND phase milestones closed
 
 **Validation Rules**:
 
 - Cannot mark design as `ready` if research is still `draft`
 - Cannot mark tasks as `in-progress` if design is still `draft`
 - Cannot mark design as `complete` if tasks is not `complete`
-- `implementing` requires at least one checked task in tasks.md
+- `implementing` requires at least one beads task issue in_progress or closed
 
 ### Step 4: Present Status Update Plan
 
@@ -311,31 +316,33 @@ draft → ready
   Requires: research.md is complete
 
 ready → implementing
-  Trigger: First task checked in tasks.md
-  Requires: tasks.md status is in-progress
+  Trigger: First beads task issue in_progress or closed
+  Requires: At least one beads task issue has status != open
 
 implementing → complete
-  Trigger: All tasks complete and verified
-  Requires: tasks.md status is complete
+  Trigger: All beads tasks complete and verified
+  Requires: All beads task issues AND phase milestones closed
 ```
 
 ### Tasks Status Transitions
 
 ```
 not-started → in-progress
-  Trigger: First task checked off
+  Trigger: First beads task issue in_progress or closed
   Updates: current_phase to active phase number
 
 in-progress → complete
-  Trigger: All tasks checked, all phase checkpoints passed
-  Requires: All phases verified
+  Trigger: All beads task issues closed, all phase milestone issues closed
+  Requires: All phases verified via beads
 ```
 
 ## Smart Status Detection
 
 The command should intelligently detect status based on actual content.
 
-**Beads is the source of truth** for task/phase status. Use `bd show [phase-id]` to get authoritative status. Markdown checkboxes may lag behind beads state.
+**Beads is the ONLY source of truth** for task/phase status. Use `bd list`, `bd show [id]`, `bd stats` to get authoritative status.
+
+**NEVER check markdown checkboxes** - they are documentation only and do not reflect actual status.
 
 For research and design status (not tracked in beads), use content analysis:
 
@@ -359,11 +366,14 @@ For research and design status (not tracked in beads), use content analysis:
 
 ### Tasks Detection
 
-- Count checked vs total tasks
-- Identify which phase has unchecked tasks
-- If all checked → suggest "complete"
-- If any checked → suggest "in-progress" and update current_phase
-- Calculate accurate percentage
+**Use beads only**:
+- Count closed issues: `bd list --status=closed | grep -v milestone | wc -l`
+- Count total task issues from frontmatter `beads_tasks`
+- Identify active phase: check which phase milestone has open blocking tasks
+- If all task issues closed AND all phase milestones closed → suggest "complete"
+- If any task issue in_progress OR closed → suggest "in-progress" and update current_phase
+- Calculate accurate percentage from beads counts
+- DO NOT count markdown checkboxes
 
 ## Error Handling
 
@@ -376,12 +386,12 @@ If user requests invalid transition:
 
 Cannot transition design.md from 'draft' to 'implementing' because:
 - research.md is still in 'draft' status
-- No tasks have been checked in tasks.md
+- No beads task issues have been claimed or completed
 
 Valid next steps:
 1. Complete research first (/create_research)
-2. Move plan to 'ready' status once research is complete
-3. Start checking off tasks to begin implementing
+2. Move design to 'ready' status once research is complete
+3. Claim a task in beads (`bd update [task-id] --status in_progress`) to begin implementing
 ```
 
 ### Missing Files

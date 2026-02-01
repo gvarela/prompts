@@ -62,20 +62,21 @@ const tasksFile = `${projectDir}/tasks.md`;
    - Decisions made during implementation
    - Any deviations from plan
 
-3. **Check TodoWrite list** if active to see:
-   - Current task status
-   - What was attempted
-   - What remains
-
-4. **Check beads state** to capture:
+3. **Check beads state** to capture:
    ```bash
    bd stats                        # Overall project progress
    bd list --status=in_progress    # Active work
-   bd blocked                      # Any blocked phases
+   bd list --status=closed         # Completed work
+   bd blocked                      # Any blocked issues
    bd ready                        # What's available next
    ```
 
-5. **Check for mockup state** (if mockups/ exists):
+   This shows:
+   - What tasks were completed
+   - What's currently in progress
+   - What's ready to work on next
+
+4. **Check for mockup state** (if mockups/ exists):
    ```bash
    ls mockups/                     # Check for mockup directory
    # If exists, read mockups/mockup-log.md for current version and pending feedback

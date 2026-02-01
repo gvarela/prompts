@@ -39,7 +39,7 @@ When invoked, check for arguments:
 1. **TDD Cycle**: Red → Green → Refactor for each task
 2. **Phase Boundaries**: Complete phases fully before proceeding
 3. **ZERO SCOPE CREEP**: Implement EXACTLY what's in tasks.md - NO additions, NO improvements, NO extras
-4. **Progress Tracking**: Update checkboxes and frontmatter as work progresses
+4. **Progress Tracking**: Use beads for ALL status tracking (`bd update`, `bd close`)
 5. **Verification Gates**: Respect ⛔ CHECKPOINT markers between phases
 6. **Documentation First**: Read research.md and design.md for context before starting
 
@@ -61,18 +61,18 @@ For each implementation task:
 1. RED Phase (Write Failing Test First)
    - Write test that defines the expected behavior
    - Run test to confirm it fails
-   - Check in tasks.md: "- [ ] Write test for [feature]"
+   - Corresponds to testing task in tasks.md (tracked in beads)
 
 2. GREEN Phase (Minimal Implementation)
    - Write just enough code to make test pass
    - No optimization, just make it work
    - Run test to confirm it passes
-   - Check in tasks.md: "- [ ] Implement [feature]"
+   - Corresponds to implementation task in tasks.md (tracked in beads)
 
 3. REFACTOR Phase (Improve Without Breaking)
    - Clean up code while tests stay green
    - Run tests after each change
-   - Commit when satisfied
+   - Close beads issue when satisfied: `bd close [task-id]`
 ```
 
 ## Process Steps
@@ -119,47 +119,77 @@ After reading all documentation, synthesize:
 - What EXACT tasks are specified in tasks.md?
 - REMEMBER: Do NOT add anything not explicitly listed
 
-### Step 2: Set Up Task Tracking
+### Step 2: Set Up Task Tracking with Beads
 
-#### Claim Phase in Beads
+**CRITICAL**: Use beads for ALL task tracking (phases AND granular tasks). Never use TaskCreate/TaskUpdate or markdown checkboxes.
 
-Check the phase from tasks.md frontmatter (`beads_phases`) and claim it:
+#### Verify Beads Tracking Configuration
+
+Check that tasks.md frontmatter has beads tracking:
 
 ```yaml
 # tasks.md frontmatter should have:
 beads_epic: [epic-id]
 beads_phases:
-  phase1: [phase1-id]
-  phase2: [phase2-id]
+  phase1_milestone: [phase1-milestone-id]
+  phase2_milestone: [phase2-milestone-id]
+beads_tasks:
+  phase1_setup_1: [task-id]
+  phase1_setup_2: [task-id]
+  phase1_impl_1: [task-id]
+  # ... all tasks
 ```
 
-**If beads_phases is missing**: Tell user "Beads tracking not configured. Run `/wb:create_execution` to set up phase tracking, or use `v1.0.0` tag for markdown-only workflow."
+**If beads tracking is missing**: Tell user "Beads tracking not configured. Run `/wb:create_execution` to set up beads issues for all tasks."
+
+#### Find Available Work
+
+Use beads to find what's ready to work on:
 
 ```bash
-bd show [phase-id-from-frontmatter]   # Review phase details
-bd update [phase-id] --status in_progress  # Claim the phase
-bd blocked  # Verify nothing blocking this phase
+bd ready    # Show all tasks with no blockers (ready to start)
 ```
 
-#### Set Up Session Tracking
+This shows:
+- Tasks with no dependencies (can start immediately)
+- Tasks whose dependencies are all closed (newly unblocked)
+- Both granular tasks and phase milestones
 
-Use Claude Code's built-in task tools (`TaskCreate`/`TaskUpdate`) for session progress:
+#### Claim and Track Tasks
 
-```javascript
-// Create tasks for this session
-TaskCreate({ subject: "Review existing code", description: "At [file:line from research]" })
-TaskCreate({ subject: "[First unchecked task from tasks.md]", description: "..." })
-TaskCreate({ subject: "Run automated verification", description: "..." })
+For each task you work on:
 
-// Update as you complete work
-TaskUpdate({ taskId: "1", status: "in_progress" })
-TaskUpdate({ taskId: "1", status: "completed" })
+```bash
+# Review task details before starting
+bd show [task-id]    # See description, dependencies, blockers
+
+# Claim the task
+bd update [task-id] --status in_progress
+
+# When complete
+bd close [task-id] --reason "Brief description of what was done"
+
+# Check what's now unblocked
+bd ready
 ```
 
-| Tool | Scope | Use For |
-|------|-------|---------|
-| TaskCreate/TaskUpdate | Session | Granular progress within session (not persisted across sessions) |
-| Beads | Cross-session | Phase milestones that survive compaction (persisted to git) |
+**Workflow**:
+1. `bd ready` - Find available work
+2. `bd show [id]` - Review task details
+3. `bd update [id] --status in_progress` - Claim it
+4. Implement with TDD (Red → Green → Refactor)
+5. `bd close [id]` - Mark complete
+6. `bd ready` - Find next task
+
+**Phase Milestone Tracking**:
+- Phase milestones are automatically unblocked when all their task dependencies close
+- Close the phase milestone only after ALL phase tasks are done AND manual verification passes
+- Use `bd show [phase-milestone-id]` to see which tasks still block the milestone
+
+| Tool | Use Case |
+|------|----------|
+| Beads | ALL task tracking (granular tasks AND phase milestones) |
+| Markdown | Documentation only (what the plan is, not status) |
 
 ### Step 3: Implement Phase Tasks
 
@@ -210,28 +240,29 @@ TaskUpdate({ taskId: "1", status: "completed" })
 
 After completing each task:
 
-1. Update tasks.md checkbox:
+1. Close the beads issue:
+
+   ```bash
+   bd close [task-id] --reason "Implemented [feature], tests passing"
+   ```
+
+2. Check what's newly available:
+
+   ```bash
+   bd ready    # See what's now unblocked
+   ```
+
+3. Optionally add implementation notes to tasks.md:
 
    ```markdown
-   - [x] Task description (completed YYYY-MM-DD HH:MM)
+   ## Implementation Notes
+   - [YYYY-MM-DD] Completed [task-id]: [brief note about discoveries or deviations]
    ```
 
-2. Update your TaskCreate/TaskUpdate list:
-
-   ```javascript
-   TaskCreate/TaskUpdate([
-     { content: "Task 1", status: "completed" },
-     { content: "Task 2", status: "in_progress" },
-     ...
-   ])
-   ```
-
-3. Consider updating frontmatter if significant progress:
-
-   ```yaml
-   completed_tasks: [new count]
-   last_updated: YYYY-MM-DD
-   ```
+**Do NOT**:
+- ❌ Update checkboxes in tasks.md (documentation only)
+- ❌ Use TaskCreate/TaskUpdate (not persisted)
+- ❌ Update frontmatter counts manually (beads is source of truth)
 
 ### Step 4: Handle Testing Tasks
 
@@ -296,11 +327,26 @@ npm test path/to/test1.spec.ts path/to/test2.test.ts
 
 When all phase tasks are complete and automated verification passes:
 
-#### Close Beads Phase Issue
+#### Verify All Phase Tasks Closed
 
 ```bash
-bd close [phase-id] --reason "Phase [N] complete: [summary of what was implemented]"
-bd ready  # Check what's now unblocked
+# Check the phase milestone to see blocking tasks
+bd show [phase-milestone-id]
+
+# Verify all tasks for this phase are closed
+bd list --status=closed | grep "phase[N]"
+
+# Verify nothing is still in progress
+bd list --status=in_progress
+```
+
+**All phase tasks must be closed** before closing the phase milestone.
+
+#### Close Phase Milestone
+
+```bash
+bd close [phase-milestone-id] --reason "Phase [N] complete: [summary]. All tasks closed, automated verification passed, manual verification confirmed."
+bd ready  # Check what's now unblocked (next phase milestone tasks)
 ```
 
 #### Report Completion
@@ -316,8 +362,9 @@ bd ready  # Check what's now unblocked
 - ✅ [Other automated checks]
 
 **Beads tracking**:
-- ✅ Closed: [phase-id]
-- 🔓 Unblocked: [next-phase-id]
+- ✅ All Phase [N] tasks closed: [list task IDs]
+- ✅ Phase [N] milestone closed: [phase-milestone-id]
+- 🔓 Unblocked: [next-phase-milestone-id] and its initial tasks
 
 **Ready for manual verification:**
 
@@ -331,32 +378,47 @@ Once manual verification is complete, I can proceed to Phase [N+1].
 
 **Progress Summary:**
 
-- Tasks completed: [X]/[Y] in this phase
-- Overall progress: [completed_tasks]/[total_tasks] ([percentage]%)
+- Phase [N] tasks: [X] tasks closed
+- Next phase: [Y] tasks available (run `bd ready` to see)
 - Files modified: [count] code files, [count] test files
 
 ```
 
-Do NOT check off manual verification items until confirmed by the user.
+Do NOT close the phase milestone until:
+1. All phase task beads issues are closed
+2. Automated verification passes
+3. Manual verification confirmed by user
 
 ### Step 7: Update Status
 
 After phase completion and verification:
 
-1. **Update tasks.md frontmatter**:
+1. **Verify beads state**:
+   ```bash
+   bd stats    # Check overall progress
+   bd list --status=closed    # See what's complete
+   bd ready    # See what's available next
+   ```
+
+2. **Optionally update tasks.md frontmatter** (for human reference):
    ```yaml
    current_phase: [N+1 if moving forward]
-   completed_tasks: [new total]
    last_updated: YYYY-MM-DD
    status: in-progress  # or complete if all phases done
    ```
 
-2. **Archive completed tasks** (if many):
-   Move completed tasks to the archive section to keep active list focused
+   Note: Frontmatter is for documentation. Beads is the source of truth.
 
-3. **Update any blockers** if encountered
+3. **Add implementation notes** if there were discoveries:
+   ```markdown
+   ## Implementation Notes
+   - [YYYY-MM-DD] Phase [N] complete: [key learnings, deviations from plan]
+   ```
 
-4. **Update TaskCreate/TaskUpdate** to reflect completion
+4. **Sync beads to git**:
+   ```bash
+   bd sync    # Persist beads state to remote
+   ```
 
 ## Handling Mismatches
 
@@ -383,13 +445,7 @@ Document any deviations in the "Implementation Notes" section of tasks.md.
 
 When resuming work (phase = "continue"):
 
-1. **Check existing progress**:
-   - Look for [x] checkmarks in tasks.md
-   - Check current_phase in frontmatter
-   - Review "Implementation Notes" for context
-   - `bd ready` shows what phases are available
-
-2. **Check beads state**:
+1. **Check beads state** (source of truth):
 
    ```bash
    # See overall progress
@@ -398,9 +454,17 @@ When resuming work (phase = "continue"):
    # Find what's ready to work on
    bd ready
 
-   # Check if a phase is in progress
+   # Check what's currently in progress
    bd list --status=in_progress
+
+   # Check what's been completed
+   bd list --status=closed
    ```
+
+2. **Review context**:
+   - Read tasks.md "Implementation Notes" for discoveries
+   - Read research.md and design.md for context
+   - Check current_phase in frontmatter (for reference)
 
 3. **Verify previous work** (optional):
 
@@ -409,11 +473,13 @@ When resuming work (phase = "continue"):
    [test command from tasks.md]
    ```
 
-4. **Continue from next unchecked task**:
-   - Trust completed work unless tests fail
-   - Pick up with TDD cycle for next task
-   - Update TaskCreate/TaskUpdate with remaining tasks
-   - Claim phase if not already in progress
+4. **Continue from next available task**:
+   - `bd ready` shows what's available (no blockers)
+   - `bd show [task-id]` to review task details
+   - `bd update [task-id] --status in_progress` to claim it
+   - Implement with TDD cycle
+   - `bd close [task-id]` when complete
+   - Trust completed work (closed beads issues) unless tests fail
 
 ## TDD Best Practices
 
@@ -462,15 +528,18 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 ### Daily Progress Pattern
 
 ```
-1. Read current state from tasks.md
-2. `bd ready` to see available phases, claim with `bd update`
-3. Set up today's todo list with TaskCreate/TaskUpdate
-4. Implement with TDD cycle
-5. Update checkboxes as you go
-6. Run verification at natural breakpoints
-7. If phase complete: `bd close` the phase issue
-8. Update frontmatter and TaskCreate/TaskUpdate before stopping
-9. `bd sync` to persist state
+1. Check beads state: `bd ready` and `bd list --status=in_progress`
+2. Read tasks.md for context (what the plan is)
+3. Choose next task from `bd ready` output
+4. Claim task: `bd update [task-id] --status in_progress`
+5. Implement with TDD cycle (Red → Green → Refactor)
+6. Close task: `bd close [task-id] --reason "..."`
+7. Check what's unblocked: `bd ready`
+8. Repeat steps 3-7 for next task
+9. Run verification at phase boundaries
+10. If phase milestone complete: close it with `bd close [milestone-id]`
+11. Add implementation notes to tasks.md if needed
+12. `bd sync` to persist state to git remote
 ```
 
 ## Error Handling
@@ -499,27 +568,30 @@ If automated verification fails after implementation:
 
 - ✅ Follow TDD cycle: Red → Green → Refactor
 - ✅ Read ALL documentation files FULLY first
-- ✅ Use TaskCreate/TaskUpdate to track session progress
-- ✅ Use `bd update`/`bd close` for phase tracking
-- ✅ Update progress in both checkboxes and frontmatter
+- ✅ Use `bd ready` to find available work
+- ✅ Use `bd update [id] --status in_progress` to claim tasks
+- ✅ Use `bd close [id]` when tasks complete
 - ✅ Respect phase boundaries and checkpoints
 - ✅ Track modified files for easier testing
 - ✅ Generate phase-specific test commands
-- ✅ Document any deviations from design
-- ✅ Run `bd sync` at session end
+- ✅ Document any deviations in Implementation Notes
+- ✅ Run `bd sync` at session end to persist state
 
 ### DON'T (ABSOLUTELY FORBIDDEN)
 
 - ❌ **NEVER** skip writing tests first (except for noted exceptions)
 - ❌ **NEVER** add ANY scope beyond what's in tasks.md - NO EXCEPTIONS
 - ❌ **NEVER** move to next phase without verification
-- ❌ **NEVER** check off manual verification without confirmation
+- ❌ **NEVER** close manual verification without user confirmation
 - ❌ **NEVER** implement multiple phases without checkpoints (unless explicitly instructed)
 - ❌ **NEVER** use limit/offset when reading files
 - ❌ **NEVER** add "nice to have" features or improvements
 - ❌ **NEVER** refactor code that works unless tasks.md says to
 - ❌ **NEVER** add error handling not specified in tasks
 - ❌ **NEVER** create helper functions not explicitly required
+- ❌ **NEVER** use TaskCreate/TaskUpdate/TodoWrite for tracking (use beads)
+- ❌ **NEVER** update markdown checkboxes for status (documentation only)
+- ❌ **NEVER** treat markdown as source of truth (beads is source of truth)
 
 ## Synchronization Points
 
@@ -530,4 +602,4 @@ If automated verification fails after implementation:
 
 ## Configuration
 
-This command implements tasks from the structured task list following TDD practices. It leverages Claude Code's TaskCreate/TaskUpdate tool for progress tracking and provides systematic implementation guidance.
+This command implements tasks from the structured task list following TDD practices. It uses beads for ALL task tracking (both granular tasks and phase milestones) and provides systematic implementation guidance with TDD discipline.

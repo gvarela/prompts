@@ -38,7 +38,11 @@ The workflow separates three distinct concerns:
 3. **File Reading Protocol**: ALWAYS read files FULLY (no limit/offset) before analysis
 4. **Dual Verification**: Separate automated checks from manual verification
 5. **Zero Scope Creep**: Tasks only come from plans, no additions
-6. **Beads Required**: These commands require beads for task tracking (`bd init`)
+6. **Beads Required**: These commands require beads for ALL task tracking (`bd init`)
+   - Use beads for phases AND granular tasks
+   - Do NOT use TaskCreate, TaskUpdate, TodoWrite, or markdown checkboxes for tracking
+   - Markdown files document the PLAN, beads tracks the STATUS
+   - See session reminder for beads workflow rules
 
 ### Beads Error Handling
 
@@ -54,6 +58,27 @@ If any `bd` command fails:
 5. **Retry**: After fixing, re-run the failed command
 
 **Do NOT** proceed without beads - it is required for phase tracking.
+
+### Task Tracking Philosophy
+
+**Beads for STATUS, Markdown for PLAN**:
+
+- **Beads issues** (`bd create`, `bd update`, `bd close`):
+  - Track live status of ALL work (phases AND granular tasks)
+  - Source of truth for "what's done" and "what's in progress"
+  - Persists across sessions and survives context compaction
+  - Use for: claiming work, tracking progress, managing dependencies
+
+- **Markdown files** (tasks.md, research.md, design.md):
+  - Document the PLAN (what tasks exist and why)
+  - Provide context and rationale for decisions
+  - Static reference material, not live tracking
+  - Updated only when the plan changes, not when status changes
+
+**Prohibited for tracking**:
+- ❌ TaskCreate / TaskUpdate (session-only, doesn't persist)
+- ❌ TodoWrite (markdown files, not for status)
+- ❌ Markdown checkboxes (documentation, not tracking)
 
 ### Command Structure
 

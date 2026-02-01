@@ -66,14 +66,13 @@ When invoked, check for arguments:
    - Underlying patterns and connections that EXIST
    - Architectural implementations CURRENTLY IN PLACE
    - Which directories, files, or patterns are ACTUALLY PRESENT
-4. **Create a research plan using TodoWrite** to track all subtasks:
 
-   ```
-   - [ ] Research authentication flow
-   - [ ] Find all user validation points
-   - [ ] Document API endpoints
-   - [ ] Analyze database schema
-   ```
+4. **Identify research areas** to investigate:
+   - Authentication flow (if relevant)
+   - User validation points (if relevant)
+   - API endpoints (if relevant)
+   - Database schema (if relevant)
+   - [Other areas specific to the research question]
 
 5. **Consider which specific components** to investigate
 
