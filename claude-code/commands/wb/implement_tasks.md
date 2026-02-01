@@ -152,8 +152,8 @@ Stop and wait for user to initialize beads before proceeding.
 #### Detect Beads Mode
 
 ```bash
-# Auto-detect: stealth mode vs git mode
-if git check-ignore -q .beads/ 2>/dev/null; then
+# Check mode (set by SessionStart hook)
+if [ "$BEADS_MODE" = "stealth" ]; then
   echo "📍 Stealth mode: Beads state is local-only"
   echo "   Tasks tracked in beads but .beads/ not committed to git"
 else
@@ -483,7 +483,7 @@ After phase completion and verification:
    bd sync    # Export beads to .beads/issues.jsonl
 
    # In git mode, commit the beads state
-   if ! git check-ignore -q .beads/ 2>/dev/null; then
+   if [ "$BEADS_MODE" != "stealth" ]; then
      git add .beads/
      git commit -m "Update beads state after Phase [N]"
    fi

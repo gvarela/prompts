@@ -115,8 +115,8 @@ Determine the current implementation state:
 # Sync beads state
 bd sync    # Exports to .beads/issues.jsonl
 
-# Auto-detect: stealth mode (work repos) vs git mode (personal repos)
-if git check-ignore -q .beads/ 2>/dev/null; then
+# Check mode (set by SessionStart hook)
+if [ "$BEADS_MODE" = "stealth" ]; then
   echo "📍 Stealth mode detected: .beads/ is gitignored"
   echo "   Beads state is local-only (not committed to repo)"
   echo "   For work handoffs, document next steps manually in handoff doc"

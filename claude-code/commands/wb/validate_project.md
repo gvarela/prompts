@@ -132,8 +132,8 @@ Check beads integration and state:
 # Verify beads is initialized
 bd doctor
 
-# Auto-detect and validate beads mode
-if git check-ignore -q .beads/ 2>/dev/null; then
+# Check and validate beads mode (set by SessionStart hook)
+if [ "$BEADS_MODE" = "stealth" ]; then
   echo "📍 Stealth mode detected"
 
   # Validate stealth mode setup

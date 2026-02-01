@@ -507,6 +507,14 @@ if [ "$INSTALL_CLAUDE" = true ]; then
         print_warning "Skills directory not found: ${CLAUDE_SOURCES[2]}"
     fi
     echo
+
+    # Make hooks executable
+    print_info "Ensuring hooks are executable..."
+    if [ -d "$REPO_ROOT/.claude/hooks" ]; then
+        chmod +x "$REPO_ROOT/.claude/hooks"/*.sh 2>/dev/null || true
+        print_success "Hooks are executable"
+    fi
+    echo
 fi
 
 # Install to AmpCode

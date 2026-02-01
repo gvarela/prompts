@@ -447,8 +447,8 @@ If beads is not initialized, prompt user: "Run `bd init` to initialize beads tra
 #### 5a1. Detect and Explain Beads Mode
 
 ```bash
-# Auto-detect: stealth mode vs git mode
-if git check-ignore -q .beads/ 2>/dev/null; then
+# Check mode (set by SessionStart hook)
+if [ "$BEADS_MODE" = "stealth" ]; then
   echo "📍 Stealth mode detected: .beads/ is gitignored"
   echo "   Beads state is local-only (not shared via git)"
   echo "   Perfect for work repos - teammates won't see beads tracking"

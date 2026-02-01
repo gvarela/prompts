@@ -9,12 +9,26 @@
       "Bash(grep:*)",
       "Bash(awk:*)",
       "Bash(git:*)",
-      "Bash(bd:*)"
+      "Bash(bd:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/setup-beads-mode.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write",

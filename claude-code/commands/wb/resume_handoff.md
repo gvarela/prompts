@@ -71,8 +71,8 @@ const handoffPath = $1 || /* prompt for it */;
 
 5. **Sync and check beads state**:
    ```bash
-   # Auto-detect: stealth mode vs git mode
-   if git check-ignore -q .beads/ 2>/dev/null; then
+   # Check mode (set by SessionStart hook)
+   if [ "$BEADS_MODE" = "stealth" ]; then
      echo "📍 Stealth mode: Beads state is local-only"
      echo "   Handoff may not include beads state (document-based only)"
    else

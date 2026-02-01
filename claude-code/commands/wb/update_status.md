@@ -48,8 +48,8 @@ bd list                         # All issues with status
 bd list --status=in_progress    # Active work
 bd list --status=closed         # Completed work
 
-# Auto-detect beads mode
-if git check-ignore -q .beads/ 2>/dev/null; then
+# Check beads mode (set by SessionStart hook)
+if [ "$BEADS_MODE" = "stealth" ]; then
   echo "📍 Stealth mode: Beads state local-only"
 else
   echo "📍 Git mode: Beads state in git"
@@ -312,7 +312,7 @@ After updating status, sync beads state:
 bd sync    # Export beads to .beads/issues.jsonl
 
 # In git mode, commit the beads state if needed
-if ! git check-ignore -q .beads/ 2>/dev/null; then
+if [ "$BEADS_MODE" != "stealth" ]; then
   if git diff --quiet .beads/ 2>/dev/null; then
     echo "No beads changes to commit"
   else
