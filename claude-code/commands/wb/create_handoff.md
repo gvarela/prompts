@@ -112,15 +112,25 @@ Determine the current implementation state:
 ### Step 3: Sync Beads and Check Git State
 
 ```bash
-# Export and commit beads state to preserve session work
+# Sync beads state
 bd sync    # Exports to .beads/issues.jsonl
 
-# Verify beads state was updated
-git status    # Should show .beads/issues.jsonl as modified
+# Auto-detect: stealth mode (work repos) vs git mode (personal repos)
+if git check-ignore -q .beads/ 2>/dev/null; then
+  echo "📍 Stealth mode detected: .beads/ is gitignored"
+  echo "   Beads state is local-only (not committed to repo)"
+  echo "   For work handoffs, document next steps manually in handoff doc"
+else
+  echo "📍 Git mode detected: .beads/ is tracked"
+  echo "   Committing beads state to git for cross-session persistence"
 
-# Commit beads state (part of handoff protocol)
-git add .beads/
-git commit -m "Sync beads state before handoff"
+  # Verify beads state was updated
+  git status    # Should show .beads/issues.jsonl as modified
+
+  # Commit beads state (part of handoff protocol)
+  git add .beads/
+  git commit -m "Sync beads state before handoff"
+fi
 
 # Check for uncommitted code changes
 git diff
@@ -128,11 +138,15 @@ git diff
 # Note any staged changes
 git diff --staged
 
-# Capture current HEAD for frontmatter AFTER committing beads
+# Capture current HEAD for frontmatter
 git rev-parse HEAD
 ```
 
-Document any uncommitted work and its purpose. Beads state should always be committed as part of the handoff to preserve task status across sessions.
+Document any uncommitted work and its purpose.
+
+**Beads persistence**:
+- **Git mode** (personal projects): Beads state committed to git, persists across sessions
+- **Stealth mode** (work repos): Beads state local-only, document next steps manually for handoff
 
 ### Step 4: Create Handoff Document
 

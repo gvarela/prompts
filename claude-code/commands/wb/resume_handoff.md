@@ -57,7 +57,7 @@ const handoffPath = $1 || /* prompt for it */;
 
 3. **Pull latest from remote**:
    ```bash
-   git pull    # Get latest commits including beads state
+   git pull    # Get latest commits (and beads state if in git mode)
    ```
 
 4. **Validate handoff currency**:
@@ -71,13 +71,24 @@ const handoffPath = $1 || /* prompt for it */;
 
 5. **Sync and check beads state**:
    ```bash
-   bd sync                         # Sync beads database from git
-   bd stats                        # Compare with handoff's beads state
+   # Auto-detect: stealth mode vs git mode
+   if git check-ignore -q .beads/ 2>/dev/null; then
+     echo "📍 Stealth mode: Beads state is local-only"
+     echo "   Handoff may not include beads state (document-based only)"
+   else
+     echo "📍 Git mode: Syncing beads state from git"
+     bd sync    # Pull beads database from .beads/ in git
+   fi
+
+   # Check beads state regardless of mode
+   bd stats                        # Current beads statistics
    bd list --status=in_progress    # Check active work
    bd ready                        # See what's available
    ```
 
-   Compare with handoff's `beads_in_progress` - if different, work may have progressed.
+   Compare with handoff's `beads_in_progress`:
+   - **Git mode**: Should match if no work done since handoff
+   - **Stealth mode**: May differ (beads is local, handoff is document-based)
 
 **think deeply about the context and discoveries documented**
 
