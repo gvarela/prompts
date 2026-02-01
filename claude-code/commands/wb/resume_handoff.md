@@ -55,7 +55,12 @@ const handoffPath = $1 || /* prompt for it */;
    - Git commit reference
    - Uncommitted changes status
 
-3. **Validate handoff currency**:
+3. **Pull latest from remote**:
+   ```bash
+   git pull    # Get latest commits including beads state
+   ```
+
+4. **Validate handoff currency**:
    ```bash
    # Check if we're on the right commit
    git rev-parse HEAD
@@ -64,9 +69,9 @@ const handoffPath = $1 || /* prompt for it */;
    # Warn if different - work may have progressed
    ```
 
-4. **Sync and check beads state**:
+5. **Sync and check beads state**:
    ```bash
-   bd sync                         # Pull latest beads state
+   bd sync                         # Sync beads database from git
    bd stats                        # Compare with handoff's beads state
    bd list --status=in_progress    # Check active work
    bd ready                        # See what's available

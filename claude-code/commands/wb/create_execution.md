@@ -259,35 +259,35 @@ Based on dependency analysis:
 
 ### Tasks
 
-**Note**: Checkboxes below are for DOCUMENTATION only. Actual task status is tracked in beads. See frontmatter `beads_tasks` for task IDs.
+**Note**: Task status is tracked ONLY in beads. The tasks below document WHAT needs to be done (the PLAN). For task STATUS, run `bd list` or check frontmatter `beads_tasks` for IDs.
 
 #### Setup Tasks
-- [ ] Create new directory structure at `path/to/new/` → `[beads:phase1_setup_1]`
-- [ ] Install dependencies: `npm install [package]` → `[beads:phase1_setup_2]`
-- [ ] Set up configuration in `config/feature.json` → `[beads:phase1_setup_3]`
+- Create new directory structure at `path/to/new/` → `[beads:phase1_setup_1]`
+- Install dependencies: `npm install [package]` → `[beads:phase1_setup_2]`
+- Set up configuration in `config/feature.json` → `[beads:phase1_setup_3]`
 
 #### Implementation Tasks
-- [ ] Create [Component] class at `src/component.ts` → `[beads:phase1_impl_1]`
+- Create [Component] class at `src/component.ts` → `[beads:phase1_impl_1]`
   - Implement constructor with dependency injection
   - Add [method1] for [purpose]
   - Add [method2] for [purpose]
-- [ ] Modify [ExistingComponent] at `src/existing.ts:45` → `[beads:phase1_impl_2]`
+- Modify [ExistingComponent] at `src/existing.ts:45` → `[beads:phase1_impl_2]`
   - Add integration with new component
   - Update error handling
 
 #### Testing Tasks
 (Generated from test coverage agent findings)
-- [ ] Write unit tests for [Component] at `tests/component.test.ts` → `[beads:phase1_test_1]`
+- Write unit tests for [Component] at `tests/component.test.ts` → `[beads:phase1_test_1]`
   - Test [scenario 1 from agent]
   - Test [edge case from agent]
   - Test [error condition from agent]
-- [ ] Write integration tests at `tests/integration/feature.test.ts` → `[beads:phase1_test_2]`
+- Write integration tests at `tests/integration/feature.test.ts` → `[beads:phase1_test_2]`
   - Test [integration scenario from agent]
 
 #### Integration Tasks
-- [ ] Connect [Component] to [ExistingSystem] → `[beads:phase1_integration_1]`
-- [ ] Update API endpoint at `api/routes.ts:78` → `[beads:phase1_integration_2]`
-- [ ] Add database migration for new table → `[beads:phase1_integration_3]`
+- Connect [Component] to [ExistingSystem] → `[beads:phase1_integration_1]`
+- Update API endpoint at `api/routes.ts:78` → `[beads:phase1_integration_2]`
+- Add database migration for new table → `[beads:phase1_integration_3]`
 
 ### Success Criteria
 

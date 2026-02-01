@@ -61,18 +61,18 @@ For each implementation task:
 1. RED Phase (Write Failing Test First)
    - Write test that defines the expected behavior
    - Run test to confirm it fails
-   - Corresponds to testing task in tasks.md (tracked in beads)
+   - Tracked in beads as testing task
 
 2. GREEN Phase (Minimal Implementation)
    - Write just enough code to make test pass
    - No optimization, just make it work
    - Run test to confirm it passes
-   - Corresponds to implementation task in tasks.md (tracked in beads)
+   - Tracked in beads as implementation task
 
 3. REFACTOR Phase (Improve Without Breaking)
    - Clean up code while tests stay green
    - Run tests after each change
-   - Close beads issue when satisfied: `bd close [task-id]`
+   - Close beads issue: `bd close [task-id]`
 ```
 
 ## Process Steps

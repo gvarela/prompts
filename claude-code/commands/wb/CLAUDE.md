@@ -223,7 +223,7 @@ Transforms design decisions into detailed phased execution plan with embedded ta
 
 ### `/implement_tasks`
 
-Implements tasks following TDD (Red → Green → Refactor) practices. Respects phase boundaries and checkpoints. Uses TodoWrite for progress tracking.
+Implements tasks following TDD (Red → Green → Refactor) practices. Respects phase boundaries and checkpoints. Uses beads for ALL task tracking.
 
 ### `/update_status`
 

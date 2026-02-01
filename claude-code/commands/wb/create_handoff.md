@@ -112,11 +112,15 @@ Determine the current implementation state:
 ### Step 3: Sync Beads and Check Git State
 
 ```bash
-# Export beads state to JSONL (does NOT auto-commit)
-bd sync
+# Export and commit beads state to preserve session work
+bd sync    # Exports to .beads/issues.jsonl
 
-# Check git status - will show .beads/issues.jsonl as modified
-git status
+# Verify beads state was updated
+git status    # Should show .beads/issues.jsonl as modified
+
+# Commit beads state (part of handoff protocol)
+git add .beads/
+git commit -m "Sync beads state before handoff"
 
 # Check for uncommitted code changes
 git diff
@@ -124,11 +128,11 @@ git diff
 # Note any staged changes
 git diff --staged
 
-# Capture current HEAD for frontmatter AFTER reviewing status
+# Capture current HEAD for frontmatter AFTER committing beads
 git rev-parse HEAD
 ```
 
-Document any uncommitted work and its purpose. Note: `bd sync` exports to JSONL but does not commit - the handoff may include uncommitted beads state.
+Document any uncommitted work and its purpose. Beads state should always be committed as part of the handoff to preserve task status across sessions.
 
 ### Step 4: Create Handoff Document
 
