@@ -47,7 +47,16 @@ bd stats                        # Overall counts
 bd list                         # All issues with status
 bd list --status=in_progress    # Active work
 bd list --status=closed         # Completed work
+
+# Auto-detect beads mode
+if git check-ignore -q .beads/ 2>/dev/null; then
+  echo "📍 Stealth mode: Beads state local-only"
+else
+  echo "📍 Git mode: Beads state in git"
+fi
 ```
+
+**Note**: Beads mode doesn't affect status updates. Both modes have same beads state, just different persistence mechanisms.
 
 Check tasks.md for beads phase IDs:
 
@@ -294,6 +303,29 @@ Present summary:
 **Next Steps**:
 [Contextual suggestions based on new status]
 ```
+
+### Step 8: Sync Beads State
+
+After updating status, sync beads state:
+
+```bash
+bd sync    # Export beads to .beads/issues.jsonl
+
+# In git mode, commit the beads state if needed
+if ! git check-ignore -q .beads/ 2>/dev/null; then
+  if git diff --quiet .beads/ 2>/dev/null; then
+    echo "No beads changes to commit"
+  else
+    git add .beads/
+    git commit -m "Sync beads state after status update"
+  fi
+fi
+```
+
+**Why this matters**:
+- **Stealth mode**: Keeps local beads database in sync with .beads/ files
+- **Git mode**: Persists beads state to git for cross-machine sync
+- Both modes: Ensures beads database is up-to-date
 
 ## Status Transition Logic
 

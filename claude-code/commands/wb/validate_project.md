@@ -132,6 +132,30 @@ Check beads integration and state:
 # Verify beads is initialized
 bd doctor
 
+# Auto-detect and validate beads mode
+if git check-ignore -q .beads/ 2>/dev/null; then
+  echo "📍 Stealth mode detected"
+
+  # Validate stealth mode setup
+  if grep -q "^\.beads/" .git/info/exclude 2>/dev/null; then
+    echo "✅ Stealth mode correctly configured (.beads/ in .git/info/exclude)"
+  else
+    echo "⚠️  WARNING: .beads/ is gitignored but not in .git/info/exclude"
+    echo "   This might be via .gitignore (committed) instead of stealth mode"
+    echo "   Run 'bd init --stealth' to properly configure stealth mode"
+  fi
+else
+  echo "📍 Git mode detected"
+
+  # Validate git mode setup
+  if git ls-files .beads/issues.jsonl >/dev/null 2>&1; then
+    echo "✅ Git mode correctly configured (.beads/ tracked in git)"
+  else
+    echo "⚠️  WARNING: .beads/ exists but not tracked in git"
+    echo "   Either add .beads/ to git OR switch to stealth mode"
+  fi
+fi
+
 # Check beads stats
 bd stats
 

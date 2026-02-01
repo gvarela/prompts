@@ -149,6 +149,24 @@ Then run `/wb:create_execution` to set up beads issues for all tasks.
 
 Stop and wait for user to initialize beads before proceeding.
 
+#### Detect Beads Mode
+
+```bash
+# Auto-detect: stealth mode vs git mode
+if git check-ignore -q .beads/ 2>/dev/null; then
+  echo "📍 Stealth mode: Beads state is local-only"
+  echo "   Tasks tracked in beads but .beads/ not committed to git"
+else
+  echo "📍 Git mode: Beads state tracked in git"
+  echo "   Tasks persist across sessions via git commits"
+fi
+```
+
+**Mode awareness**:
+- Both modes work identically within a session
+- **Stealth**: After `bd sync`, beads state stays local (no git commit)
+- **Git**: After `bd sync`, commit .beads/ to persist across machines
+
 #### Verify Beads Tracking Configuration
 
 Check that tasks.md frontmatter has beads tracking:
@@ -460,10 +478,20 @@ After phase completion and verification:
    - [YYYY-MM-DD] Phase [N] complete: [key learnings, deviations from plan]
    ```
 
-4. **Sync beads to git**:
+4. **Sync beads state**:
    ```bash
-   bd sync    # Persist beads state to remote
+   bd sync    # Export beads to .beads/issues.jsonl
+
+   # In git mode, commit the beads state
+   if ! git check-ignore -q .beads/ 2>/dev/null; then
+     git add .beads/
+     git commit -m "Update beads state after Phase [N]"
+   fi
    ```
+
+   **Mode behavior**:
+   - **Stealth mode**: bd sync exports locally, .beads/ not committed
+   - **Git mode**: bd sync + git commit persists to git for cross-machine sync
 
 ## Handling Mismatches
 

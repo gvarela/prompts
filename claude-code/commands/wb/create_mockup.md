@@ -269,17 +269,23 @@ based_on: [similar feature from research]
 
 ## Open Questions
 
-Track in beads to ensure resolution before finalizing:
+UI questions are tracked in beads, NOT in this document.
 
-| Question | Beads ID | Blocks |
-|----------|----------|--------|
-| [Question needing resolution] | `[id]` | finalization |
+**To add a UI question**:
 
 ```bash
-# Create beads issues for UI questions:
-bd create "UI Q: [brief question]" --type=task --priority=2 \
-  -d "From mockup v001. Blocks: [what can't proceed]"
+bd create "UI Q: [your question]" --type=task --priority=2 \
+  -d "From mockup v[version]. Blocks: [what can't proceed without answer]"
+# → Returns issue ID (e.g., prompts-abc)
 ```
+
+**Active questions** (reference only, beads is source of truth):
+
+Use `bd list --status=open | grep "UI Q:"` to see all open UI questions, or reference by ID:
+- `[id]`: [Brief question summary] - blocks finalization
+- `[id]`: [Brief question summary] - blocks [what it blocks]
+
+To see full question details: `bd show [id]`
 ````
 
 Create `mockups/v001/decisions.md`:
