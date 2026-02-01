@@ -123,6 +123,32 @@ After reading all documentation, synthesize:
 
 **CRITICAL**: Use beads for ALL task tracking (phases AND granular tasks). Never use TaskCreate/TaskUpdate or markdown checkboxes.
 
+#### Verify Beads is Initialized
+
+First, check that beads is working:
+
+```bash
+bd doctor    # Check beads health
+```
+
+**If beads is not initialized or has errors**:
+
+```
+⚠️ Beads Not Initialized
+
+Beads is required for task tracking in the wb workflow.
+
+To initialize beads for this project:
+```bash
+cd [project-root]
+bd init
+```
+
+Then run `/wb:create_execution` to set up beads issues for all tasks.
+```
+
+Stop and wait for user to initialize beads before proceeding.
+
 #### Verify Beads Tracking Configuration
 
 Check that tasks.md frontmatter has beads tracking:
@@ -140,7 +166,7 @@ beads_tasks:
   # ... all tasks
 ```
 
-**If beads tracking is missing**: Tell user "Beads tracking not configured. Run `/wb:create_execution` to set up beads issues for all tasks."
+**If frontmatter is missing beads tracking**: Tell user "Beads tracking not configured. Run `/wb:create_execution` to set up beads issues for all tasks."
 
 #### Find Available Work
 
@@ -325,9 +351,9 @@ npm test path/to/test1.spec.ts path/to/test2.test.ts
 
 **⛔ CHECKPOINT: Phase [N] Complete**
 
-When all phase tasks are complete and automated verification passes:
+Complete these steps IN ORDER before proceeding to next phase:
 
-#### Verify All Phase Tasks Closed
+#### 1. Verify All Phase Tasks Closed
 
 ```bash
 # Check the phase milestone to see blocking tasks
@@ -340,54 +366,73 @@ bd list --status=closed | grep "phase[N]"
 bd list --status=in_progress
 ```
 
-**All phase tasks must be closed** before closing the phase milestone.
+**Requirement**: All phase task beads issues must be closed.
 
-#### Close Phase Milestone
+#### 2. Run Automated Verification
+
+```bash
+# Adapt these to actual commands from tasks.md
+make test           # or npm test, go test ./..., pytest
+make lint           # or npm run lint, golangci-lint run
+make typecheck      # or npm run typecheck, go build ./...
+make build          # or npm run build, go build
+```
+
+**Requirement**: All automated checks must pass.
+
+#### 3. Request Manual Verification
+
+Present manual verification checklist to user:
+
+```
+✅ Phase [N] Automated Verification Complete
+
+**Automated checks passed:**
+- ✅ All tests passing: [test command]
+- ✅ Linting clean: [lint command]
+- ✅ Build successful: [build command]
+
+**Beads state:**
+- ✅ All Phase [N] tasks closed: [list task IDs]
+
+**Manual verification required:**
+
+Please perform the following manual checks from design.md:
+
+1. [Manual verification item 1]
+2. [Manual verification item 2]
+3. [Manual verification item 3]
+
+Reply when manual verification is complete and I'll close the phase milestone.
+```
+
+**Requirement**: Wait for user confirmation before proceeding.
+
+#### 4. Close Phase Milestone
+
+**ONLY after user confirms manual verification**, close the milestone:
 
 ```bash
 bd close [phase-milestone-id] --reason "Phase [N] complete: [summary]. All tasks closed, automated verification passed, manual verification confirmed."
 bd ready  # Check what's now unblocked (next phase milestone tasks)
 ```
 
-#### Report Completion
+#### 5. Report Completion
 
 ```
-✅ Phase [N] Implementation Complete
-
-**Automated verification passed:**
-
-- ✅ All tests passing: [test command]
-- ✅ Linting clean: [lint command]
-- ✅ Build successful: [build command]
-- ✅ [Other automated checks]
+✅ Phase [N] Complete
 
 **Beads tracking**:
-- ✅ All Phase [N] tasks closed: [list task IDs]
 - ✅ Phase [N] milestone closed: [phase-milestone-id]
 - 🔓 Unblocked: [next-phase-milestone-id] and its initial tasks
 
-**Ready for manual verification:**
-
-Please perform the following manual checks from the design:
-
-1. [Manual verification item 1]
-2. [Manual verification item 2]
-3. [Manual verification item 3]
-
-Once manual verification is complete, I can proceed to Phase [N+1].
-
 **Progress Summary:**
-
-- Phase [N] tasks: [X] tasks closed
+- Phase [N]: [X] tasks completed
 - Next phase: [Y] tasks available (run `bd ready` to see)
 - Files modified: [count] code files, [count] test files
 
+Ready to proceed to Phase [N+1].
 ```
-
-Do NOT close the phase milestone until:
-1. All phase task beads issues are closed
-2. Automated verification passes
-3. Manual verification confirmed by user
 
 ### Step 7: Update Status
 

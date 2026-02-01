@@ -206,13 +206,21 @@ Based on dependency analysis:
 
 ## Progress Overview
 
-| Phase | Status | Tasks | Progress |
-|-------|--------|-------|----------|
-| Phase 1: [Name] | 🔄 In Progress | 0/[Y] | 0% |
-| Phase 2: [Name] | ⏸️ Not Started | 0/[Y] | 0% |
-| Phase 3: [Name] | ⏸️ Not Started | 0/[Y] | 0% |
+Progress is tracked in beads. To check current status:
 
-**Overall Progress**: 0/[total] tasks (0%)
+```bash
+bd stats                    # Overall project statistics
+bd list --status=closed     # See completed tasks
+bd list --status=in_progress # See active work
+bd ready                    # See available work
+```
+
+**Phase status**:
+- Phase 1: See beads milestone `[phase1-milestone-id]` - depends on [X] tasks
+- Phase 2: See beads milestone `[phase2-milestone-id]` - depends on [Y] tasks
+- Phase 3: See beads milestone `[phase3-milestone-id]` - depends on [Z] tasks
+
+Use `bd show [milestone-id]` to see which tasks block each phase milestone.
 
 ---
 
@@ -375,9 +383,15 @@ Move completed tasks here weekly to keep active list focused.
 ## 🚧 Blockers & Notes
 
 ### Current Blockers
-| Blocker | Impact | Action | Owner | Due Date |
-|---------|--------|--------|-------|----------|
-| None | - | - | - | - |
+
+Blockers are tracked in beads. To see current blockers:
+
+```bash
+bd blocked    # Show all blocked issues and what blocks them
+```
+
+For reference, recently resolved blockers can be noted here:
+- [Date]: [Brief description] - resolved by [solution]
 
 ### Implementation Notes
 - [Important discovery during implementation]

@@ -309,18 +309,23 @@ This pattern is also used in:
 
 ## Open Questions
 
-[Any areas that need further investigation - track in beads to ensure resolution]
+Questions that require resolution before proceeding are tracked in beads, NOT in this document.
 
-| Question | Beads ID | Blocks |
-|----------|----------|--------|
-| [Specific thing that needs clarification] | `[id]` | design decisions about [area] |
-| [Area that requires more research] | `[id]` | [what it blocks] |
+**To add a question**:
 
 ```bash
-# Create beads issues for questions that block progress:
-bd create "Q: [brief question]" --type=task --priority=2 \
-  -d "From research. Blocks: [what can't proceed without answer]"
+bd create "Q: [your question]" --type=task --priority=2 \
+  -d "Research question. Blocks: [what can't proceed without this answer]"
+# → Returns issue ID (e.g., prompts-abc)
 ```
+
+**Active questions** (reference only, beads is source of truth):
+
+Use `bd list --status=open` to see all open questions, or reference by ID:
+- `[id]`: [Brief question summary] - blocks design decisions about [area]
+- `[id]`: [Brief question summary] - blocks [what it blocks]
+
+To see full question details: `bd show [id]`
 
 ## Next Steps
 
