@@ -17,42 +17,61 @@ This directory contains hooks that run automatically during Claude Code sessions
 
 ## Installation
 
-### Automatic (via install script)
+### Automatic (Recommended)
 
-Run the install script which makes hooks executable:
+Run the install script which:
+1. Installs hooks to `~/.claude/hooks/` (global) or `<project>/.claude/hooks/` (project)
+2. Offers to configure the SessionStart hook in your settings.json
+3. Makes hooks executable
 
 ```bash
+# Global installation (recommended for wb commands)
 ./scripts/install-commands --claude
+
+# Project-specific installation
+./scripts/install-commands --claude --project /path/to/project
 ```
 
-### Project-Level (Committed)
+The script will prompt you to configure the SessionStart hook automatically.
 
-The hook is already configured in `.claude/settings.json` (committed), so anyone cloning this repo gets it automatically.
+### Manual Installation
 
-### User-Level (Optional)
+If you prefer manual setup:
 
-To use this hook across all your projects, add to `~/.claude/settings.json`:
+1. **Copy hook script** to `~/.claude/hooks/`:
+   ```bash
+   mkdir -p ~/.claude/hooks
+   cp .claude/hooks/setup-beads-mode.sh ~/.claude/hooks/
+   chmod +x ~/.claude/hooks/setup-beads-mode.sh
+   ```
 
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./.claude/hooks/setup-beads-mode.sh",
-            "timeout": 5,
-            "statusMessage": "Detecting beads mode"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
+2. **Configure in settings.json**:
+   - For global use: Edit `~/.claude/settings.json`
+   - For project use: Edit `<project>/.claude/settings.json`
 
-**Note**: User-level config only works if you have this hook script in your project's `.claude/hooks/` directory.
+   Add this configuration:
+   ```json
+   {
+     "hooks": {
+       "SessionStart": [
+         {
+           "hooks": [
+             {
+               "type": "command",
+               "command": "./.claude/hooks/setup-beads-mode.sh",
+               "timeout": 5,
+               "statusMessage": "Detecting beads mode"
+             }
+           ]
+         }
+       ]
+     }
+   }
+   ```
+
+### In This Repo
+
+The hook is pre-configured in `.claude/settings.json` (committed), so anyone working in this prompts repo gets it automatically.
 
 ## Beads Mode Explained
 

@@ -198,6 +198,112 @@ ensure_directory() {
     print_success "Created directory: $dir"
 }
 
+# Function to configure SessionStart hook in settings.json
+configure_sessionstart_hook() {
+    local settings_file=$1
+    local scope=$2
+
+    # Check if file exists and has the hook already
+    if [ -f "$settings_file" ]; then
+        if grep -q "setup-beads-mode.sh" "$settings_file" 2>/dev/null; then
+            print_info "SessionStart hook already configured in settings"
+            return 0
+        fi
+    fi
+
+    # Offer to configure automatically
+    print_info "SessionStart hook not configured in $(basename "$settings_file")"
+    echo
+    if [ "$SKIP_CONFIRM" = false ]; then
+        echo "This hook auto-detects beads mode (stealth vs git) and is used by wb commands."
+        read -p "Configure SessionStart hook automatically? (y/n) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            print_info "Skipped. You can configure it manually later (see .claude/hooks/README.md)"
+            return 0
+        fi
+    fi
+
+    # Create or update settings file
+    local temp_file
+    temp_file=$(mktemp)
+
+    if [ -f "$settings_file" ] && [ -s "$settings_file" ]; then
+        # File exists and is not empty - need to merge
+        # Check if it has a hooks section already
+        if grep -q '"hooks"' "$settings_file" 2>/dev/null; then
+            print_warning "settings.json already has a hooks section - manual merge required"
+            print_info "Add this to your hooks.SessionStart array in $settings_file:"
+            cat << 'EOF'
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/setup-beads-mode.sh",
+            "timeout": 5,
+            "statusMessage": "Detecting beads mode"
+          }
+        ]
+      }
+EOF
+            rm "$temp_file"
+            return 0
+        else
+            # Add hooks section to existing file
+            # Remove closing brace, add hooks, add closing brace
+            head -n -1 "$settings_file" > "$temp_file"
+            cat >> "$temp_file" << 'EOF'
+  ,
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/setup-beads-mode.sh",
+            "timeout": 5,
+            "statusMessage": "Detecting beads mode"
+          }
+        ]
+      }
+    ]
+  }
+}
+EOF
+        fi
+    else
+        # Create new file
+        cat > "$temp_file" << 'EOF'
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/hooks/setup-beads-mode.sh",
+            "timeout": 5,
+            "statusMessage": "Detecting beads mode"
+          }
+        ]
+      }
+    ]
+  }
+}
+EOF
+    fi
+
+    # Backup existing file if it exists
+    if [ -f "$settings_file" ]; then
+        cp "$settings_file" "${settings_file}.backup"
+        print_info "Backed up existing settings to ${settings_file}.backup"
+    fi
+
+    # Move temp file to settings file
+    mv "$temp_file" "$settings_file"
+    print_success "Configured SessionStart hook in $(basename "$settings_file")"
+}
+
 # Function to install commands to a target directory
 install_to_target() {
     local target_dir=$1
@@ -508,11 +614,71 @@ if [ "$INSTALL_CLAUDE" = true ]; then
     fi
     echo
 
-    # Make hooks executable
-    print_info "Ensuring hooks are executable..."
+    # Install hooks
+    print_info "Installing Claude Code Hooks..."
     if [ -d "$REPO_ROOT/.claude/hooks" ]; then
-        chmod +x "$REPO_ROOT/.claude/hooks"/*.sh 2>/dev/null || true
-        print_success "Hooks are executable"
+        local hooks_target
+        if [ "$SCOPE" = "global" ]; then
+            hooks_target="$HOME/.claude/hooks"
+        else
+            hooks_target="${PROJECT_PATH}/.claude/hooks"
+        fi
+
+        # Ensure hooks directory exists
+        if ! ensure_directory "$hooks_target" "$SCOPE"; then
+            print_warning "Failed to create hooks directory, skipping hooks installation"
+        else
+            local installed_hooks=0
+            local skipped_hooks=0
+
+            # Install each hook script
+            for hook_file in "$REPO_ROOT/.claude/hooks"/*.sh; do
+                if [ -f "$hook_file" ]; then
+                    local hook_name
+                    hook_name=$(basename "$hook_file")
+                    local target_hook="$hooks_target/$hook_name"
+
+                    # Check if symlink already exists and points to correct location
+                    if [ -L "$target_hook" ]; then
+                        local current_target
+                        current_target=$(readlink "$target_hook")
+                        if [ "$current_target" = "$hook_file" ]; then
+                            print_info "  $hook_name (already installed)"
+                            ((skipped_hooks++))
+                            continue
+                        else
+                            print_warning "  $hook_name (updating symlink)"
+                            rm "$target_hook"
+                        fi
+                    elif [ -e "$target_hook" ]; then
+                        print_warning "  $hook_name (file exists, skipping)"
+                        ((skipped_hooks++))
+                        continue
+                    fi
+
+                    # Create symlink and make executable
+                    ln -s "$hook_file" "$target_hook"
+                    chmod +x "$hook_file"
+                    print_success "  $hook_name"
+                    ((installed_hooks++))
+                fi
+            done
+
+            if [ $installed_hooks -gt 0 ] || [ $skipped_hooks -gt 0 ]; then
+                print_success "Hooks: Installed $installed_hooks, skipped $skipped_hooks"
+                echo
+
+                # Configure SessionStart hook
+                local settings_file
+                if [ "$SCOPE" = "global" ]; then
+                    settings_file="$HOME/.claude/settings.json"
+                else
+                    settings_file="${PROJECT_PATH}/.claude/settings.json"
+                fi
+
+                configure_sessionstart_hook "$settings_file" "$SCOPE"
+            fi
+        fi
     fi
     echo
 fi
@@ -560,8 +726,10 @@ if [ "$INSTALL_CLAUDE" = true ]; then
     echo "  • Test Claude Code commands with: /wb:create_project test-feature"
     if [ "$SCOPE" = "global" ]; then
         echo "  • Commands available in all projects using Claude Code"
+        echo "  • Hooks installed to ~/.claude/hooks/ (beads mode auto-detection)"
     else
         echo "  • Commands available in this project only"
+        echo "  • Hooks installed to project .claude/hooks/"
     fi
 fi
 
