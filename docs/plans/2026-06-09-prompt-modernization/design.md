@@ -2,7 +2,7 @@
 project: prompt-modernization
 ticket: prompts-fkz
 created: 2026-06-09
-status: draft
+status: ready
 last_updated: 2026-06-09
 git_commit: db40dea
 git_branch: modernize-2.0
@@ -10,6 +10,7 @@ repository: workbench
 designer: gabe@vare.la
 depends_on: research.md
 design_approach: mechanism-first-trims-last
+status_note: approved via /wb:create_execution invocation 2026-06-09
 ---
 
 # Design: wb Prompt Modernization
