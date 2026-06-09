@@ -2,7 +2,7 @@
 
 Error catalogs and specs consulted at specific steps. Read the relevant section in full when its step directs you here; match its structure exactly.
 
-## Error Handling Catalog (Step 5 / Step 6)
+## Error Handling Catalog
 
 ### Invalid Transitions
 

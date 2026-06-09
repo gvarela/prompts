@@ -122,7 +122,7 @@ Determine the current implementation state:
 ```bash
 # Beads auto-flushes .beads/issues.jsonl after mutations — nothing to run
 
-# Mode semantics: see docs/reference/beads-mode.md ($BEADS_MODE set by SessionStart hook)
+# Mode semantics: see beads-mode.md in this plugin's docs/reference/ ($BEADS_MODE set by SessionStart hook)
 if [ "$BEADS_MODE" != "stealth" ]; then
   # Git mode: commit beads state (part of handoff protocol)
   git status    # Should show .beads/issues.jsonl as modified

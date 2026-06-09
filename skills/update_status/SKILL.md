@@ -55,7 +55,7 @@ bd list                         # All issues with status
 bd list --status=in_progress    # Active work
 bd list --status=closed         # Completed work
 
-# Mode semantics: see docs/reference/beads-mode.md ($BEADS_MODE set by SessionStart hook)
+# Mode semantics: see beads-mode.md in this plugin's docs/reference/ ($BEADS_MODE set by SessionStart hook)
 ```
 
 **Note**: Beads mode doesn't affect status updates — only persistence.
