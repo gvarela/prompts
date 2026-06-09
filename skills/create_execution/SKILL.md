@@ -631,7 +631,7 @@ This project uses beads for ALL task tracking across sessions.
 **Essential Commands**:
 - `bd ready` - See what's ready to work on (no blockers)
 - `bd show [id]` - View task details and dependencies
-- `bd update [id] --status in_progress` - Claim a task
+- `bd update [id] --claim` - Claim a task
 - `bd close [id]` - Complete a task
 - `bd blocked` - See what's currently blocked
 - `bd list --status=in_progress` - See your active work
@@ -689,7 +689,7 @@ Next steps:
 1. Review the execution plan in tasks.md (documentation)
 2. Run `bd ready` to see available work (first tasks with no dependencies)
 3. Run `/implement_tasks` to begin implementation with TDD
-4. Track ALL progress with beads (`bd update [id] --status in_progress`, `bd close [id]`)
+4. Track ALL progress with beads (`bd update [id] --claim`, `bd close [id]`)
 5. Never use markdown checkboxes for status - beads is source of truth
 ```
 
@@ -779,7 +779,3 @@ Tasks should be:
 3. **⛔ BARRIER 3**: Before writing tasks.md - verify no placeholders
 4. **Step 5**: Create beads issues for phase tracking
 5. **⛔ CHECKPOINT**: Between phases - require human verification
-
-## Configuration
-
-This command creates an execution plan from approved research and design documents. It leverages Claude Code's agent spawning capabilities to analyze dependencies, test coverage, and similar patterns.

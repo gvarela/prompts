@@ -131,7 +131,7 @@ const tasksFile = `${projectDir}/tasks.md`;
 bd show [phase-id-from-handoff]
 
 # If phase was released (no longer in_progress), reclaim it
-bd update [phase-id] --status in_progress
+bd update [phase-id] --claim
 
 # If phase was completed by another session, find next work
 bd ready
@@ -149,7 +149,7 @@ bd show [issue-id-from-handoff]
 bd ready
 
 # Claim the next task
-bd update [task-id] --status in_progress
+bd update [task-id] --claim
 ```
 
 **Check for uncommitted changes** mentioned in handoff:
@@ -421,15 +421,3 @@ Options:
 2. Checkout handoff commit: git checkout [commit]
 3. Create new handoff from current state
 ```
-
-## Configuration
-
-This command restores complete context from handoff documents. It's essential for maintaining continuity across sessions and preventing loss of discovered knowledge.
-
-Best used:
-- When resuming incomplete work
-- After session timeout or limit
-- When switching between models
-- For collaborative handoffs between team members
-
-The resume process ensures no context is lost and work continues efficiently without repeating discoveries or solving already-solved problems.

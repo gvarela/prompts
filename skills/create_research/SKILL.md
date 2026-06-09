@@ -420,15 +420,3 @@ Next: Review the research and run `/create_design` when ready to create design d
 1. ⛔ **BARRIER 1**: After reading mentioned files - Do not proceed until ALL files are read
 2. ⛔ **BARRIER 2**: After spawning agents - Wait for ALL agents to complete
 3. ⛔ **BARRIER 3**: Before writing output - Verify no placeholder values
-
-## Configuration
-
-The command accepts the directory path as a parameter:
-
-```
-
-/create_research docs/plans/2025-10-07-my-project
-
-```
-
-Or prompts for it if not provided.

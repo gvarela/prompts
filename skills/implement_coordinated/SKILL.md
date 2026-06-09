@@ -11,6 +11,8 @@ disable-model-invocation: true
 
 You coordinate task implementation from `tasks.md` by spawning worker agents sequentially, each with focused context and fresh context window. This prevents main session context bloat.
 
+**Recommended for**: Long phases with many tasks, sessions where context compaction would be disruptive, or when you want the main window available for monitoring/debugging.
+
 ## Evolution from implement_tasks
 
 This command evolves the original `implement_tasks` with one key improvement:
@@ -268,7 +270,7 @@ bd ready
    - Task Title: ${taskTitle}
    - Task Description: ${taskDescription}
    - Context Package: ${patterns, design, file references}
-   - Beads Commands: bd update [id] --status in_progress, bd close [id]
+   - Beads Commands: bd update [id] --claim, bd close [id]
 
    The worker must follow TDD:
    1. RED: Write failing test
@@ -317,7 +319,7 @@ ${formatTestCommands(contextPackage.testCommands)}
 
 ### 1. Claim the Task
 \`\`\`bash
-bd update ${task.id} --status in_progress
+bd update ${task.id} --claim
 \`\`\`
 
 ### 2. RED Phase - Write Failing Test First
@@ -527,10 +529,11 @@ Same verification process as original `implement_tasks`:
 #### 1. Verify All Phase Tasks Closed
 
 ```bash
-bd show ${phaseMilestoneId}  # Should have no blockers
-bd list --status=closed | grep "phase${phase}"
-bd list --status=in_progress  # Should be empty for this phase
+bd show ${phaseMilestoneId}    # Authoritative: blockedBy must be empty
+bd list --status=in_progress   # Should be empty for this phase
 ```
+
+The milestone's dependency list is the completion check — every phase task blocks the milestone, so an empty `blockedBy` means all tasks are closed. Do not grep titles for phase membership.
 
 **Requirement**: All phase task beads issues must be closed.
 
@@ -800,9 +803,3 @@ Both commands produce identical results. Coordinated version just keeps main ses
 - ❌ **NEVER** proceed without waiting for worker completion
 - ❌ **NEVER** skip worker output aggregation
 - ❌ **NEVER** close phase milestone before manual verification
-
-## Configuration
-
-This command coordinates task implementation using sequential worker agents with focused context. It preserves all disciplines from `implement_tasks` while keeping the main session context clean.
-
-**Recommended for**: Long phases with many tasks, sessions where context compaction would be disruptive, or when you want the main window available for monitoring/debugging.

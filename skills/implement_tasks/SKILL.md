@@ -211,7 +211,7 @@ For each task you work on:
 bd show [task-id]    # See description, dependencies, blockers
 
 # Claim the task
-bd update [task-id] --status in_progress
+bd update [task-id] --claim
 
 # When complete
 bd close [task-id] --reason "Brief description of what was done"
@@ -223,7 +223,7 @@ bd ready
 **Workflow**:
 1. `bd ready` - Find available work
 2. `bd show [id]` - Review task details
-3. `bd update [id] --status in_progress` - Claim it
+3. `bd update [id] --claim` - Claim it
 4. Implement with TDD (Red → Green → Refactor)
 5. `bd close [id]` - Mark complete
 6. `bd ready` - Find next task
@@ -377,11 +377,9 @@ Complete these steps IN ORDER before proceeding to next phase:
 #### 1. Verify All Phase Tasks Closed
 
 ```bash
-# Check the phase milestone to see blocking tasks
+# Check the phase milestone: blockedBy must be empty (authoritative —
+# every phase task blocks the milestone, so empty means all closed)
 bd show [phase-milestone-id]
-
-# Verify all tasks for this phase are closed
-bd list --status=closed | grep "phase[N]"
 
 # Verify nothing is still in progress
 bd list --status=in_progress
@@ -550,7 +548,7 @@ When resuming work (phase = "continue"):
 4. **Continue from next available task**:
    - `bd ready` shows what's available (no blockers)
    - `bd show [task-id]` to review task details
-   - `bd update [task-id] --status in_progress` to claim it
+   - `bd update [task-id] --claim` to claim it
    - Implement with TDD cycle
    - `bd close [task-id]` when complete
    - Trust completed work (closed beads issues) unless tests fail
@@ -605,7 +603,7 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 1. Check beads state: `bd ready` and `bd list --status=in_progress`
 2. Read tasks.md for context (what the plan is)
 3. Choose next task from `bd ready` output
-4. Claim task: `bd update [task-id] --status in_progress`
+4. Claim task: `bd update [task-id] --claim`
 5. Implement with TDD cycle (Red → Green → Refactor)
 6. Close task: `bd close [task-id] --reason "..."`
 7. Check what's unblocked: `bd ready`
@@ -643,7 +641,7 @@ If automated verification fails after implementation:
 - ✅ Follow TDD cycle: Red → Green → Refactor
 - ✅ Read ALL documentation files FULLY first
 - ✅ Use `bd ready` to find available work
-- ✅ Use `bd update [id] --status in_progress` to claim tasks
+- ✅ Use `bd update [id] --claim` to claim tasks
 - ✅ Use `bd close [id]` when tasks complete
 - ✅ Respect phase boundaries and checkpoints
 - ✅ Track modified files for easier testing
@@ -672,8 +670,3 @@ If automated verification fails after implementation:
 1. **⛔ BARRIER 1**: After reading all documentation - full context required
 2. **⛔ BARRIER 2**: After phase completion - all tasks must be done
 3. **⛔ CHECKPOINT**: Between phases - requires human verification
-4. **⛔ BARRIER 3**: Before status update - ensure consistency
-
-## Configuration
-
-This command implements tasks from the structured task list following TDD practices. It uses beads for ALL task tracking (both granular tasks and phase milestones) and provides systematic implementation guidance with TDD discipline.

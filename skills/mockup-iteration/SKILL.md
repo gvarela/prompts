@@ -232,7 +232,7 @@ When user says "finalize" or "ready for design":
 
 ```bash
 # Check for unresolved questions/assumptions:
-bd list --status=open | grep -E "UI Q:|UI Assumption:"
+bd list -n 0 --status=open | grep -E "UI Q:|UI Assumption:"
 ```
 
 If open issues exist:

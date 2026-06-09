@@ -422,14 +422,3 @@ Recommended workflow:
 
 1. **⛔ BARRIER 1**: Read all documentation first
 2. **⛔ BARRIER 2**: Wait for all validation agents
-3. **⛔ BARRIER 3**: Complete all automated checks before report
-
-## Configuration
-
-This command performs comprehensive validation of implemented plans. It can be run by the implementer for self-check or by another person/agent for objective validation.
-
-Best used:
-- After implementation before merge
-- When resuming work to verify state
-- Before deployment to production
-- For quality assurance checks

@@ -324,7 +324,7 @@ bd create "UI Q: [your question]" --type=task --priority=2 \
 
 **Active questions** (reference only, beads is source of truth):
 
-Use `bd list --status=open | grep "UI Q:"` to see all open UI questions, or reference by ID:
+Use `bd list -n 0 --status=open | grep "UI Q:"` to see all open UI questions, or reference by ID:
 - `[id]`: [Brief question summary] - blocks finalization
 - `[id]`: [Brief question summary] - blocks [what it blocks]
 

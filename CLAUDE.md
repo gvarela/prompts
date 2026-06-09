@@ -199,7 +199,7 @@ This repository uses [beads](https://github.com/steveyegge/beads) for task track
 ```bash
 bd ready              # Find available work (no blockers)
 bd show <id>          # View issue details
-bd update <id> --status in_progress  # Claim work
+bd update <id> --claim  # Claim work
 bd close <id>         # Complete work
 # beads auto-flushes .beads/issues.jsonl; commit .beads/ at session end (git mode)
 ```

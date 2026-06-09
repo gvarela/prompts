@@ -73,7 +73,7 @@ Beads helps ensure nothing falls through the cracks during planning:
 
 ```bash
 # Before moving to next phase, check for blockers:
-bd list --status=open | grep -E "Q:|Decide:|Validate:|UI Q:"
+bd list -n 0 --status=open | grep -E "Q:|Decide:|Validate:|UI Q:"
 ```
 
 ### Execution Phase (Phases & Tasks)
@@ -86,7 +86,7 @@ bd init
 ### Execution Workflow
 ```bash
 bd ready                              # Find available work
-bd update [phase-id] --status in_progress  # Claim it
+bd update [phase-id] --claim          # Claim it
 # ... implement ...
 bd close [phase-id] --reason "Done"   # Complete it
 # beads auto-flushes .beads/issues.jsonl; commit .beads/ in git mode

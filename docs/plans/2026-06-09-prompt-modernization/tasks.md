@@ -444,7 +444,10 @@ bd blocked    # live view
 
 ### Implementation Notes
 
-(append discoveries, deviations, and model-hint review decisions here)
+- [2026-06-09] prompts-dzy variance: research listed 5 truncation sites; implementation found and fixed 3 more of the same decision-gating class (update_status counting pipelines ×2, implement_tasks phase-verification grep). Display-only listings deliberately untouched.
+- [2026-06-09] prompts-xou variance: claim-intent sites totaled 14, not 6 — implement_tasks ×5, implement_coordinated ×2, resume_handoff ×2, create_execution ×2 (incl. generated-template text), help ×1, update_status ×1, plus CLAUDE.md and AGENTS.md quick references. All standardized to `--claim`.
+- [2026-06-09] prompts-gz8 variance: the same fragile title-grep existed in implement_tasks Step 6; fixed both. Authoritative check is milestone `blockedBy`.
+- [2026-06-09] prompts-gja: implement_coordinated's unique "Recommended for" guidance relocated to its intro before section deletion.
 
 ---
 

@@ -121,7 +121,7 @@ Examine the files to determine actual state:
    Determine: not-started | in-progress | complete
 
 4. **Progress Calculation**:
-   - Count closed task issues: `bd list --status=closed | wc -l`
+   - Count closed task issues: `bd list -n 0 --status=closed | wc -l`
    - Count total task issues from tasks.md frontmatter `beads_tasks`
    - Identify active phase: check which phase milestone has open tasks
    - Check current work: `bd list --status=in_progress`
@@ -399,7 +399,7 @@ For research and design status (not tracked in beads), use content analysis:
 ### Tasks Detection
 
 **Use beads only**:
-- Count closed issues: `bd list --status=closed | grep -v milestone | wc -l`
+- Count closed issues: `bd list -n 0 --status=closed | grep -v milestone | wc -l`
 - Count total task issues from frontmatter `beads_tasks`
 - Identify active phase: check which phase milestone has open blocking tasks
 - If all task issues closed AND all phase milestones closed → suggest "complete"
@@ -423,7 +423,7 @@ Cannot transition design.md from 'draft' to 'implementing' because:
 Valid next steps:
 1. Complete research first (/create_research)
 2. Move design to 'ready' status once research is complete
-3. Claim a task in beads (`bd update [task-id] --status in_progress`) to begin implementing
+3. Claim a task in beads (`bd update [task-id] --claim`) to begin implementing
 ```
 
 ### Missing Files
@@ -490,13 +490,3 @@ Which would you prefer?
 - Automatically detect current phase from tasks.md
 - Update current_phase based on which phase has active work
 - Don't skip phases - must complete in order
-
-## Configuration
-
-The command accepts the directory path as a parameter:
-
-```
-/update_status docs/plans/2025-10-07-my-project
-```
-
-Or prompts for it if not provided.

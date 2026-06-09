@@ -500,9 +500,3 @@ Typical workflows:
 3. **`/create_handoff`** - Document for next phase
 4. [New session]
 5. `/resume_handoff` - Start Phase N+1
-
-## Configuration
-
-This command creates rich context documents for work continuity. Best used when work spans multiple sessions or needs transfer between different agents/models.
-
-The handoff document is self-contained and includes everything needed to resume work without loss of context or discovered knowledge.

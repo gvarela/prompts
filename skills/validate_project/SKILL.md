@@ -135,34 +135,32 @@ Check beads integration and state:
 bd info
 
 # Check and validate beads mode (set by SessionStart hook)
+# Validation mirrors the hook's own detection: git check-ignore on .beads/
 if [ "$BEADS_MODE" = "stealth" ]; then
   echo "📍 Stealth mode detected"
 
-  # Validate stealth mode setup
-  if grep -q "^\.beads/" .git/info/exclude 2>/dev/null; then
-    echo "✅ Stealth mode correctly configured (.beads/ in .git/info/exclude)"
+  if git check-ignore -q .beads/ 2>/dev/null; then
+    echo "✅ Stealth mode correctly configured (.beads/ is gitignored)"
   else
-    echo "⚠️  WARNING: .beads/ is gitignored but not in .git/info/exclude"
-    echo "   This might be via .gitignore (committed) instead of stealth mode"
+    echo "⚠️  WARNING: BEADS_MODE=stealth but .beads/ is not gitignored"
     echo "   Run 'bd init --stealth' to properly configure stealth mode"
   fi
 else
   echo "📍 Git mode detected"
 
-  # Validate git mode setup
-  if git ls-files .beads/issues.jsonl >/dev/null 2>&1; then
-    echo "✅ Git mode correctly configured (.beads/ tracked in git)"
+  if git check-ignore -q .beads/ 2>/dev/null; then
+    echo "⚠️  WARNING: BEADS_MODE=git but .beads/ is gitignored"
+    echo "   Either un-ignore .beads/ OR switch to stealth mode"
   else
-    echo "⚠️  WARNING: .beads/ exists but not tracked in git"
-    echo "   Either add .beads/ to git OR switch to stealth mode"
+    echo "✅ Git mode correctly configured (.beads/ not gitignored)"
   fi
 fi
 
 # Check beads stats
 bd stats
 
-# Get all beads issues
-bd list
+# Get all beads issues (including closed; unlimited)
+bd list --all -n 0
 
 # Check specific issues from frontmatter
 bd show [epic-id]
@@ -510,19 +508,3 @@ for (const section of sections) {
 ## Synchronization Points
 
 1. **⛔ BARRIER 1**: After reading all files - ensure full context
-2. **⛔ BARRIER 2**: After beads validation - verify all IDs exist
-3. **⛔ BARRIER 3**: Before reporting - organize findings by severity
-
-## Configuration
-
-This command validates project documentation structure and beads integration. It does not modify files unless the user explicitly requests fixes.
-
-**Usage**:
-```
-/wb:validate_project docs/plans/2025-01-08-my-project
-```
-
-**Validation Modes**:
-- Default: Full validation with detailed report
-- Quick: Check only critical errors (future enhancement)
-- Fix: Validate and auto-fix issues (future enhancement)

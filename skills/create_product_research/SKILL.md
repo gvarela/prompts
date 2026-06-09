@@ -524,13 +524,3 @@ Next: Review the research and run `/wb:create_design` when ready.
 2. ⛔ **BARRIER 2**: After spawning research agents — Wait for ALL agents to complete
 3. ⛔ **BARRIER 3**: Before writing output — Verify no placeholder values
 4. ⛔ **BARRIER 4**: After spawning validation agent — Wait for validation to complete
-
-## Configuration
-
-The command accepts the directory path as a parameter:
-
-```
-/wb:create_product_research docs/plans/2025-10-07-my-project
-```
-
-Or prompts for it if not provided.

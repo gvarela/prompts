@@ -50,7 +50,7 @@ When invoked, check for arguments:
 Before starting design, check if research left unresolved questions:
 
 ```bash
-bd list --status=open | grep "Q:"   # Find open questions from research
+bd list -n 0 --status=open | grep "Q:"   # Find open questions from research
 ```
 
 If critical questions block design decisions, resolve them first or document as assumptions.
@@ -474,7 +474,3 @@ Use agent findings to strengthen design:
 3. **⛔ DECISION POINT**: After presenting options - get approach approval
 4. **⛔ BARRIER 3**: Before writing - verify no placeholders
 5. **⛔ APPROVAL GATE**: After writing design - get explicit approval
-
-## Configuration
-
-This command creates design decisions based on validated research. It leverages Claude Code's agent spawning capabilities to verify design approaches and find precedents.
