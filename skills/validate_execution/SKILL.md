@@ -9,6 +9,11 @@ disable-model-invocation: true
 
 Validates that an execution plan was correctly implemented, verifying all success criteria and identifying any deviations, gaps, or issues.
 
+Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
+
+- [sub-agent-prompts.md](sub-agent-prompts.md) — verbatim prompts for the four validation agents spawned in Step 2
+- [templates.md](templates.md) — Validation Report template used in Step 5
+
 ## Purpose
 
 This command provides an objective assessment of implementation completeness by:
@@ -77,78 +82,7 @@ const tasksFile = `${projectDir}/tasks.md`;
 
 **CRITICAL: Sub-agents gather information and return findings. They do NOT write files. YOU (the main agent) will write the validation report after synthesizing their findings.**
 
-```javascript
-// Spawn validation agents concurrently
-Task({
-  description: "Verify code changes",
-  prompt: `Analyze all code changes to verify they match the execution plan.
-
-  From tasks.md, these files should be modified:
-  [List files from tasks.md]
-
-  Check:
-  - Were all listed files actually modified?
-  - Do modifications match specified changes?
-  - Are there unexpected modifications?
-  - Were any planned changes missed?
-
-  Use git diff to compare changes if needed.
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "codebase-analyzer"
-})
-
-Task({
-  description: "Verify test coverage",
-  prompt: `Verify that all tests specified in the plan were implemented.
-
-  From tasks.md, these tests were required:
-  [List test requirements]
-
-  Check:
-  - Do all specified tests exist?
-  - Do they test the right scenarios?
-  - Are there gaps in coverage?
-  - Do all tests pass?
-
-  Run test commands and analyze coverage.
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "general-purpose",
-  model: "sonnet"
-})
-
-Task({
-  description: "Check for regressions",
-  prompt: `Verify no existing functionality was broken.
-
-  Run comprehensive checks:
-  - All existing tests still pass
-  - Build succeeds without warnings
-  - No performance degradation
-  - No breaking changes to APIs
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "general-purpose",
-  model: "haiku"
-})
-
-Task({
-  description: "Analyze patterns and quality",
-  prompt: `Verify implementation follows established patterns.
-
-  From research.md, these patterns should be followed:
-  [List patterns from research]
-
-  Check:
-  - Does new code follow existing patterns?
-  - Are conventions maintained?
-  - Is error handling consistent?
-  - Are there any anti-patterns?
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "pattern-finder",
-  model: "sonnet"
-})
-```
+Read [sub-agent-prompts.md](sub-agent-prompts.md) NOW and spawn the four agents defined there (Verify code changes, Verify test coverage, Check for regressions, Analyze patterns and quality) using their verbatim prompts.
 
 **⛔⛔⛔ BARRIER 2: STOP! Wait for ALL validation agents to complete ⛔⛔⛔**
 
@@ -203,166 +137,18 @@ For each phase in tasks.md:
 
 **⛔ BARRIER 3**: Do not write the report until every automated verification command from Step 3 has been run in this session and its result recorded. The report asserts verification results — unverified claims must not appear in it.
 
-Create a comprehensive validation report:
-
-```markdown
-# Validation Report: [Project Name]
-Generated: [YYYY-MM-DD HH:MM]
-
-## Executive Summary
-
-**Overall Status**: ✅ PASSED | ⚠️ PASSED WITH ISSUES | ❌ FAILED
-
-- Planned Phases: [X]
-- Completed Phases: [Y]
-- Task Completion: [X]/[Y] tasks ([percentage]%)
-- Automated Tests: [PASS/FAIL]
-- Manual Testing Required: YES/NO
-
-## Phase-by-Phase Validation
-
-### Phase 1: [Name]
-**Status**: ✅ Fully Implemented | ⚠️ Partially Implemented | ❌ Not Implemented
-
-#### Completed Tasks
-✅ [Task description] - Verified at `file:line`
-✅ [Task description] - Verified at `file:line`
-
-#### Incomplete/Missing Tasks
-❌ [Task description] - Not found in code
-⚠️ [Task description] - Partially complete (missing X)
-
-#### Success Criteria Results
-
-**Automated Verification**:
-- ✅ Tests pass: `make test` (all 45 tests passing)
-- ✅ Linting clean: `make lint` (no issues)
-- ❌ Build fails: `make build` (error: [specific error])
-
-**Manual Verification Required**:
-- [ ] [Manual test 1 from plan]
-- [ ] [Manual test 2 from plan]
-
-### Phase 2: [Name]
-[Similar structure...]
-
-## Code Quality Analysis
-
-### Pattern Compliance
-- ✅ Follows existing error handling patterns
-- ✅ Uses established naming conventions
-- ⚠️ Inconsistent with logging pattern at `file:line`
-
-### Test Coverage
-- Unit Tests: [X]% coverage ([Y] new tests added)
-- Integration Tests: [X] scenarios covered
-- Missing Tests: [List any gaps]
-
-## Deviations from Plan
-
-### Justified Deviations
-1. **[Description]** at `file:line`
-   - Plan specified: [what plan said]
-   - Actual implementation: [what was done]
-   - Justification: [why it's better]
-
-### Unjustified Deviations
-1. **[Description]** at `file:line`
-   - Should be: [per plan]
-   - Actually is: [current state]
-   - Impact: [consequences]
-
-## Issues and Risks
-
-### Critical Issues (Must Fix)
-- 🔴 [Issue description] - Blocks functionality
-- 🔴 [Issue description] - Security concern
-
-### Non-Critical Issues (Should Fix)
-- 🟡 [Issue description] - Performance impact
-- 🟡 [Issue description] - Maintainability concern
-
-### Potential Risks
-- ⚠️ [Risk description] - Monitor in production
-- ⚠️ [Risk description] - May affect [component]
-
-## Recommendations
-
-### Immediate Actions Required
-1. Fix build error at `file:line`
-2. Add missing test for [scenario]
-3. Complete [incomplete task]
-
-### Before Deployment
-1. Perform manual testing checklist below
-2. Review with team lead
-3. Update documentation
-
-### Future Improvements (Not Blocking)
-1. Consider refactoring [component] for clarity
-2. Add additional error handling at [location]
-
-## Manual Testing Checklist
-
-Copy this checklist for manual verification:
-
-### User Interface
-- [ ] Feature appears correctly in UI
-- [ ] All user interactions work as expected
-- [ ] Error states display properly
-- [ ] Performance is acceptable
-
-### Integration
-- [ ] Works with existing [component]
-- [ ] Data flows correctly through system
-- [ ] No regressions in related features
-
-### Edge Cases
-- [ ] Handles empty/null inputs
-- [ ] Works with maximum data size
-- [ ] Graceful degradation on errors
-
-## Appendix: Validation Evidence
-
-### Git Changes Summary
-```bash
-Files changed: [X]
-Insertions: +[Y] lines
-Deletions: -[Z] lines
-```
-
-### Test Execution Logs
-
-[Include key excerpts from test runs]
-
-### Agent Findings
-
-[Include relevant findings from validation agents]
-
----
-
-## Validation Completed
-
-**Next Steps**:
-
-1. Address any critical issues identified
-2. Perform manual testing using checklist above
-3. Get approval from reviewer
-4. Deploy with confidence
-
-**Validator Notes**:
-[Any additional context or observations about the implementation]
-
-```
+Read [templates.md](templates.md) NOW and create the validation report using its "Validation Report Template" — match its structure exactly.
 
 ### Step 6: Update Documentation
 
 If validation passes with minor issues:
+
 1. Update tasks.md to reflect actual completion status
 2. Document any approved deviations
 3. Note lessons learned for future projects
 
 If validation fails:
+
 1. Clearly mark which tasks need completion
 2. Provide specific guidance for fixes
 3. Re-run validation after fixes
@@ -380,18 +166,21 @@ If validation fails:
 ### What Makes a PASS vs FAIL
 
 **✅ PASS**:
+
 - All critical functionality implemented
 - All automated tests pass
 - No blocking issues
 - Ready for manual testing
 
 **⚠️ PASS WITH ISSUES**:
+
 - Core functionality works
 - Some non-critical issues exist
 - Can be deployed with known limitations
 - Issues documented for future work
 
 **❌ FAIL**:
+
 - Critical functionality missing
 - Tests failing
 - Blocking issues present
@@ -400,6 +189,7 @@ If validation fails:
 ### Common Validation Checks
 
 Always verify:
+
 - [ ] All phases marked complete actually are
 - [ ] All checked tasks have corresponding code
 - [ ] All tests pass consistently
@@ -412,6 +202,7 @@ Always verify:
 ## Relationship to Other Commands
 
 Recommended workflow:
+
 1. `/create_research` - Document current state
 2. `/create_design` - Decide what to build
 3. `/create_execution` - Plan how to build

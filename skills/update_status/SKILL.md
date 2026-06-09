@@ -9,6 +9,11 @@ disable-model-invocation: true
 
 Intelligently updates status across all project documentation files (research.md, design.md, tasks.md) based on actual progress, ensuring consistency and proper state transitions.
 
+Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
+
+- [templates.md](templates.md) — frontmatter update blocks and confirmation message template
+- [reference.md](reference.md) — error handling catalog
+
 ## CRITICAL: Status Update Philosophy
 
 - **READ BEFORE WRITE**: Always read ALL documentation files FULLY before making any updates
@@ -199,62 +204,9 @@ Do you want to proceed with these updates? (yes/no)
 
 **⛔ BARRIER 2**: Wait for user confirmation before proceeding
 
-After user confirms, update all files:
+After user confirms, update all files.
 
-#### Update research.md
-
-Update frontmatter:
-
-```yaml
-status: [new-status]
-last_updated: [YYYY-MM-DD]
-git_commit: [current-commit]
-git_branch: [current-branch]
-```
-
-#### Update design.md
-
-Update frontmatter:
-
-```yaml
-status: [new-status]
-last_updated: [YYYY-MM-DD]
-git_commit: [current-commit]
-git_branch: [current-branch]
-```
-
-If transitioning to `implementing`, add implementation notes:
-
-```markdown
-## Implementation Notes
-
-Started: [YYYY-MM-DD]
-- Implementation began on phase [N]
-- [Any relevant context about starting implementation]
-```
-
-#### Update tasks.md
-
-Update frontmatter:
-
-```yaml
-status: [new-status]
-last_updated: [YYYY-MM-DD]
-current_phase: [calculated-phase-number]
-completed_tasks: [actual-count]
-git_commit: [current-commit]
-git_branch: [current-branch]
-```
-
-Update Progress Overview table to reflect actual counts.
-
-Add implementation notes if status changes:
-
-```markdown
-### Implementation Notes
-- Status updated to [new-status] on [YYYY-MM-DD]
-- [Reason for status change]
-```
+**Read [templates.md](templates.md) NOW** — its "Frontmatter Update Blocks" section has the exact YAML and markdown structures for research.md, design.md, and tasks.md. Use them verbatim.
 
 #### Reconcile Beads State
 
@@ -283,28 +235,7 @@ After all updates:
 
 ### Step 7: Confirm Completion
 
-Present summary:
-
-```
-✅ Status updated successfully!
-
-📁 Project: [project-name]
-📊 Updates Applied:
-
-**research.md**: [old] → [new]
-**design.md**: [old] → [new]
-**tasks.md**: [old] → [new]
-  - Phase: [number]
-  - Progress: [X]/[Y] tasks ([percentage]%)
-
-**Metadata Updated**:
-- Last updated: [YYYY-MM-DD]
-- Git commit: [commit-hash]
-- Git branch: [branch-name]
-
-**Next Steps**:
-[Contextual suggestions based on new status]
-```
+**Read [templates.md](templates.md) NOW** — its "Confirmation Message Template" section has the exact structure to present. Use it verbatim with values filled in.
 
 ### Step 8: Persist Beads State
 
@@ -323,6 +254,7 @@ fi
 ```
 
 **Why this matters**:
+
 - **Stealth mode**: beads state is auto-flushed locally; nothing to commit
 - **Git mode**: Persists beads state to git for cross-machine sync
 - Both modes: Ensures beads database is up-to-date
@@ -399,6 +331,7 @@ For research and design status (not tracked in beads), use content analysis:
 ### Tasks Detection
 
 **Use beads only**:
+
 - Count closed issues: `bd list -n 0 --status=closed | grep -v milestone | wc -l`
 - Count total task issues from frontmatter `beads_tasks`
 - Identify active phase: check which phase milestone has open blocking tasks
@@ -409,55 +342,7 @@ For research and design status (not tracked in beads), use content analysis:
 
 ## Error Handling
 
-### Invalid Transitions
-
-If user requests invalid transition:
-
-```
-⚠️ Invalid Status Transition
-
-Cannot transition design.md from 'draft' to 'implementing' because:
-- research.md is still in 'draft' status
-- No beads task issues have been claimed or completed
-
-Valid next steps:
-1. Complete research first (/create_research)
-2. Move design to 'ready' status once research is complete
-3. Claim a task in beads (`bd update [task-id] --claim`) to begin implementing
-```
-
-### Missing Files
-
-If files don't exist:
-
-```
-❌ Missing Documentation Files
-
-Expected files in [directory]:
-- research.md [✓/✗]
-- design.md [✓/✗]
-- tasks.md [✓/✗]
-
-Run /create_project first to initialize the documentation structure.
-```
-
-### Inconsistent State
-
-If files have conflicting status:
-
-```
-⚠️ Inconsistent Status Detected
-
-Current state:
-- design.md: implementing
-- tasks.md: not-started (0 tasks completed)
-
-This is inconsistent. Suggesting correction:
-- Set design.md back to 'ready' OR
-- Start checking off tasks in tasks.md
-
-Which would you prefer?
-```
+**Read [reference.md](reference.md) NOW** — its "Error Handling Catalog" section has the verbatim response blocks for Invalid Transitions, Missing Files, and Inconsistent State.
 
 ## Important Notes
 

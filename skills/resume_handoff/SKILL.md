@@ -9,9 +9,15 @@ disable-model-invocation: true
 
 Resumes work from a handoff document, restoring context and continuing implementation where the previous session left off.
 
+Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
+
+- [templates.md](templates.md) — output templates for resumption reports
+- [reference.md](reference.md) — error handling catalog
+
 ## Purpose
 
 This command:
+
 - Restores full context from handoff document
 - Reads all referenced project files
 - Understands problems solved and blockers
@@ -27,6 +33,7 @@ When invoked, check for arguments:
    - Begin resumption process immediately
 
 2. **If no arguments**:
+
    ```
    I'll resume work from a handoff document. Please provide:
    1. Path to the handoff document (e.g., docs/plans/project/handoff-YYYY-MM-DD-HH-MM.md)
@@ -58,11 +65,13 @@ const handoffPath = $1 || /* prompt for it */;
    - Uncommitted changes status
 
 3. **Pull latest from remote**:
+
    ```bash
    git pull    # Get latest commits (and beads state if in git mode)
    ```
 
 4. **Validate handoff currency**:
+
    ```bash
    # Check if we're on the right commit
    git rev-parse HEAD
@@ -72,6 +81,7 @@ const handoffPath = $1 || /* prompt for it */;
    ```
 
 5. **Sync and check beads state**:
+
    ```bash
    # Check mode (set by SessionStart hook)
    if [ "$BEADS_MODE" = "stealth" ]; then
@@ -223,6 +233,7 @@ Continuing implementation...
 ```
 
 Follow the "Next Steps" section from handoff:
+
 1. Complete the immediate next task specified
 2. Apply recommended approach documented
 3. Watch for gotchas mentioned
@@ -243,6 +254,7 @@ As you work:
 After resuming, verify continuity:
 
 1. **Code State Verification**:
+
    ```bash
    # Run tests to ensure starting state is good
    npm test  # or appropriate test command
@@ -263,45 +275,14 @@ After resuming, verify continuity:
 
 ## Output Format
 
-When successfully resumed:
-
-```
-✅ Successfully resumed from handoff
-
-Handoff Summary:
-- Created: [date/time from handoff]
-- Previous Session: [duration] with [model]
-- Tasks Completed: [X]/[Y]
-- Current Phase: [N] - [name]
-
-Key Context Restored:
-- [Critical learning 1]
-- [Critical learning 2]
-- [Active blocker if any]
-
-Current State:
-- Git: [branch] at [commit]
-- Uncommitted changes: [YES/NO]
-- Tests: [PASSING/FAILING]
-- Beads: [N] open, [M] in_progress, [X] closed
-- Active phase: [phase-id] or "none"
-
-Ready to continue with:
-[Next immediate task from handoff]
-
-Using approach:
-[Recommended approach from handoff]
-
-Watching for:
-- [Gotcha 1 from handoff]
-- [Gotcha 2 from handoff]
-```
+When successfully resumed, read [templates.md](templates.md) and use the "Resumption Report Template" to format the output.
 
 ## Handling Stale Handoffs
 
 If the handoff seems outdated:
 
 1. **Check git history**:
+
    ```bash
    # See if work progressed since handoff
    git log --oneline -10
@@ -317,6 +298,7 @@ If the handoff seems outdated:
    - Consider creating fresh handoff from current state
 
 Alert user if handoff is stale:
+
 ```
 ⚠️ Warning: Handoff may be stale
 
@@ -351,6 +333,7 @@ If handoff says one thing but code shows another:
 ### Quality Indicators
 
 A successful resume shows:
+
 - Immediate understanding of context
 - No repeated discovery work
 - Consistent approach with previous session
@@ -362,17 +345,20 @@ A successful resume shows:
 Common workflows:
 
 **Simple Resume**:
+
 1. **`/resume_handoff`** - Load context
 2. `/implement_tasks` - Continue implementation
 3. `/validate_execution` - Verify when phase complete
 
 **Complex Resume with Validation**:
+
 1. **`/resume_handoff`** - Load context
 2. `/validate_execution` - Check actual state
 3. Resolve any discrepancies
 4. `/implement_tasks` - Continue work
 
 **Chain of Handoffs**:
+
 1. **`/resume_handoff`** - Session 2 resumes from Session 1
 2. Work on implementation
 3. `/create_handoff` - Session 2 creates new handoff
@@ -381,43 +367,4 @@ Common workflows:
 
 ## Error Handling
 
-### Handoff File Not Found
-
-```
-❌ Error: Handoff file not found at [path]
-
-Please check:
-1. File path is correct
-2. You're in the right repository
-3. File wasn't moved or deleted
-
-You may need to:
-- Search for handoff files: find . -name "handoff-*.md"
-- Start fresh with project documentation
-```
-
-### Invalid Handoff Format
-
-```
-❌ Error: Handoff document missing critical sections
-
-Required sections not found:
-- [Missing section]
-
-This may not be a valid handoff document.
-Check the file path or create a new handoff.
-```
-
-### Git State Mismatch
-
-```
-⚠️ Warning: Git state doesn't match handoff
-
-Handoff commit: [commit]
-Current commit: [different commit]
-
-Options:
-1. Continue anyway (may have merge conflicts)
-2. Checkout handoff commit: git checkout [commit]
-3. Create new handoff from current state
-```
+Read [reference.md](reference.md) and use the "Error Handling Catalog" for the appropriate error block (Handoff File Not Found / Invalid Handoff Format / Git State Mismatch).

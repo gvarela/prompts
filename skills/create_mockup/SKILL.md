@@ -12,10 +12,16 @@ Researches existing UI patterns, styles, and layouts, then creates an initial mo
 ## Purpose
 
 This command:
+
 - Documents current UI patterns and styles (research phase)
 - Asks clarifying questions about the desired feature
 - Creates a versioned mockup with rationale
 - Sets up iteration tracking for refinement
+
+Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
+
+- [sub-agent-prompts.md](sub-agent-prompts.md) — verbatim prompts for the five Step 1 research agents
+- [templates.md](templates.md) — output templates for research summary, mockup.md, decisions.md, HTML mockup, and mockup-log.md
 
 ## Initial Response
 
@@ -27,6 +33,7 @@ When invoked, check for arguments:
    - Begin research immediately
 
 2. **If no arguments**:
+
    ```
    I'll help you create a UI mockup. Please provide:
    1. Path to the project documentation directory
@@ -43,131 +50,19 @@ When invoked, check for arguments:
 
 Spawn parallel agents to document what EXISTS:
 
-```javascript
-// Agent 1: Layout Patterns
-Task({
-  description: "Research UI layouts",
-  prompt: `You are documenting the codebase UI as it exists.
+- Agent 1: Layout patterns (page layout, navigation, containers, breakpoints)
+- Agent 2: Component library (buttons, forms, cards, modals, naming conventions)
+- Agent 3: Styling approach (CSS method, color tokens, typography, spacing, theme)
+- Agent 4: Similar features (panels/modals/pages matching the target feature type)
+- Agent 5: Icon system (library, import location, usage pattern, sizing conventions)
 
-Find and document:
-- Page layout patterns (grid, flex, containers)
-- Navigation structure
-- Content area organization
-- Responsive breakpoints
-
-Return with file:line references. DO NOT suggest improvements.`,
-  subagent_type: "codebase-analyzer",
-  model: "haiku"
-})
-
-// Agent 2: Component Library
-Task({
-  description: "Research UI components",
-  prompt: `You are documenting the codebase UI as it exists.
-
-Find and document:
-- Existing component library (buttons, forms, cards, modals)
-- Component naming conventions
-- Props/API patterns
-- Where components are defined
-
-Return with file:line references. DO NOT suggest improvements.`,
-  subagent_type: "codebase-analyzer",
-  model: "haiku"
-})
-
-// Agent 3: Styling Patterns
-Task({
-  description: "Research styling approach",
-  prompt: `You are documenting the codebase styling as it exists.
-
-Find and document:
-- CSS approach (CSS modules, Tailwind, styled-components, etc.)
-- Color tokens/variables
-- Typography scale
-- Spacing system
-- Theme configuration
-
-Return with file:line references. DO NOT suggest improvements.`,
-  subagent_type: "codebase-analyzer",
-  model: "haiku"
-})
-
-// Agent 4: Similar Features
-Task({
-  description: "Find similar UI features",
-  prompt: `You are documenting similar features in the codebase.
-
-Find examples of:
-- Similar panels/modals/pages to [feature description]
-- How similar features are structured
-- Patterns for [feature type] in this codebase
-
-Return with file:line references. DO NOT suggest improvements.`,
-  subagent_type: "pattern-finder",
-  model: "haiku"
-})
-
-// Agent 5: Icon System
-Task({
-  description: "Research icon system",
-  prompt: `You are documenting the icon system as it exists.
-
-Find and document:
-- Icon library used (Font Awesome, Material Icons, Heroicons, SVG sprites, custom, etc.)
-- Where icons are defined/imported (file:line references)
-- How icons are referenced in components (class names, components, imports)
-- Icon sizing and color conventions
-- Examples of icon usage with file:line references
-- Pattern for icons in buttons, headers, navigation
-
-Return exact patterns found. If NO icon system exists, state that clearly.
-DO NOT suggest adding an icon library if none exists.`,
-  subagent_type: "codebase-analyzer",
-  model: "haiku"
-})
-```
+Read the five agent prompts in [sub-agent-prompts.md](sub-agent-prompts.md) NOW before spawning — use each verbatim.
 
 **⛔ BARRIER 2**: Wait for ALL agents to complete before proceeding.
 
 ### Step 2: Synthesize Research
 
-Create a UI research summary:
-
-```markdown
-## UI Research Summary
-
-### Layout System
-- Pattern: [grid/flex/etc]
-- Container widths: [values]
-- Breakpoints: [mobile/tablet/desktop values]
-
-### Component Library
-- Location: [path]
-- Key components: [list with file:line]
-- Naming convention: [pattern]
-
-### Styling Approach
-- Method: [CSS modules/Tailwind/etc]
-- Colors: [token location]
-- Typography: [scale location]
-- Spacing: [system]
-
-### Icon System
-- Library: [Font Awesome / Material Icons / Heroicons / SVG sprites / Custom / None]
-- Location: [file:line where icons imported/defined]
-- Usage pattern: [<i class="..."> / <Icon name="..."> / <svg><use href="...">]
-- Sizing: [classes or conventions]
-- Examples: [file:line references to icon usage]
-
-### Similar Features
-- [Feature 1]: [path] - [how it's structured]
-- [Feature 2]: [path] - [how it's structured]
-
-### Patterns to Follow
-1. [Pattern from research]
-2. [Pattern from research]
-```
+Create a UI research summary using the "UI Research Summary" template in [templates.md](templates.md).
 
 ### Step 3: Clarifying Questions
 
@@ -225,235 +120,24 @@ Set up versioned mockup structure:
 
 **⛔ BARRIER 3**: No placeholders - all content must be specific based on research + answers.
 
-Create `mockups/v001/mockup.md`:
+Create `mockups/v001/mockup.md` using the "mockup.md v001 Template" in [templates.md](templates.md).
 
-````markdown
----
-version: 1
-created: [YYYY-MM-DD]
-status: draft
-feature: [feature name]
-based_on: [similar feature from research]
----
-
-# Mockup: [Feature Name] v001
-
-## Overview
-
-**Purpose**: [From clarifying questions]
-**User**: [From clarifying questions]
-**Trigger**: [How user gets here]
-
-## Layout
-
-```
-┌─────────────────────────────────────────────────┐
-│ [Header/Navigation - per existing pattern]       │
-├─────────────────────────────────────────────────┤
-│                                                 │
-│   ┌─────────────────────────────────────────┐   │
-│   │ [Component Area]                        │   │
-│   │                                         │   │
-│   │  [Content structure using ASCII]        │   │
-│   │                                         │   │
-│   │  ┌──────────┐  ┌──────────┐            │   │
-│   │  │ Button 1 │  │ Button 2 │            │   │
-│   │  └──────────┘  └──────────┘            │   │
-│   │                                         │   │
-│   └─────────────────────────────────────────┘   │
-│                                                 │
-└─────────────────────────────────────────────────┘
-```
-
-## Components Used
-
-| Component | From Library | Purpose |
-|-----------|--------------|---------|
-| [Component] | [file:line] | [what it does here] |
-
-## Content Specifications
-
-### [Section 1]
-- **Data**: [what's displayed]
-- **Source**: [where data comes from]
-- **Empty state**: [what shows when no data]
-
-### [Section 2]
-...
-
-## Interactions
-
-1. **[Action]**: User clicks [element] → [result]
-2. **[Action]**: User types in [field] → [validation/result]
-
-## States
-
-| State | Trigger | Display |
-|-------|---------|---------|
-| Loading | Initial load | [skeleton/spinner] |
-| Empty | No data | [message + CTA] |
-| Error | API failure | [error message] |
-| Success | Action complete | [confirmation] |
-
-## Styling Notes
-
-- Uses [color tokens] from [file]
-- Follows [spacing system]
-- Typography: [heading/body styles]
-
-## Icons
-
-- System: [icon library/approach from research, or "None - text only"]
-- Usage: [how icons are applied, with examples]
-- Locations: [where icons appear in this mockup]
-
-**If no icon system found but icons needed:**
-Create beads issue: `bd create "UI Q: Icon system?" --type=task --priority=2 -d "Mockup needs icons but no system found. Options: add library, use text only, custom SVG"`
-
-## Open Questions
-
-UI questions are tracked in beads, NOT in this document.
-
-**To add a UI question**:
-
-```bash
-bd create "UI Q: [your question]" --type=task --priority=2 \
-  -d "From mockup v[version]. Blocks: [what can't proceed without answer]"
-# → Returns issue ID (e.g., prompts-abc)
-```
-
-**Active questions** (reference only, beads is source of truth):
-
-Use `bd list -n 0 --status=open | grep "UI Q:"` to see all open UI questions, or reference by ID:
-- `[id]`: [Brief question summary] - blocks finalization
-- `[id]`: [Brief question summary] - blocks [what it blocks]
-
-To see full question details: `bd show [id]`
-````
-
-Create `mockups/v001/decisions.md`:
-
-```markdown
----
-version: 1
-created: [YYYY-MM-DD]
----
-
-# v001 Decisions
-
-## Choices Made
-
-### Layout Choice
-- **Decision**: [what was chosen]
-- **Rationale**: [why, referencing research]
-- **Alternative considered**: [what else could work]
-
-### Component Choices
-- **Decision**: Use [component] for [purpose]
-- **Rationale**: Matches existing pattern at [file:line]
-
-## Based On Research
-
-- Layout follows pattern from [similar feature]
-- Components reused from [library location]
-- Styling matches [existing page]
-
-## Assumptions
-
-1. [Assumption made due to unclear requirement]
-2. [Assumption about user behavior]
-
-## Needs Validation
-
-- [ ] [Thing to verify with user/stakeholder]
-- [ ] [Technical feasibility question]
-```
+Create `mockups/v001/decisions.md` using the "decisions.md Template" in [templates.md](templates.md).
 
 ### Step 6: Create HTML Mockup with App Styles
 
 **⛔ BARRIER 4**: After ASCII mockup created, generate working HTML mockup with real app styles.
 
-Create `mockups/v001/mockup.html`:
+Create `mockups/v001/mockup.html` using the "HTML Mockup Template" in [templates.md](templates.md).
 
 **Critical requirements:**
+
 1. **Import app's actual stylesheets** based on research
 2. **Use discovered component HTML patterns** (copy structure from file:line references)
 3. **Apply actual CSS classes/tokens** from research (no placeholder classes)
 4. **Follow icon system** from research (Font Awesome, Material Icons, etc.) or text-only if none
 5. **Match layout structure** from ASCII diagram
 6. **Standalone file** - can be opened directly in browser
-
-**Template structure:**
-
-`````html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mockup: [Feature Name] v001</title>
-
-  <!-- Import app's styles based on research -->
-  <!-- If using Tailwind: -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- If using app's CSS files (adjust paths): -->
-  <!-- <link rel="stylesheet" href="../../src/styles/main.css"> -->
-
-  <!-- If using icon library from research: -->
-  <!-- Font Awesome example: -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
-
-  <!-- Material Icons example: -->
-  <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> -->
-
-  <style>
-    /* Add any custom styles needed to match app exactly */
-    /* Copy from discovered theme/color tokens */
-  </style>
-</head>
-<body class="[discovered body classes from research]">
-
-  <!-- Header/Navigation - copy structure from research file:line -->
-  <header class="[actual header classes from app]">
-    <!-- Use actual nav structure from research -->
-  </header>
-
-  <!-- Main content area -->
-  <main class="[layout classes from research]">
-
-    <!-- Feature mockup using real component HTML -->
-    <div class="[container classes from research]">
-
-      <h1 class="[heading classes from research]">
-        <!-- Icon if system found: -->
-        <!-- <i class="fa-solid fa-[icon-name]"></i> -->
-        [Feature Title]
-      </h1>
-
-      <!-- Content sections matching ASCII diagram -->
-
-      <!-- Buttons using app's actual button HTML -->
-      <div class="[button container classes]">
-        <button class="[primary button classes from research]">
-          <!-- Icon if used in app: -->
-          <!-- <i class="fa-solid fa-save"></i> -->
-          Primary Action
-        </button>
-        <button class="[secondary button classes from research]">
-          Secondary Action
-        </button>
-      </div>
-
-    </div>
-
-  </main>
-
-  <!-- Footer if app has one -->
-
-</body>
-</html>
-`````
 
 **Icon handling based on research:**
 
@@ -464,6 +148,7 @@ Create `mockups/v001/mockup.html`:
 - **If NO icon system found**: Use text only, create beads issue if icons needed
 
 **Quality checks before proceeding:**
+
 - [ ] All CSS classes are from research (no placeholder classes)
 - [ ] Icon system matches research (or confirmed text-only)
 - [ ] Layout structure matches ASCII diagram
@@ -510,56 +195,7 @@ If anything looks off, let me know and I'll adjust.
 
 ### Step 8: Initialize Mockup Log
 
-Create `mockups/mockup-log.md`:
-
-```markdown
----
-feature: [feature name]
-created: [YYYY-MM-DD]
-current_version: 1
-status: iterating
-project_directory: [full path to project directory]
-last_updated: [YYYY-MM-DD]
----
-
-# Mockup Iteration Log
-
-## Feature: [Name]
-
-**Goal**: [From clarifying questions]
-
-## Version History
-
-### v001 - [YYYY-MM-DD] - Initial Draft
-- **Status**: In Review
-- **Key decisions**: [brief summary]
-- **Feedback needed**: [what to validate]
-
-## UI Research Reference
-
-_From initial research - apply to all versions:_
-
-- **Layout pattern**: [pattern from research]
-- **Component library**: [location]
-- **Styling system**: [approach]
-- **Icon system**: [library and usage pattern, or "None - text only"]
-- **Similar features**: [references]
-
-## Running Requirements
-
-### Confirmed (KEEP)
-_Requirements confirmed through iteration_
-
-### Rejected (REMOVE)
-_Ideas explored and rejected with rationale_
-
-### Open (DECIDING)
-_Still being discussed_
-
-## Design Principles Emerging
-
-1. [Principle discovered through iteration]
-```
+Create `mockups/mockup-log.md` using the "mockup-log.md Template" in [templates.md](templates.md).
 
 ### Step 9: Present for Iteration
 
@@ -612,21 +248,25 @@ Ready to iterate? Just tell me what to keep, change, or remove.
 ## Important Guidelines
 
 ### Research First
+
 - ALWAYS research existing UI before proposing
 - Reference specific file:line locations
 - Follow established patterns unless explicitly breaking them
 
 ### Clarifying Questions
+
 - Ask before assuming
 - Understand the WHY not just the WHAT
 - Identify constraints early
 
 ### Versioning
+
 - Never overwrite - always create new version
 - Document what changed and why
 - Keep decision trail for design.md
 
 ### Fidelity
+
 - ASCII mockups for layout structure discussion
 - HTML mockups with app's actual styles for visual validation
 - Component specs for implementation detail (copied from research)
@@ -637,6 +277,7 @@ Ready to iterate? Just tell me what to keep, change, or remove.
 ## Relationship to Other Commands
 
 **Typical workflow:**
+
 1. `/wb:create_research` - Understand the codebase
 2. **`/wb:create_mockup`** - Research UI + create initial mockup
 3. [Iterate with mockup-iteration skill]

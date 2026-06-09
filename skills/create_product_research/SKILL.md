@@ -9,6 +9,11 @@ disable-model-invocation: true
 
 Conducts comprehensive codebase research and documents findings from a **product manager's perspective** by spawning specialized agents to work in parallel. Produces a three-layer document: product overview, engineering approach, and technical appendix.
 
+**Supporting files** (same directory as this skill):
+
+- `sub-agent-prompts.md` — verbatim Task({}) blocks for Component Locator, Product Behavior Analyzer, Pattern Finder (Step 4), and Validation Agent (Step 7)
+- `templates.md` — the product-research.md output document template (Step 6)
+
 ## CRITICAL: YOUR ONLY JOB IS TO DOCUMENT THE CODEBASE AS IT EXISTS
 
 - **DO NOT** suggest improvements or changes unless explicitly asked
@@ -123,78 +128,15 @@ Based on the research question "[research-question]", I'll spawn specialized age
 
 #### Agent 1: Component Locator
 
-```javascript
-Task({
-  description: "Find [feature] components",
-  prompt: `Find all files related to [feature].
-
-  Search for:
-  - Source files implementing [feature]
-  - Test files for [feature]
-  - Configuration files
-  - UI components, routes, API endpoints
-  - Related documentation
-
-  Focus on [specific directories if known].
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "codebase-locator",
-  model: "haiku"
-})
-```
+Use the **Component Locator** prompt from `sub-agent-prompts.md` § "Component Locator (Step 4)".
 
 #### Agent 2: Product Behavior Analyzer
 
-```javascript
-Task({
-  description: "Analyze [feature] product behaviors",
-  prompt: `Understand what [feature] does from a product perspective.
-
-  Analyze:
-  - What user-visible behaviors does this feature provide?
-  - What are the user flows (step by step, in plain language)?
-  - What data does the user provide, and what do they see?
-  - What happens when things go wrong (error states)?
-  - What configuration controls this feature's behavior?
-
-  Start with [specific files if known].
-
-  CRITICAL INSTRUCTIONS:
-  - Explain as PRODUCT BEHAVIORS, not code implementation
-  - Write for a product manager, not an engineer
-  - Document what EXISTS — Document what IS, not what SHOULD BE
-  - DO NOT suggest improvements or identify issues
-  - Include file:line references for EVERY behavioral claim
-  - Trace actual code — do NOT guess or infer
-  - DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "product-behavior-analyzer",
-  model: "sonnet"
-})
-```
+Use the **Product Behavior Analyzer** prompt from `sub-agent-prompts.md` § "Product Behavior Analyzer (Step 4)".
 
 #### Agent 3: Pattern Finder
 
-```javascript
-Task({
-  description: "Find engineering patterns and conventions",
-  prompt: `Identify coding patterns and engineering conventions in the codebase.
-
-  Find:
-  - Naming conventions used
-  - Architecture patterns (MVC, microservices, etc.)
-  - How similar features are typically built
-  - Testing approach and coverage patterns
-  - Error handling conventions
-  - Configuration management approach
-
-  Summarize at a HIGH LEVEL suitable for a product manager to understand the engineering approach, not the engineering details.
-
-  REMEMBER: Document what IS, not what SHOULD BE. No recommendations.
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "pattern-finder",
-  model: "haiku"
-})
-```
+Use the **Pattern Finder** prompt from `sub-agent-prompts.md` § "Pattern Finder (Step 4)".
 
 **Additional specialized agents** based on research focus:
 
@@ -260,136 +202,7 @@ Spawn all agents concurrently for efficiency. Each returns a report; none write 
 
 Write the product-research.md file. **Keep the main agent focused on synthesis — sub-agents already did the deep file reading.**
 
-````markdown
----
-project: [from existing frontmatter or research question]
-created: [YYYY-MM-DD]
-status: complete
-audience: product
-last_updated: [YYYY-MM-DD]
-validation_status: not-yet-run
----
-
-# Product Research: [Feature/Area Name]
-
-**Created**: [YYYY-MM-DD]
-**Last Updated**: [YYYY-MM-DD]
-**Audience**: Product Management
-
-## Feature Overview
-
-[2-3 paragraph plain-language description of what this feature/area does. Written so a PM can understand the product capability without reading code.]
-
-## User Flows
-
-### [Flow Name] (e.g., "User Creates an Account")
-
-1. User [action in plain language]
-2. System [validates/processes/responds]
-3. If [condition], then [outcome A]; otherwise [outcome B]
-4. User sees [result]
-
-**Success outcome**: [what the user experiences when everything works]
-**Error outcomes**:
-
-- [Error condition]: [what the user sees]
-- [Error condition]: [what the user sees]
-
-### [Additional flows...]
-
-## Product Behaviors
-
-### [Behavior Area]
-
-| Trigger | What Happens | Configurable? |
-|---------|-------------|---------------|
-| [user action or event] | [system behavior in plain language] | [yes — setting name / no] |
-
-### [Additional behavior areas...]
-
-## Data & Integration
-
-### What Data Is Involved
-
-- **User provides**: [input data in business terms]
-- **System stores**: [what's persisted and why]
-- **User sees**: [output/display data]
-
-### How It Connects to Other Features
-
-- **[Feature/Service]**: [what the integration enables]
-- **[External System]**: [what data flows between them]
-
-### Configuration That Affects Behavior
-
-| Setting | What It Controls | Default |
-|---------|-----------------|---------|
-| [setting name] | [plain-language description] | [value] |
-
-## Engineering Approach
-
-### Coding Patterns
-
-- **[Pattern name]**: [1-sentence description of the convention]
-  - Used in: [where this pattern appears]
-
-### Architecture Style
-
-- [High-level observation about how the codebase is organized]
-- [Technology choices relevant to product decisions]
-
-### Testing Approach
-
-- [How this feature is tested — unit, integration, e2e]
-- [Coverage level observation]
-
-## Technical Appendix
-
-### File References
-
-**[Feature Area 1]**:
-
-- `path/to/main/implementation/` — [what it handles in product terms]
-- `path/to/tests/` — [test coverage for this area]
-
-**[Feature Area 2]**:
-
-- `path/to/files/` — [what it handles]
-
-### Key Code (for engineering discussions)
-
-```language
-// From path/to/file.ext:NN-MM
-// [Brief description of what this code does in product terms]
-[actual code snippet]
-```
-
-### Validation Notes
-
-[Any UNCERTAIN claims from validation that need human review]
-
-- [Claim]: [What was verified, what needs manual check]
-
-## Open Questions
-
-Questions requiring resolution are tracked in beads:
-
-```bash
-bd create "Q: [your question]" --type=task --priority=2 \
-  -d "Product research question. Context: [what this affects]"
-```
-
-**Active questions** — use `bd list --status=open` for current list.
-
-## Next Steps
-
-Based on the research findings:
-
-1. [Suggested next action based on findings]
-2. [Another logical next step]
-3. Review with engineering team for accuracy
-4. Run `/wb:create_design` when ready to make design decisions
-````
+Use the **product-research.md Template** from `templates.md` § "product-research.md Template".
 
 **⛔⛔⛔ BARRIER 3: STOP! Verify NO placeholder values — ALL data MUST be from ACTUAL codebase ⛔⛔⛔**
 
@@ -407,23 +220,7 @@ Before writing:
 
 The validator reads the written file directly — no need to pass findings in context.
 
-```javascript
-Task({
-  description: "Validate product research document",
-  prompt: `Validate the research document at [project-dir]/product-research.md against the actual codebase.
-
-  Read the document fully, then check:
-  1. All file paths mentioned exist
-  2. All code snippets match actual file content
-  3. All behavioral claims ("when X, system does Y") can be traced through code
-  4. All pattern claims are accurate
-
-  Return a structured validation report with PASS/FAIL/UNCERTAIN per claim.
-  DO NOT modify the document. Only report findings.`,
-  subagent_type: "research-validator",
-  model: "sonnet"
-})
-```
+Use the **Validation Agent** prompt from `sub-agent-prompts.md` § "Validation Agent (Step 7)".
 
 **⛔⛔⛔ BARRIER 4: STOP! Wait for validation agent to complete before proceeding ⛔⛔⛔**
 

@@ -36,6 +36,7 @@ When invoked, check for arguments:
 The command validates the following aspects:
 
 ### 1. File Structure
+
 - ✅ research.md exists
 - ✅ design.md exists
 - ✅ tasks.md exists
@@ -43,13 +44,16 @@ The command validates the following aspects:
 - ⚠️ Optional: mockup-log.md in mockups/ (if mockup workflow used)
 
 ### 2. Frontmatter Completeness
+
 For each file (research.md, design.md, tasks.md):
+
 - ✅ Has valid YAML frontmatter
 - ✅ Required fields present: `project`, `created`, `status`, `last_updated`
 - ✅ Git metadata present: `git_commit`, `git_branch`
 - ⚠️ Optional fields: `ticket`, `repository`, `researcher`, `planner`, `assignee`
 
 ### 3. Beads Integration
+
 - ✅ Beads is initialized (`bd info` succeeds)
 - ✅ tasks.md has `beads_epic` in frontmatter
 - ✅ tasks.md has `beads_phases` in frontmatter
@@ -58,6 +62,7 @@ For each file (research.md, design.md, tasks.md):
 - ✅ No orphaned beads issues (beads exist that aren't in frontmatter)
 
 ### 4. Status Consistency
+
 - ✅ research.md status is valid: `draft`, `in-progress`, or `complete`
 - ✅ design.md status is valid: `draft`, `ready`, `implementing`, or `complete`
 - ✅ tasks.md status is valid: `not-started`, `in-progress`, or `complete`
@@ -68,6 +73,7 @@ For each file (research.md, design.md, tasks.md):
 - ✅ All files have same `last_updated` date (or close)
 
 ### 5. Content Completeness
+
 - ✅ No placeholder text like `[To be added]`, `[TBD]`, `[TODO]`
 - ✅ research.md has findings sections populated
 - ✅ design.md has design decisions documented
@@ -75,6 +81,7 @@ For each file (research.md, design.md, tasks.md):
 - ✅ Success criteria are specific, not generic
 
 ### 6. Beads State Alignment
+
 - ✅ Beads epic exists and is open (or closed if project complete)
 - ✅ Phase milestone issues exist for each phase
 - ✅ Task issues exist for all tasks listed in `beads_tasks`
@@ -84,15 +91,22 @@ For each file (research.md, design.md, tasks.md):
 - ✅ Beads dependencies are set up correctly (phases depend on previous phases)
 
 ### 7. Dependencies
+
 - ✅ design.md references research.md in `depends_on`
 - ✅ tasks.md references both research.md and design.md in `depends_on`
 - ✅ Dependency chain is complete: research → design → tasks
 
 ### 8. Cross-File Consistency
+
 - ✅ Project names match across all files
 - ✅ Ticket IDs match (if present)
 - ✅ Git metadata is consistent
 - ✅ Current phase in tasks.md makes sense given progress
+
+**Supporting files** (same directory):
+
+- [templates.md](templates.md) — output report template for Step 4
+- [reference.md](reference.md) — validation logic spec and error/warning message catalog for Steps 3–4
 
 ## Validation Process
 
@@ -112,6 +126,7 @@ const files = {
 ```
 
 1. **Check directory exists**:
+
    ```bash
    ls ${projectDir}
    ```
@@ -169,6 +184,7 @@ bd show [task-id]
 ```
 
 Extract beads IDs from tasks.md frontmatter:
+
 - `beads_epic`
 - `beads_phases.*`
 - `beads_tasks.*`
@@ -177,12 +193,16 @@ For each ID, verify it exists in beads.
 
 ### Step 3: Run Validation Checks
 
+For exact commands and precedence, read the "Validation Logic Spec" in [reference.md](reference.md) NOW.
+
 Run all checks from the checklist above. Track:
+
 - ✅ **Pass**: Check succeeded
 - ⚠️ **Warning**: Non-critical issue, should fix
 - ❌ **Error**: Critical issue, must fix
 
 Organize findings by category:
+
 1. Critical Errors (must fix)
 2. Warnings (should fix)
 3. Passed Checks (all good)
@@ -191,116 +211,7 @@ Organize findings by category:
 
 **⛔ BARRIER 2**: Do not write the report until every checklist category has actually been executed in this session and its result recorded — including `bd show` on every ID from the frontmatter. The report asserts validation results; unverified claims must not appear in it.
 
-Present a comprehensive report:
-
-```
-# Project Validation Report
-
-**Project**: [project-name]
-**Location**: [project-dir]
-**Validated**: [YYYY-MM-DD HH:MM]
-
-## Summary
-
-- ✅ [X] checks passed
-- ⚠️ [Y] warnings found
-- ❌ [Z] critical errors found
-
-**Overall Status**: [PASS / PASS WITH WARNINGS / FAIL]
-
----
-
-## Critical Errors ❌
-
-These MUST be fixed for the project to follow wb workflow correctly:
-
-### 1. Missing Beads Epic
-**File**: tasks.md frontmatter
-**Issue**: `beads_epic` field is missing
-**Impact**: No way to track project-level work in beads
-**Fix**: Run `/wb:create_execution` to set up beads tracking
-
-### 2. Status Inconsistency
-**Files**: design.md (status: ready), research.md (status: draft)
-**Issue**: Design cannot be ready if research is still draft
-**Impact**: Violates workflow progression rules
-**Fix**: Complete research first OR set design back to draft
-
-[... more critical errors ...]
-
----
-
-## Warnings ⚠️
-
-These should be fixed but don't block workflow:
-
-### 1. Missing Git Metadata
-**File**: research.md
-**Issue**: `git_commit` and `git_branch` fields are missing
-**Impact**: Can't track when research was done or what code state it reflects
-**Fix**: Run `/wb:update_status` to update metadata
-
-### 2. Placeholder Content
-**File**: design.md, line 45
-**Issue**: Contains "[To be added]" placeholder text
-**Impact**: Incomplete design documentation
-**Fix**: Document the design decision or remove the section
-
-[... more warnings ...]
-
----
-
-## Passed Checks ✅
-
-These aspects are correctly configured:
-
-- ✅ All required files exist
-- ✅ Frontmatter is valid YAML
-- ✅ Required frontmatter fields present
-- ✅ Beads is initialized and working
-- ✅ All beads IDs in frontmatter exist
-- ✅ Status progression is logical
-- ✅ Dependencies are documented
-- ✅ Project names are consistent
-
----
-
-## Recommendations
-
-Based on the validation results:
-
-1. **Immediate Actions** (critical errors):
-   - [Specific action 1]
-   - [Specific action 2]
-
-2. **Soon** (warnings):
-   - [Specific action 1]
-   - [Specific action 2]
-
-3. **Optional Improvements**:
-   - Add `ticket` field to frontmatter for issue tracking
-   - Add `repository` field for GitHub integration
-   - Run `/wb:update_status` to sync all metadata
-
----
-
-## Validation Details
-
-**Files Checked**:
-- research.md: [status] (last_updated: [date])
-- design.md: [status] (last_updated: [date])
-- tasks.md: [status] (last_updated: [date])
-
-**Beads State**:
-- Epic: [id] ([status])
-- Phase milestones: [count] ([open/closed])
-- Task issues: [count] ([open/in_progress/closed])
-
-**Next Command Suggestions**:
-- If critical errors: Fix them manually or re-run workflow commands
-- If warnings only: Run `/wb:update_status` to sync metadata
-- If all passed: Run `/wb:implement_tasks` to continue work
-```
+Read the "Project Validation Report Template" in [templates.md](templates.md) NOW and present a comprehensive report using that structure.
 
 ### Step 5: Offer Fixes
 
@@ -312,178 +223,6 @@ Would you like me to:
 2. Generate a plan to address all issues
 3. Re-run validation after you make changes
 4. Continue to next step in workflow
-```
-
-## Validation Rules
-
-### File Structure Validation
-
-```javascript
-// Required files
-const requiredFiles = ['research.md', 'design.md', 'tasks.md'];
-
-// Check each exists
-for (const file of requiredFiles) {
-  if (!exists(`${projectDir}/${file}`)) {
-    ERROR(`Missing required file: ${file}`);
-  }
-}
-```
-
-### Frontmatter Validation
-
-```javascript
-// Required fields per file
-const requiredFields = {
-  all: ['project', 'created', 'status', 'last_updated', 'git_commit', 'git_branch'],
-  tasks: ['beads_epic', 'beads_phases', 'beads_tasks', 'current_phase', 'total_tasks', 'completed_tasks']
-};
-
-// Parse YAML frontmatter
-const frontmatter = parseYAML(fileContent);
-
-// Check required fields
-for (const field of requiredFields.all) {
-  if (!frontmatter[field]) {
-    ERROR(`Missing required field: ${field}`);
-  }
-}
-```
-
-### Status Validation
-
-```javascript
-const validStatuses = {
-  research: ['draft', 'in-progress', 'complete'],
-  design: ['draft', 'ready', 'implementing', 'complete'],
-  tasks: ['not-started', 'in-progress', 'complete']
-};
-
-// Check status is valid
-if (!validStatuses[fileType].includes(status)) {
-  ERROR(`Invalid status: ${status}. Must be one of: ${validStatuses[fileType]}`);
-}
-
-// Check status progression
-if (design.status === 'ready' && research.status === 'draft') {
-  ERROR('Design cannot be ready if research is still draft');
-}
-
-if (tasks.status === 'in-progress' && design.status === 'draft') {
-  ERROR('Tasks cannot be in-progress if design is still draft');
-}
-
-if (design.status === 'complete' && tasks.status !== 'complete') {
-  ERROR('Design cannot be complete if tasks are not complete');
-}
-```
-
-### Beads Validation
-
-```javascript
-// Check beads is initialized
-const beadsCheck = exec('bd info');
-if (beadsCheck.failed) {
-  ERROR('Beads is not initialized. Run: bd init');
-}
-
-// Extract beads IDs from frontmatter
-const beadsIds = [
-  tasksFrontmatter.beads_epic,
-  ...Object.values(tasksFrontmatter.beads_phases),
-  ...Object.values(tasksFrontmatter.beads_tasks)
-];
-
-// Verify each ID exists
-for (const id of beadsIds) {
-  const result = exec(`bd show ${id}`);
-  if (result.failed) {
-    ERROR(`Beads issue not found: ${id}`);
-  }
-}
-
-// Check for orphaned beads issues
-const allBeadsIssues = exec('bd list').parseOutput();
-for (const issue of allBeadsIssues) {
-  if (!beadsIds.includes(issue.id)) {
-    WARNING(`Orphaned beads issue: ${issue.id} (not in frontmatter)`);
-  }
-}
-```
-
-### Content Validation
-
-```javascript
-// Check for placeholders
-const placeholders = ['[To be added]', '[TBD]', '[TODO]', '[Fill this in]'];
-
-for (const placeholder of placeholders) {
-  if (fileContent.includes(placeholder)) {
-    WARNING(`Found placeholder text: ${placeholder} in ${filename}`);
-  }
-}
-
-// Check for empty sections
-const sections = extractSections(fileContent);
-for (const section of sections) {
-  if (section.content.trim().length < 50) {
-    WARNING(`Section appears empty or very short: ${section.title}`);
-  }
-}
-```
-
-## Error Messages
-
-### Critical Errors
-
-```
-❌ Missing Required File: tasks.md
-   Location: [project-dir]/tasks.md
-   Cause: File does not exist
-   Impact: Cannot track implementation work
-   Fix: Run /wb:create_execution to generate tasks.md
-```
-
-```
-❌ Invalid Beads ID: prompts-xyz
-   Location: tasks.md frontmatter, beads_epic field
-   Cause: Beads issue does not exist
-   Impact: Cannot track project in beads
-   Fix: Create beads epic or update frontmatter with correct ID
-```
-
-```
-❌ Status Progression Violation
-   Files: design.md (implementing), research.md (draft)
-   Cause: Design implementing but research not complete
-   Impact: Violates workflow: research must complete before design
-   Fix: Complete research OR set design back to draft
-```
-
-### Warnings
-
-```
-⚠️ Missing Git Metadata
-   File: research.md
-   Fields: git_commit, git_branch
-   Impact: Cannot track code state when research was done
-   Fix: Run /wb:update_status to populate metadata
-```
-
-```
-⚠️ Placeholder Content Found
-   File: design.md, line 45
-   Text: "[To be added]"
-   Impact: Incomplete documentation
-   Fix: Document the design decision or remove placeholder
-```
-
-```
-⚠️ Orphaned Beads Issue
-   Issue: prompts-abc (Priority: P2, Status: open)
-   Cause: Beads issue exists but not referenced in frontmatter
-   Impact: Work may be tracked that's not in plan
-   Fix: Add to beads_tasks or close if no longer needed
 ```
 
 ## Important Guidelines

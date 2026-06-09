@@ -9,9 +9,15 @@ when_to_use: When the user gives mockup feedback ("keep this", "remove this", "c
 
 Helps iterate on UI mockups efficiently, capturing decisions without fidelity loss.
 
+Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
+
+- [templates.md](templates.md) — output templates for version log entries and decisions.md
+- [examples.md](examples.md) — example interaction walkthrough
+
 ## Activation
 
 This skill activates when:
+
 - User provides feedback on a mockup ("keep the header", "remove the sidebar")
 - User asks to iterate or create next version
 - User discusses mockup changes
@@ -29,6 +35,7 @@ Before processing feedback, locate the mockup:
 4. **Verify v00[N] directory exists** - if not, scan for highest existing
 
 **If mockup-log.md missing:**
+
 ```
 I can't find an active mockup session.
 
@@ -38,6 +45,7 @@ Options:
 ```
 
 **If giving feedback about non-mockup topic:**
+
 ```
 I'm treating this as mockup feedback for [feature] (currently v00[N]).
 If this isn't about the mockup, let me know.
@@ -60,6 +68,7 @@ When user provides mockup feedback:
    - Each part gets its own log entry
 
    **Questions and assumptions** → Create beads issues:
+
    ```bash
    # For questions that need answers:
    bd create "UI Q: [question]" --type=task --priority=2 \
@@ -71,6 +80,7 @@ When user provides mockup feedback:
    ```
 
 2. **Update mockup-log.md** immediately:
+
    ```markdown
    ### Confirmed (KEEP)
    - [Requirement] - confirmed [date] - "[user quote]"
@@ -80,6 +90,7 @@ When user provides mockup feedback:
    ```
 
 3. **Summarize understanding** before creating new version:
+
    ```
    Got it. For the next version:
 
@@ -136,61 +147,7 @@ User feedback → Classify → Update log → Confirm understanding → Create v
 
 ## Templates
 
-### New Version Entry (mockup-log.md)
-
-```markdown
-### v00[N] - [YYYY-MM-DD] - [Brief Description]
-- **Status**: In Review
-- **Changes from v00[N-1]**:
-  - KEPT: [what was preserved]
-  - REMOVED: [what was cut]
-  - CHANGED: [what was modified]
-- **Feedback incorporated**: [summary]
-- **Open questions**: [remaining unknowns]
-```
-
-### decisions.md for New Version
-
-```markdown
----
-version: [N]
-created: [YYYY-MM-DD]
-previous_version: [N-1]
----
-
-# v00[N] Decisions
-
-## Changes from v00[N-1]
-
-### Added
-- [New element] - reason: [user feedback/requirement]
-
-### Removed
-- [Removed element] - reason: [user feedback]
-
-### Modified
-- [Element]: [old] → [new] - reason: [rationale]
-
-## Feedback Incorporated
-
-| Feedback | Classification | Action Taken |
-|----------|---------------|--------------|
-| "[user quote]" | KEEP | Preserved [element] |
-| "[user quote]" | REMOVE | Cut [element] |
-| "[user quote]" | CHANGE | Modified [element] |
-
-## Cumulative Requirements
-
-_All confirmed requirements through this version:_
-
-1. [Requirement from v001]
-2. [Requirement from v002]
-3. [New requirement this version]
-
-## Still Open
-
-- [ ] [Unresolved question]
-```
+Read [templates.md](templates.md) for the "New Version Entry (mockup-log.md)" and "decisions.md Template" templates; use them verbatim when creating version log entries and decisions files.
 
 ## Fidelity Preservation
 
@@ -236,6 +193,7 @@ bd list -n 0 --status=open | grep -E "UI Q:|UI Assumption:"
 ```
 
 If open issues exist:
+
 ```
 ⚠️ Cannot finalize - unresolved items:
 
@@ -310,19 +268,24 @@ When user wants to see the current mockup visually:
 
 1. **Find current version** from mockup-log.md frontmatter
 2. **Navigate to mockup.html**:
+
    ```javascript
    mcp__plugin_playwright_playwright__browser_navigate({
      url: "file:///[absolute-path]/mockups/v00[N]/mockup.html"
    })
    ```
+
 3. **Take screenshot**:
+
    ```javascript
    mcp__plugin_playwright_playwright__browser_take_screenshot({
      filename: "mockup-preview-current.png",
      fullPage: true
    })
    ```
+
 4. **Show to user**:
+
    ```
    Current mockup (v00[N]) preview:
 
@@ -383,43 +346,7 @@ v00[B]:
 
 ## Example Interaction
 
-```
-User: "Keep the card layout but remove the sidebar. The header should be sticky."
-
-Claude: Updated mockup-log.md:
-
-✓ KEEPING:
-  - Card layout - "Keep the card layout"
-  - Header (will make sticky)
-
-✗ REMOVING:
-  - Sidebar - "remove the sidebar"
-
-~ CHANGING:
-  - Header: static → sticky - "header should be sticky"
-
-Ready to create v002?
-
-User: "Yes, and make the cards 3 columns on desktop"
-
-Claude: Got it, adding to changes:
-
-~ CHANGING:
-  - Card grid: current → 3 columns on desktop
-
-Creating v002...
-
-Created mockups/v002/
-- mockup.md: Updated ASCII with all changes
-- mockup.html: Updated HTML with all changes
-- preview-v002.png: Visual screenshot
-- decisions.md: Documented rationale
-- mockup-log.md: Added v002 entry
-
-[Shows preview-v002.png screenshot]
-
-Visual preview updated with your changes. Anything else to adjust?
-```
+See [examples.md](examples.md) for a full example interaction walkthrough.
 
 ## Session Continuity
 
@@ -427,11 +354,13 @@ If session ends mid-iteration or user requests handoff:
 
 1. **Capture pending feedback** not yet versioned
 2. **Update mockup-log.md** with "Pending Feedback" section:
+
    ```markdown
    ## Pending Feedback (Not Yet Versioned)
    - "[feedback 1]" - KEEP
    - "[feedback 2]" - CHANGE
    ```
+
 3. **Note in handoff document** (if using /wb:create_handoff):
    - Mockup location: [path]
    - Current version: v00[N]

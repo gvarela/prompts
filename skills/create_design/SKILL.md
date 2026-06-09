@@ -9,6 +9,11 @@ disable-model-invocation: true
 
 Creates architectural and technical design decisions based on validated research. Focuses on WHAT to build and WHY, not HOW to implement.
 
+Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
+
+- [sub-agent-prompts.md](sub-agent-prompts.md) — verbatim prompts for the three Step 2 verification agents
+- [templates.md](templates.md) — design.md output template
+
 ## CRITICAL: This Document is About WHAT and WHY - NEVER HOW
 
 - **DO NOT** include implementation sequences or step-by-step procedures
@@ -99,62 +104,7 @@ After reading research, spawn specialized agents in parallel to gather additiona
 
 **CRITICAL: Sub-agents are READ-ONLY. They gather information and return findings. They do NOT write files. YOU (the main agent) will write design.md after synthesizing their findings.**
 
-```javascript
-// Spawn agents concurrently for verification - all are read-only
-Task({
-  description: "Verify design patterns",
-  prompt: `Based on the research findings, identify architectural patterns we should follow.
-
-  From research.md:
-  - [Key patterns found in research]
-  - [Conventions observed]
-  - [Integration points]
-
-  Find:
-  - Similar features already implemented
-  - Patterns we should follow for consistency
-  - Anti-patterns to avoid
-
-  Document what exists, do not evaluate quality.
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "pattern-finder",
-  model: "haiku"
-})
-
-Task({
-  description: "Analyze integration points",
-  prompt: `Analyze how our design will integrate with existing systems.
-
-  From research.md:
-  - [Current architecture]
-  - [Integration patterns]
-
-  Identify:
-  - Required integration points
-  - API contracts we must respect
-  - Dependencies we'll have
-  - Potential conflicts
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "codebase-analyzer",
-  model: "sonnet"
-})
-
-Task({
-  description: "Find risk precedents",
-  prompt: `Search for similar changes in the codebase history.
-
-  Look for:
-  - Previous similar implementations
-  - Issues encountered
-  - Solutions that worked
-  - Patterns that failed
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "pattern-finder",
-  model: "haiku"
-})
-```
+Spawn the three agents concurrently using the prompts in [sub-agent-prompts.md](sub-agent-prompts.md) → **Step 2 Agent Prompts**.
 
 **⛔⛔⛔ BARRIER 2: STOP! Wait for ALL agents to complete - NO EXCEPTIONS ⛔⛔⛔**
 
@@ -216,134 +166,9 @@ Based on research and agent findings, clearly articulate:
 
 ### Step 5: Document Design Decisions
 
-Update or create design.md with the following structure:
+Update or create design.md using the structure in [templates.md](templates.md) → **design.md Template**.
 
-```markdown
----
-project: [from existing frontmatter]
-ticket: [from existing frontmatter]
-created: [from existing frontmatter]
-status: draft
-last_updated: [YYYY-MM-DD]
-depends_on: research.md
-design_approach: [selected option name]
----
-
-# Design: [Feature/Task Name]
-
-## Problem Statement
-
-[Clear articulation of the problem we're solving and why it matters]
-
-### Success Metrics
-- [Measurable outcome 1]
-- [Measurable outcome 2]
-- [Measurable outcome 3]
-
-## Design Approach
-
-[High-level description of the chosen solution approach]
-
-### Why This Approach
-- [Rationale for choosing this over alternatives]
-- [How it aligns with existing patterns from research]
-- [How it addresses the core problem]
-- [Precedents from agent findings]
-
-## Technical Decisions
-
-### Architecture
-- [Key architectural decision 1]
-  - Rationale: [Why this choice]
-  - Trade-off: [What we're giving up]
-  - Pattern reference: [file:line from research]
-
-### Data Model
-- [Data structure/schema decisions]
-- [State management approach]
-- [Data flow design]
-
-### Integration Points
-- [How this integrates with existing systems]
-- [API contracts or interfaces]
-- [Dependencies on other components]
-
-## Scope Definition
-
-### In Scope
-- [Specific feature/capability 1]
-- [Specific feature/capability 2]
-- [Specific feature/capability 3]
-
-### Out of Scope
-- [What we explicitly won't do]
-- [Features deferred to later]
-- [Problems we're not solving]
-
-## Success Criteria
-
-### Functional Requirements
-- [ ] [User-facing capability 1]
-- [ ] [User-facing capability 2]
-- [ ] [System behavior 1]
-
-### Non-Functional Requirements
-- [ ] Performance: [Specific metric]
-- [ ] Reliability: [Specific metric]
-- [ ] Security: [Specific requirement]
-
-## Risk Analysis
-
-### Technical Risks
-| Risk | Impact | Likelihood | Mitigation |
-|------|--------|------------|------------|
-| [Risk 1] | High/Med/Low | High/Med/Low | [Strategy] |
-
-### Assumptions
-
-Based on knowledge gaps from research - track in beads to ensure validation:
-
-| Assumption | Beads ID | Validated? |
-|------------|----------|------------|
-| [gap 1] works as [description] | `[id]` | Pending |
-| [gap 2] can be resolved by [approach] | `[id]` | Pending |
-
-```bash
-# Create beads issues for assumptions that need validation:
-bd create "Validate: [assumption]" --type=task --priority=2 \
-  -d "Assumption from design. If wrong: [impact]"
-```
-
-## Rejected Alternatives
-
-### Option: [Alternative Approach Name]
-- **Approach**: [What it would have done]
-- **Rejected because**: [Specific reasons]
-- **Trade-offs**: [What we would have gained/lost]
-
-## Pending Decisions
-
-Design decisions that need stakeholder input - track in beads:
-
-| Decision Needed | Beads ID | Blocks |
-|-----------------|----------|--------|
-| [What needs to be decided] | `[id]` | [phase or "execution start"] |
-| [Options and trade-offs] | `[id]` | [what can't proceed] |
-
-```bash
-# Create beads issues for pending decisions:
-bd create "Decide: [brief decision]" --type=task --priority=1 \
-  -d "Options: [A, B, C]. Trade-offs: [summary]. Blocks: [what]"
-```
-
-Note: Decisions blocking execution should be resolved before `/create_execution`.
-
-## References
-
-- Research: [research.md](research.md)
-- Related designs: [if any]
-- External docs: [if any]
-```
+The template includes `bd create` command snippets for tracking assumptions and pending decisions — use them as written.
 
 **⛔ BARRIER 3**: Verify no placeholder values before writing
 
