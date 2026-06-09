@@ -119,7 +119,7 @@ The workflow separates three distinct concerns:
 
 If any `bd` command fails:
 
-1. **Diagnose**: Run `bd doctor` to check for issues
+1. **Diagnose**: Run `bd info` to check for issues
 2. **Report**: Tell the user the specific error and suggest fixes
 3. **Fix**: Common fixes:
    - "beads not initialized" → `bd init`
@@ -202,7 +202,7 @@ bd ready              # Find available work (no blockers)
 bd show <id>          # View issue details
 bd update <id> --status in_progress  # Claim work
 bd close <id>         # Complete work
-bd sync               # Sync with git (run at session end)
+# beads auto-flushes .beads/issues.jsonl; commit .beads/ at session end (git mode)
 ```
 
 ### Session Protocol
@@ -210,7 +210,7 @@ bd sync               # Sync with git (run at session end)
 See [AGENTS.md](AGENTS.md) for the full session close protocol. Key points:
 
 1. **Before ending**: Close completed issues with `bd close`
-2. **Sync**: Run `bd sync` to persist changes
+2. **Persist**: beads auto-flushes `.beads/issues.jsonl` — commit `.beads/` (git mode)
 3. **Push**: Commit and push to remote
 
 ### Integration with wb Commands

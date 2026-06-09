@@ -130,7 +130,7 @@ After reading all documentation, synthesize:
 First, check that beads is working:
 
 ```bash
-bd doctor    # Check beads health
+bd info    # Check beads is initialized
 ```
 
 **If beads is not initialized or has errors**:
@@ -166,8 +166,9 @@ fi
 
 **Mode awareness**:
 - Both modes work identically within a session
-- **Stealth**: After `bd sync`, beads state stays local (no git commit)
-- **Git**: After `bd sync`, commit .beads/ to persist across machines
+- Beads auto-flushes state to `.beads/issues.jsonl` after mutations
+- **Stealth**: beads state stays local (.beads/ gitignored)
+- **Git**: commit .beads/ to persist across machines
 
 #### Verify Beads Tracking Configuration
 
@@ -480,10 +481,8 @@ After phase completion and verification:
    - [YYYY-MM-DD] Phase [N] complete: [key learnings, deviations from plan]
    ```
 
-4. **Sync beads state**:
+4. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
    ```bash
-   bd sync    # Export beads to .beads/issues.jsonl
-
    # In git mode, commit the beads state
    if [ "$BEADS_MODE" != "stealth" ]; then
      git add .beads/
@@ -492,8 +491,8 @@ After phase completion and verification:
    ```
 
    **Mode behavior**:
-   - **Stealth mode**: bd sync exports locally, .beads/ not committed
-   - **Git mode**: bd sync + git commit persists to git for cross-machine sync
+   - **Stealth mode**: state auto-flushed locally, .beads/ not committed
+   - **Git mode**: git commit persists to git for cross-machine sync
 
 ## Handling Mismatches
 
@@ -614,7 +613,7 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 9. Run verification at phase boundaries
 10. If phase milestone complete: close it with `bd close [milestone-id]`
 11. Add implementation notes to tasks.md if needed
-12. `bd sync` to persist state to git remote
+12. Commit .beads/ (git mode) to persist state — issues.jsonl is auto-flushed
 ```
 
 ## Error Handling
@@ -650,7 +649,7 @@ If automated verification fails after implementation:
 - ✅ Track modified files for easier testing
 - ✅ Generate phase-specific test commands
 - ✅ Document any deviations in Implementation Notes
-- ✅ Run `bd sync` at session end to persist state
+- ✅ Commit .beads/ at session end (git mode) — beads auto-flushes issues.jsonl
 
 ### DON'T (ABSOLUTELY FORBIDDEN)
 

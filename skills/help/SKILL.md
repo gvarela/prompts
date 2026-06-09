@@ -89,7 +89,7 @@ bd ready                              # Find available work
 bd update [phase-id] --status in_progress  # Claim it
 # ... implement ...
 bd close [phase-id] --reason "Done"   # Complete it
-bd sync                               # Save to git
+# beads auto-flushes .beads/issues.jsonl; commit .beads/ in git mode
 ```
 
 ### Beads Slash Commands
@@ -107,7 +107,6 @@ Use these instead of CLI when working in Claude Code:
 | `/beads:blocked` | See what's stuck and why |
 | `/beads:dep` | Manage dependencies between issues |
 | `/beads:stats` | Project health and progress |
-| `/beads:sync` | End of session - save to git |
 
 **Less Common:**
 | Command | When to Use |
@@ -136,15 +135,17 @@ bd close prompts-abc --reason "Done"
 
 ### Beads + Git Workflow
 ```bash
-# End of session
-bd sync              # Export beads state
-git add .beads/      # Stage beads changes
+# End of session (.beads/issues.jsonl is auto-flushed by beads)
+git add .beads/      # Stage beads changes (git mode)
 git commit           # Commit everything
 git push             # Push to remote
 
 # Start of session (after git pull)
-bd sync --import     # Import any remote changes
-bd ready             # See what's available
+bd ready             # See what's available (beads auto-imports changed issues.jsonl)
+
+# If a Dolt remote is configured:
+bd dolt push         # Push beads database to Dolt remote
+bd dolt pull         # Pull beads database from Dolt remote
 ```
 
 ## Command Details
@@ -205,7 +206,7 @@ bd list              # Find correct ID
 ```
 
 **"database locked"**
-Wait a moment and retry. Check for other bd processes.
+Wait a moment and retry. Check for a stale `.beads/daemon.lock` or another bd process (`bd daemon` status).
 
 **Need markdown-only workflow?**
 Use `v1.0.0` tag of this repo (before beads integration).

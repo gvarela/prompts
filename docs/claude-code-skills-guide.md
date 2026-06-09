@@ -247,7 +247,7 @@ Hook output supports `continue`, `systemMessage`, `suppressOutput`, and event-sp
 
 Hooks can now also live in **skill frontmatter** (active while the skill runs) and **agent frontmatter** (active while the agent runs), not just settings and plugin manifests. Hook types beyond `command` exist: `http`, `mcp_tool`, `prompt`, and `agent`.
 
-Events especially relevant to this repo: `SessionEnd`/`Stop` (deterministic `bd sync` reminders instead of skill-based ones), `PreCompact`/`PostCompact` (sync/restore beads state at context boundaries), `SubagentStop` (verify worker output automatically).
+Events especially relevant to this repo: `SessionEnd`/`Stop` (deterministic beads-persistence reminders instead of skill-based ones), `PreCompact`/`PostCompact` (sync/restore beads state at context boundaries), `SubagentStop` (verify worker output automatically).
 
 ---
 
@@ -313,7 +313,7 @@ The wb plugin's `commands/` files continue to work unchanged — plugin commands
    - `context: fork` for research-heavy commands (`create_research`, `create_product_research`)
    - `skills: [tdd-discipline]` preload + `maxTurns` on worker agents used by `implement_coordinated`
    - `memory: project` on research agents to accumulate codebase knowledge
-   - `SessionEnd`/`PreCompact` hooks for deterministic `bd sync` instead of relying on the status-sync skill activating
+   - `SessionEnd`/`PreCompact` hooks for deterministic beads persistence instead of relying on the status-sync skill activating
    - `displayName` in plugin.json
 
 ---

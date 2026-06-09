@@ -50,7 +50,7 @@ For each file (research.md, design.md, tasks.md):
 - ⚠️ Optional fields: `ticket`, `repository`, `researcher`, `planner`, `assignee`
 
 ### 3. Beads Integration
-- ✅ Beads is initialized (`bd doctor` succeeds)
+- ✅ Beads is initialized (`bd info` succeeds)
 - ✅ tasks.md has `beads_epic` in frontmatter
 - ✅ tasks.md has `beads_phases` in frontmatter
 - ✅ tasks.md has `beads_tasks` in frontmatter
@@ -132,7 +132,7 @@ Check beads integration and state:
 
 ```bash
 # Verify beads is initialized
-bd doctor
+bd info
 
 # Check and validate beads mode (set by SessionStart hook)
 if [ "$BEADS_MODE" = "stealth" ]; then
@@ -382,7 +382,7 @@ if (design.status === 'complete' && tasks.status !== 'complete') {
 
 ```javascript
 // Check beads is initialized
-const beadsCheck = exec('bd doctor');
+const beadsCheck = exec('bd info');
 if (beadsCheck.failed) {
   ERROR('Beads is not initialized. Run: bd init');
 }

@@ -368,14 +368,14 @@ Beads provides persistent, git-backed task tracking that survives context compac
 - `.beads/` added to `.git/info/exclude`
 - Beads state stays local
 - Good for work repos where you don't want to expose task tracking
-- `bd sync` exports to `.beads/issues.jsonl` locally
+- beads auto-flushes `.beads/issues.jsonl` locally
 - State doesn't persist across machines
 
 **Git Mode** (`.beads/` tracked in git):
 - `.beads/` committed like normal code
 - Beads state persists across machines
 - Good for personal projects
-- `bd sync` then commit `.beads/` to push state
+- commit `.beads/` to push state (issues.jsonl is auto-flushed)
 - Full team collaboration on task state
 
 **Auto-detection**: SessionStart hook (`.claude/hooks/setup-beads-mode.sh`) checks:
@@ -429,8 +429,7 @@ bd update [task-id] --status in_progress
 # Complete it
 bd close [task-id] --reason "Done"
 
-# Sync (export to file)
-bd sync
+# beads auto-flushes .beads/issues.jsonl after mutations
 
 # Git mode: commit beads state
 git add .beads/
@@ -454,8 +453,7 @@ bd list --status=open | grep -E "UI Q:|UI Assumption:"
 # 1. Close completed tasks
 bd close [task-id] --reason "..."
 
-# 2. Sync beads state
-bd sync
+# 2. Beads state is auto-flushed to .beads/issues.jsonl
 
 # 3. Git mode: commit and push
 git add .beads/
@@ -753,7 +751,6 @@ Tasks come ONLY from plans.
 - Claim with `bd update`
 - Follow TDD cycle strictly
 - Close with `bd close`
-- Sync with `bd sync`
 - Respect phase boundaries
 - Stop at checkpoints
 
@@ -761,8 +758,7 @@ Tasks come ONLY from plans.
 
 **At session end**:
 - Close completed beads issues
-- Run `bd sync`
-- Git mode: commit .beads/
+- Git mode: commit .beads/ (issues.jsonl is auto-flushed)
 - Create handoff if needed
 
 **At session start**:

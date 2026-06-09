@@ -306,13 +306,11 @@ Present summary:
 [Contextual suggestions based on new status]
 ```
 
-### Step 8: Sync Beads State
+### Step 8: Persist Beads State
 
-After updating status, sync beads state:
+After updating status, persist beads state (beads auto-flushes `.beads/issues.jsonl` after mutations):
 
 ```bash
-bd sync    # Export beads to .beads/issues.jsonl
-
 # In git mode, commit the beads state if needed
 if [ "$BEADS_MODE" != "stealth" ]; then
   if git diff --quiet .beads/ 2>/dev/null; then
@@ -325,7 +323,7 @@ fi
 ```
 
 **Why this matters**:
-- **Stealth mode**: Keeps local beads database in sync with .beads/ files
+- **Stealth mode**: beads state is auto-flushed locally; nothing to commit
 - **Git mode**: Persists beads state to git for cross-machine sync
 - Both modes: Ensures beads database is up-to-date
 

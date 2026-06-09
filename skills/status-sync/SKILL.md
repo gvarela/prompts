@@ -1,6 +1,6 @@
 ---
 name: status-sync
-description: Monitors beads status and reminds about bd sync at session end or when phases complete.
+description: Monitors beads status at session end or when phases complete - reminds about committing beads state and closing finished phase milestones.
 allowed-tools: Read, Glob, Grep, Bash(bd:*)
 user-invocable: false
 ---
@@ -25,8 +25,8 @@ bd list --status=in_progress    # What's claimed
 
 ## Drift Indicators
 
-**Work done but not synced**:
-- Issues closed in session but `bd sync` not run
+**Work done but not persisted**:
+- Issues closed this session but `.beads/` changes not committed (git mode)
 - End of session approaching
 
 **Phase complete but not closed**:
@@ -38,7 +38,8 @@ bd list --status=in_progress    # What's claimed
 ```
 📍 Beads sync reminder:
 - [X] issues updated this session
-- Run `bd sync` before ending session
+- Commit .beads/ before ending session (git mode) — issues.jsonl is auto-flushed
+- Run `bd dolt push` if a Dolt remote is configured
 
 Or if phase complete:
 - Phase [N] appears complete

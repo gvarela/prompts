@@ -132,7 +132,7 @@ After reading all documentation, prepare to spawn workers sequentially.
 #### Verify Beads is Initialized
 
 ```bash
-bd doctor    # Check beads health
+bd info    # Check beads is initialized
 ```
 
 **If beads is not initialized or has errors**:
@@ -643,11 +643,9 @@ After phase completion:
      - Key learnings: ${aggregatedLearnings}
    ```
 
-4. **Sync beads state**:
+4. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
 
    ```bash
-   bd sync    # Export beads to .beads/issues.jsonl
-
    # In git mode, commit the beads state
    if [ "$BEADS_MODE" != "stealth" ]; then
      git add .beads/

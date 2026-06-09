@@ -111,11 +111,10 @@ Determine the current implementation state:
    - What's been tried
    - Potential solutions identified
 
-### Step 3: Sync Beads and Check Git State
+### Step 3: Persist Beads and Check Git State
 
 ```bash
-# Sync beads state
-bd sync    # Exports to .beads/issues.jsonl
+# Beads auto-flushes .beads/issues.jsonl after mutations — nothing to run
 
 # Check mode (set by SessionStart hook)
 if [ "$BEADS_MODE" = "stealth" ]; then

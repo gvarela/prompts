@@ -78,8 +78,7 @@ const handoffPath = $1 || /* prompt for it */;
      echo "📍 Stealth mode: Beads state is local-only"
      echo "   Handoff may not include beads state (document-based only)"
    else
-     echo "📍 Git mode: Syncing beads state from git"
-     bd sync    # Pull beads database from .beads/ in git
+     echo "📍 Git mode: beads auto-imports .beads/issues.jsonl updated by git pull"
    fi
 
    # Check beads state regardless of mode

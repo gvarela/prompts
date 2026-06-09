@@ -441,7 +441,7 @@ Create beads issues to track ALL work (phases AND granular tasks) across session
 #### 5a. Verify Beads is Initialized
 
 ```bash
-bd doctor    # Check beads is working
+bd info    # Check beads is working
 ```
 
 If beads is not initialized, prompt user: "Run `bd init` to initialize beads tracking for this project."

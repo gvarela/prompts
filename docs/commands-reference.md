@@ -64,13 +64,14 @@ bd init             # Git: .beads/ tracked in git (personal projects)
 - **`mockup-iteration` skill**: Creates UI questions, validates all resolved before finalization
 
 **Beads workflow**:
+
 ```bash
 bd ready                                    # Find available work (no blockers)
 bd show [id]                                # Review task details
 bd update [id] --status in_progress         # Claim task
 # ... implement ...
 bd close [id] --reason "..."                # Complete task
-bd sync                                     # Export to .beads/issues.jsonl
+# beads auto-flushes .beads/issues.jsonl after mutations
 # Git mode: commit .beads/ to persist across machines
 # Stealth mode: .beads/ stays uncommitted (local only)
 ```
