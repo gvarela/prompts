@@ -55,15 +55,10 @@ bd list                         # All issues with status
 bd list --status=in_progress    # Active work
 bd list --status=closed         # Completed work
 
-# Check beads mode (set by SessionStart hook)
-if [ "$BEADS_MODE" = "stealth" ]; then
-  echo "📍 Stealth mode: Beads state local-only"
-else
-  echo "📍 Git mode: Beads state in git"
-fi
+# Mode semantics: see docs/reference/beads-mode.md ($BEADS_MODE set by SessionStart hook)
 ```
 
-**Note**: Beads mode doesn't affect status updates. Both modes have same beads state, just different persistence mechanisms.
+**Note**: Beads mode doesn't affect status updates — only persistence.
 
 Check tasks.md for beads phase IDs:
 

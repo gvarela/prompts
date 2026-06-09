@@ -126,35 +126,11 @@ After reading all documentation, prepare to spawn workers sequentially.
 bd info    # Check beads is initialized
 ```
 
-**If beads is not initialized or has errors**:
+**If beads is not initialized or has errors**: follow [docs/reference/beads-not-initialized.md](../../docs/reference/beads-not-initialized.md) — present its standard message and stop until the user initializes beads.
 
-```
-⚠️ Beads Not Initialized
+#### Note Beads Mode
 
-Beads is required for task tracking in the wb workflow.
-
-To initialize beads for this project:
-```bash
-cd [project-root]
-bd init
-```
-
-Then run `/wb:create_execution` to set up beads issues for all tasks.
-
-```
-
-Stop and wait for user to initialize beads before proceeding.
-
-#### Detect Beads Mode
-
-```bash
-# Check mode (set by SessionStart hook)
-if [ "$BEADS_MODE" = "stealth" ]; then
-  echo "📍 Stealth mode: Beads state is local-only"
-else
-  echo "📍 Git mode: Beads state tracked in git"
-fi
-```
+Mode is already detected: read `$BEADS_MODE` (set by the SessionStart hook). For stealth vs git semantics, see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md).
 
 #### Verify Beads Tracking Configuration
 

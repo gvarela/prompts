@@ -122,19 +122,10 @@ Determine the current implementation state:
 ```bash
 # Beads auto-flushes .beads/issues.jsonl after mutations — nothing to run
 
-# Check mode (set by SessionStart hook)
-if [ "$BEADS_MODE" = "stealth" ]; then
-  echo "📍 Stealth mode detected: .beads/ is gitignored"
-  echo "   Beads state is local-only (not committed to repo)"
-  echo "   For work handoffs, document next steps manually in handoff doc"
-else
-  echo "📍 Git mode detected: .beads/ is tracked"
-  echo "   Committing beads state to git for cross-session persistence"
-
-  # Verify beads state was updated
+# Mode semantics: see docs/reference/beads-mode.md ($BEADS_MODE set by SessionStart hook)
+if [ "$BEADS_MODE" != "stealth" ]; then
+  # Git mode: commit beads state (part of handoff protocol)
   git status    # Should show .beads/issues.jsonl as modified
-
-  # Commit beads state (part of handoff protocol)
   git add .beads/
   git commit -m "Sync beads state before handoff"
 fi

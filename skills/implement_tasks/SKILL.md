@@ -135,42 +135,11 @@ First, check that beads is working:
 bd info    # Check beads is initialized
 ```
 
-**If beads is not initialized or has errors**:
-
-```
-⚠️ Beads Not Initialized
-
-Beads is required for task tracking in the wb workflow.
-
-To initialize beads for this project:
-```bash
-cd [project-root]
-bd init
-```
-
-Then run `/wb:create_execution` to set up beads issues for all tasks.
-```
-
-Stop and wait for user to initialize beads before proceeding.
+**If beads is not initialized or has errors**: follow [docs/reference/beads-not-initialized.md](../../docs/reference/beads-not-initialized.md) — present its standard message and stop until the user initializes beads.
 
 #### Detect Beads Mode
 
-```bash
-# Check mode (set by SessionStart hook)
-if [ "$BEADS_MODE" = "stealth" ]; then
-  echo "📍 Stealth mode: Beads state is local-only"
-  echo "   Tasks tracked in beads but .beads/ not committed to git"
-else
-  echo "📍 Git mode: Beads state tracked in git"
-  echo "   Tasks persist across sessions via git commits"
-fi
-```
-
-**Mode awareness**:
-- Both modes work identically within a session
-- Beads auto-flushes state to `.beads/issues.jsonl` after mutations
-- **Stealth**: beads state stays local (.beads/ gitignored)
-- **Git**: commit .beads/ to persist across machines
+Mode is already detected: read `$BEADS_MODE` (set by the SessionStart hook). For stealth vs git semantics, see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md).
 
 #### Verify Beads Tracking Configuration
 
@@ -423,9 +392,7 @@ After phase completion and verification:
    fi
    ```
 
-   **Mode behavior**:
-   - **Stealth mode**: state auto-flushed locally, .beads/ not committed
-   - **Git mode**: git commit persists to git for cross-machine sync
+   Mode semantics: [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md).
 
 ## Handling Mismatches
 

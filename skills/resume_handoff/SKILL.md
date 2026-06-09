@@ -83,13 +83,8 @@ const handoffPath = $1 || /* prompt for it */;
 5. **Sync and check beads state**:
 
    ```bash
-   # Check mode (set by SessionStart hook)
-   if [ "$BEADS_MODE" = "stealth" ]; then
-     echo "📍 Stealth mode: Beads state is local-only"
-     echo "   Handoff may not include beads state (document-based only)"
-   else
-     echo "📍 Git mode: beads auto-imports .beads/issues.jsonl updated by git pull"
-   fi
+   # Mode semantics: see docs/reference/beads-mode.md ($BEADS_MODE set by
+   # SessionStart hook). Git mode: beads auto-imports issues.jsonl after git pull.
 
    # Check beads state regardless of mode
    bd stats                        # Current beads statistics
