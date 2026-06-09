@@ -9,6 +9,12 @@ disable-model-invocation: true
 
 Transforms design decisions into a detailed, phased execution plan with embedded tasks. Focuses on HOW to implement what was designed.
 
+Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
+
+- [sub-agent-prompts.md](sub-agent-prompts.md) — verbatim Task() spawn prompts for the Step 2 analysis agents
+- [templates.md](templates.md) — output document skeletons (tasks.md template, beads tracking blocks)
+- [examples.md](examples.md) — illustrative bd command examples for Step 5
+
 ## Initial Response
 
 When invoked, check for arguments:
@@ -77,73 +83,7 @@ After reading all documents, spawn specialized agents in parallel:
 
 **CRITICAL: Sub-agents are READ-ONLY. They gather information and return findings. They do NOT write files. YOU (the main agent) will write tasks.md after synthesizing their findings.**
 
-```javascript
-// Spawn analysis agents in parallel - all are read-only
-Task({
-  description: "Analyze file dependencies",
-  prompt: `Analyze dependencies for implementing the design.
-
-  From research.md:
-  - Current file structure: [key files]
-  - Integration points: [systems]
-
-  From design.md:
-  - Target architecture: [approach]
-  - Components to build: [list]
-
-  Determine:
-  - Build order (what must be done first)
-  - Parallel work opportunities
-  - Critical path dependencies
-  - External dependencies needed
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "codebase-analyzer",
-  model: "sonnet"
-})
-
-Task({
-  description: "Identify test coverage needs",
-  prompt: `Identify testing requirements for the implementation.
-
-  From design.md:
-  - Success criteria: [criteria]
-  - Risk areas: [risks]
-
-  From research.md:
-  - Existing test patterns: [patterns]
-  - Test frameworks in use: [frameworks]
-
-  Determine:
-  - Unit tests needed (with file:line for each component)
-  - Integration tests required
-  - Edge cases from risk analysis
-  - Test fixtures needed
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "codebase-analyzer",
-  model: "sonnet"
-})
-
-Task({
-  description: "Find similar implementation patterns",
-  prompt: `Find examples of similar implementations in the codebase.
-
-  From design.md:
-  - Type of change: [type]
-  - Components affected: [components]
-
-  Search for:
-  - Similar features already implemented
-  - Phased rollout patterns used
-  - Testing approaches for similar changes
-  - Configuration patterns to follow
-
-  DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "pattern-finder",
-  model: "haiku"
-})
-```
+Read the "Analysis Agent Prompts (Step 2)" section of [sub-agent-prompts.md](sub-agent-prompts.md) NOW and follow it exactly.
 
 **⛔⛔⛔ BARRIER 2: STOP! Wait for ALL agents - dependency, test, pattern agents ⛔⛔⛔**
 
@@ -172,263 +112,7 @@ Based on the gap between current and target state, and agent findings:
 
 Update or create tasks.md with the following structure:
 
-````markdown
----
-project: [from existing frontmatter]
-ticket: [from existing frontmatter]
-created: [from existing frontmatter]
-status: not-started
-last_updated: [YYYY-MM-DD]
-current_phase: 1
-total_tasks: [calculated count]
-completed_tasks: 0
-depends_on: [research.md, design.md]
----
-
-# Execution Plan: [Feature Name]
-
-## Overview
-
-Implementing [brief summary] as specified in design.md
-
-**Design Approach**: [from design.md]
-**Target State**: [from design.md success criteria]
-
-## Implementation Strategy
-
-### Phase Rationale
-[Explain why phases are ordered this way - dependencies from agents, risk mitigation, etc.]
-
-Based on dependency analysis:
-- [Key dependency finding from agent]
-- [Parallel work opportunity from agent]
-
-### Testing Strategy
-[Overall approach to testing throughout implementation, incorporating test coverage agent findings]
-
-## Progress Overview
-
-Progress is tracked in beads. To check current status:
-
-```bash
-bd stats                    # Overall project statistics
-bd list --status=closed     # See completed tasks
-bd list --status=in_progress # See active work
-bd ready                    # See available work
-```
-
-**Phase status**:
-- Phase 1: See beads milestone `[phase1-milestone-id]` - depends on [X] tasks
-- Phase 2: See beads milestone `[phase2-milestone-id]` - depends on [Y] tasks
-- Phase 3: See beads milestone `[phase3-milestone-id]` - depends on [Z] tasks
-
-Use `bd show [milestone-id]` to see which tasks block each phase milestone.
-
----
-
-## Phase 1: [Descriptive Name]
-
-### Objective
-[Single clear goal for this phase]
-
-### Prerequisites
-- [ ] Research validated
-- [ ] Design approved
-- [ ] Development environment ready
-- [ ] [Dependencies from agent analysis]
-
-### Changes Required
-
-#### 1. [Component/Module Name]
-
-**File**: `path/to/file.ext`
-
-**Current State** (from research.md):
-- [How it works now]
-- [Key function at line X]
-
-**Target State** (from design.md):
-- [How it should work]
-- [New capability needed]
-
-**Implementation**:
-```language
-// At line [X], replace:
-[old code]
-
-// With:
-[new code]
-```
-
-**Rationale**: [Why this specific implementation]
-**Pattern Reference**: [Similar implementation from agent at file:line]
-
-#### 2. [Another Component]
-
-[Similar structure...]
-
-### Tasks
-
-**Note**: Task status is tracked ONLY in beads. The tasks below document WHAT needs to be done (the PLAN). For task STATUS, run `bd list` or check frontmatter `beads_tasks` for IDs.
-
-#### Setup Tasks
-- Create new directory structure at `path/to/new/` → `[beads:phase1_setup_1]`
-- Install dependencies: `npm install [package]` → `[beads:phase1_setup_2]`
-- Set up configuration in `config/feature.json` → `[beads:phase1_setup_3]`
-
-#### Implementation Tasks
-- Create [Component] class at `src/component.ts` → `[beads:phase1_impl_1]`
-  - Implement constructor with dependency injection
-  - Add [method1] for [purpose]
-  - Add [method2] for [purpose]
-- Modify [ExistingComponent] at `src/existing.ts:45` → `[beads:phase1_impl_2]`
-  - Add integration with new component
-  - Update error handling
-
-#### Testing Tasks
-(Generated from test coverage agent findings)
-- Write unit tests for [Component] at `tests/component.test.ts` → `[beads:phase1_test_1]`
-  - Test [scenario 1 from agent]
-  - Test [edge case from agent]
-  - Test [error condition from agent]
-- Write integration tests at `tests/integration/feature.test.ts` → `[beads:phase1_test_2]`
-  - Test [integration scenario from agent]
-
-#### Integration Tasks
-- Connect [Component] to [ExistingSystem] → `[beads:phase1_integration_1]`
-- Update API endpoint at `api/routes.ts:78` → `[beads:phase1_integration_2]`
-- Add database migration for new table → `[beads:phase1_integration_3]`
-
-### Success Criteria
-
-#### Automated Verification
-- [ ] Unit tests pass: `npm test src/component.test.ts`
-- [ ] Integration tests pass: `npm test:integration`
-- [ ] Linting clean: `npm run lint`
-- [ ] Type checking passes: `npm run typecheck`
-- [ ] Build succeeds: `npm run build`
-
-#### Manual Verification
-(From design.md success criteria)
-- [ ] [Specific user action] works correctly
-- [ ] Performance meets target: [metric]
-- [ ] Error messages are clear and helpful
-- [ ] No regression in [related feature]
-
-### Modified Files
-
-Track all files changed in this phase:
-
-#### Code Files
-- `src/component.ts` - New component implementation
-- `src/existing.ts` - Integration point modified
-- `config/feature.json` - Configuration added
-
-#### Test Files
-- `tests/component.test.ts` - Unit tests for new component
-- `tests/integration/feature.test.ts` - Integration tests
-
-**Quick test command for this phase**:
-```bash
-npm test src/component.test.ts tests/integration/feature.test.ts
-```
-
-### ⛔ CHECKPOINT: Phase 1 Complete
-
-Before proceeding to Phase 2:
-1. ✅ All Phase 1 task beads issues closed (`bd list --status=closed`)
-2. ✅ Phase 1 milestone beads issue closed
-3. ✅ All automated verification passing
-4. ✅ Manual verification confirmed by human
-5. ✅ Update frontmatter: `current_phase: 2`
-
-**Verification**: Run `bd show [phase1-milestone-id]` to confirm all blocking tasks are closed.
-
-**Do not proceed without human confirmation of manual tests.**
-
----
-
-## Phase 2: [Descriptive Name]
-
-### Objective
-[Clear goal for phase 2]
-
-### Prerequisites
-- [ ] Phase 1 complete and verified
-- [ ] Phase 1 manual testing confirmed
-- [ ] [Additional prerequisites from dependency agent]
-
-[Continue with similar structure...]
-
----
-
-## Implementation Discoveries
-
-Things to determine during implementation:
-- [Technical detail that needs investigation]
-- [Configuration that needs testing]
-- [Performance tuning needed]
-
-Note: Update this section with findings as you implement.
-
----
-
-## 📝 Completed Tasks Archive
-
-Move completed tasks here weekly to keep active list focused.
-
-### Week of [YYYY-MM-DD]
-- [x] Task description (completed YYYY-MM-DD HH:MM)
-
----
-
-## 🚧 Blockers & Notes
-
-### Current Blockers
-
-Blockers are tracked in beads. To see current blockers:
-
-```bash
-bd blocked    # Show all blocked issues and what blocks them
-```
-
-For reference, recently resolved blockers can be noted here:
-- [Date]: [Brief description] - resolved by [solution]
-
-### Implementation Notes
-- [Important discovery during implementation]
-- [Deviation from plan and why]
-
----
-
-## 🔗 Quick Reference
-
-### Key Files
-- **Research**: [research.md](research.md) - Current state documentation
-- **Design**: [design.md](design.md) - Target state specification
-- **Main Entry**: `[from design]`
-- **Config**: `[from design]`
-
-### Common Commands
-```bash
-# Run all tests
-npm test
-
-# Run phase-specific tests
-[phase test command]
-
-# Build
-npm run build
-
-# Lint
-npm run lint
-```
-
-### Design Decisions Reference
-Quick lookup of key design decisions:
-- [Decision 1]: [Brief reminder]
-- [Decision 2]: [Brief reminder]
-````
+Read the "tasks.md Document Template" section of [templates.md](templates.md) NOW and follow it exactly.
 
 **⛔⛔⛔ BARRIER 3: STOP! Verify NO placeholder values - ALL tasks MUST be specific and executable ⛔⛔⛔**
 
@@ -462,6 +146,7 @@ fi
 ```
 
 **Mode implications**:
+
 - **Stealth mode**: Beads issues created locally, tracked in frontmatter, but .beads/ directory not committed
 - **Git mode**: Beads issues AND .beads/ directory both committed to git for full persistence
 
@@ -482,24 +167,7 @@ bd create "[Project Name] Implementation" \
 
 For each phase in the execution plan, create a milestone issue:
 
-```bash
-# Phase 1 - capture the ID from output
-bd create "Phase 1 Milestone: [Phase Name]" \
-  --type=task \
-  --priority=2 \
-  -d "All Phase 1 tasks complete. Objective: [phase objective]. See tasks.md Phase 1 for details."
-# → Created prompts-xyz (save this as PHASE1_MILESTONE_ID)
-
-# Phase 2 - capture the ID from output
-bd create "Phase 2 Milestone: [Phase Name]" \
-  --type=task \
-  --priority=2 \
-  -d "All Phase 2 tasks complete. Objective: [phase objective]. See tasks.md Phase 2 for details."
-# → Created prompts-abc (save this as PHASE2_MILESTONE_ID)
-
-# Set up dependency: Phase 2 milestone depends on Phase 1 milestone
-bd dep add [PHASE2_MILESTONE_ID] [PHASE1_MILESTONE_ID]
-```
+Read the "Phase Milestone Creation Examples (Step 5c)" section of [examples.md](examples.md) NOW and follow it exactly.
 
 **Important**: Capture each ID as it's created. You'll need them for dependencies.
 
@@ -509,37 +177,10 @@ bd dep add [PHASE2_MILESTONE_ID] [PHASE1_MILESTONE_ID]
 
 For each task in each phase:
 
-```bash
-# Setup task example
-bd create "Create new directory structure at path/to/new/" \
-  --type=task \
-  --priority=2 \
-  -d "Phase 1 setup task. Create directory structure for new component."
-# → Created prompts-def (save as TASK1_ID)
-
-# Implementation task example
-bd create "Create [Component] class at src/component.ts" \
-  --type=task \
-  --priority=2 \
-  -d "Phase 1 implementation. Create component with constructor, method1 for [purpose], method2 for [purpose]."
-# → Created prompts-ghi (save as TASK2_ID)
-
-# Testing task example
-bd create "Write unit tests for [Component] at tests/component.test.ts" \
-  --type=task \
-  --priority=2 \
-  -d "Phase 1 testing. Test scenario 1, edge case X, error condition Y."
-# → Created prompts-jkl (save as TASK3_ID)
-
-# Integration task example
-bd create "Connect [Component] to [ExistingSystem]" \
-  --type=task \
-  --priority=2 \
-  -d "Phase 1 integration. Update API endpoint at api/routes.ts:78."
-# → Created prompts-mno (save as TASK4_ID)
-```
+Read the "Task Creation Examples (Step 5d)" section of [examples.md](examples.md) NOW and follow it exactly.
 
 **Task Creation Guidelines**:
+
 - Title should match the task description from tasks.md
 - Description includes phase, task type (setup/implementation/testing/integration), and key details
 - All tasks start with priority 2 (medium)
@@ -568,6 +209,7 @@ bd dep add [TASK4_ID] [TASK3_ID]
 ```
 
 **Dependency Principles**:
+
 - Setup tasks have no dependencies (start immediately)
 - Implementation depends on setup
 - Testing depends on implementation
@@ -576,6 +218,7 @@ bd dep add [TASK4_ID] [TASK3_ID]
 - Next phase milestone depends on previous phase milestone
 
 **Tip**: Use parallel task creation for efficiency:
+
 - Spawn multiple `bd create` commands using parallel agents
 - Capture all IDs, then set up dependencies in a second pass
 
@@ -585,28 +228,10 @@ bd dep add [TASK4_ID] [TASK3_ID]
 
 Add beads tracking to tasks.md frontmatter for ALL issues:
 
-```yaml
-beads_epic: [epic-id]
-beads_phases:
-  phase1_milestone: [phase1-milestone-id]
-  phase2_milestone: [phase2-milestone-id]
-  phase3_milestone: [phase3-milestone-id]
-beads_tasks:
-  # Phase 1 tasks
-  phase1_setup_1: [task-id]
-  phase1_setup_2: [task-id]
-  phase1_impl_1: [task-id]
-  phase1_impl_2: [task-id]
-  phase1_test_1: [task-id]
-  phase1_test_2: [task-id]
-  phase1_integration_1: [task-id]
-  # Phase 2 tasks
-  phase2_setup_1: [task-id]
-  phase2_impl_1: [task-id]
-  # ... etc for all tasks
-```
+Read the "Frontmatter Tracking Block (Step 5f)" section of [templates.md](templates.md) NOW and follow it exactly.
 
 **Frontmatter Guidelines**:
+
 - Use descriptive keys that match the task structure
 - Format: `phaseN_category_number` (e.g., `phase1_setup_1`, `phase2_impl_3`)
 - Keep the same order as tasks appear in the plan
@@ -614,30 +239,7 @@ beads_tasks:
 
 Add a quick reference section with key commands:
 
-```markdown
-## Beads Issue Tracking
-
-This project uses beads for ALL task tracking across sessions.
-
-**Epic**: [epic-id]
-
-**Phase Milestones**:
-- Phase 1: [phase1-milestone-id] (all Phase 1 tasks must complete)
-- Phase 2: [phase2-milestone-id] (all Phase 2 tasks must complete)
-- Phase 3: [phase3-milestone-id] (all Phase 3 tasks must complete)
-
-**Granular Tasks**: See frontmatter `beads_tasks` section for all task IDs.
-
-**Essential Commands**:
-- `bd ready` - See what's ready to work on (no blockers)
-- `bd show [id]` - View task details and dependencies
-- `bd update [id] --claim` - Claim a task
-- `bd close [id]` - Complete a task
-- `bd blocked` - See what's currently blocked
-- `bd list --status=in_progress` - See your active work
-
-**Status Source**: Beads is the source of truth for all task status. Do NOT use markdown checkboxes for tracking.
-```
+Read the "Beads Issue Tracking Section (Step 5f)" section of [templates.md](templates.md) NOW and follow it exactly.
 
 ### Step 6: Validate Completeness
 
