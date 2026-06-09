@@ -8,7 +8,7 @@ git_commit: b87c809
 git_branch: modernize-2.0
 repository: workbench
 assignee: gabe@vare.la
-current_phase: 1
+current_phase: 2
 total_tasks: 28
 completed_tasks: 8
 depends_on: [research.md, design.md]
