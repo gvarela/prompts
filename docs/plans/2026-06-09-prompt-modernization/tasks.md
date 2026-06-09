@@ -448,6 +448,7 @@ bd blocked    # live view
 - [2026-06-09] prompts-xou variance: claim-intent sites totaled 14, not 6 — implement_tasks ×5, implement_coordinated ×2, resume_handoff ×2, create_execution ×2 (incl. generated-template text), help ×1, update_status ×1, plus CLAUDE.md and AGENTS.md quick references. All standardized to `--claim`.
 - [2026-06-09] prompts-gz8 variance: the same fragile title-grep existed in implement_tasks Step 6; fixed both. Authoritative check is milestone `blockedBy`.
 - [2026-06-09] prompts-gja: implement_coordinated's unique "Recommended for" guidance relocated to its intro before section deletion.
+- [2026-06-09] prompts-skb decisions (maintainer): create_mockup ×4 codebase-analyzer@haiku KEPT (deliberate cost choice for lightweight UI documentation); validate_execution:97 haiku hint REMOVED (diff verification defers to frontmatter sonnet); validate_execution:149 pattern-finder@sonnet KEPT (quality judgment is heavier than pattern location). Per-spawn overrides remain a sanctioned mechanism.
 
 ---
 

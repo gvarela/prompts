@@ -94,8 +94,7 @@ Task({
 
   Use git diff to compare changes if needed.
   DO NOT write any files. Return your findings as a report.`,
-  subagent_type: "codebase-analyzer",
-  model: "haiku"
+  subagent_type: "codebase-analyzer"
 })
 
 Task({
