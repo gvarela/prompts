@@ -201,6 +201,8 @@ For each phase in tasks.md:
 
 ### Step 5: Generate Validation Report
 
+**⛔ BARRIER 3**: Do not write the report until every automated verification command from Step 3 has been run in this session and its result recorded. The report asserts verification results — unverified claims must not appear in it.
+
 Create a comprehensive validation report:
 
 ```markdown
@@ -421,3 +423,4 @@ Recommended workflow:
 
 1. **⛔ BARRIER 1**: Read all documentation first
 2. **⛔ BARRIER 2**: Wait for all validation agents
+3. **⛔ BARRIER 3**: Complete all automated checks before writing the report
