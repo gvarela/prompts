@@ -189,6 +189,8 @@ Organize findings by category:
 
 ### Step 4: Report Findings
 
+**⛔ BARRIER 2**: Do not write the report until every checklist category has actually been executed in this session and its result recorded — including `bd show` on every ID from the frontmatter. The report asserts validation results; unverified claims must not appear in it.
+
 Present a comprehensive report:
 
 ```
@@ -508,3 +510,4 @@ for (const section of sections) {
 ## Synchronization Points
 
 1. **⛔ BARRIER 1**: After reading all files - ensure full context
+2. **⛔ BARRIER 2**: All checks executed (including per-ID bd show) before writing the report

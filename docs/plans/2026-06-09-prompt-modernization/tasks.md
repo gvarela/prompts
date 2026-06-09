@@ -450,6 +450,7 @@ bd blocked    # live view
 - [2026-06-09] prompts-gja: implement_coordinated's unique "Recommended for" guidance relocated to its intro before section deletion.
 - [2026-06-09] prompts-skb decisions (maintainer): create_mockup ×4 codebase-analyzer@haiku KEPT (deliberate cost choice for lightweight UI documentation); validate_execution:97 haiku hint REMOVED (diff verification defers to frontmatter sonnet); validate_execution:149 pattern-finder@sonnet KEPT (quality judgment is heavier than pattern location). Per-spawn overrides remain a sanctioned mechanism.
 - [2026-06-09] prompts-wyz follow-up (maintainer decision): validate_execution's phantom BARRIER 3 promoted to a REAL gate at Step 5 (no report until automated checks run and recorded) — restores the create_* skills' barrier-before-writing symmetry; the dangling summary line was likely a remnant of intended structure. The implement_tasks analog stays deleted (post-CHECKPOINT bookkeeping, already human-gated).
+- [2026-06-09] prompts-wyz follow-up 2 (maintainer decision): validate_project gets a real pre-report BARRIER 2 (all checklist categories executed, incl. per-ID bd show, before writing the report) — covers the gate semantics of its deleted phantom "BARRIER 2: verify all IDs exist". The deleted "BARRIER 3: organize findings by severity" stays dead: formatting instruction, not a gate; the report template already enforces severity structure.
 
 ---
 
