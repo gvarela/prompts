@@ -712,19 +712,19 @@ Flexible ticket support:
 
 ### Extending Commands
 
-All commands are markdown files - edit to customize:
+All commands are skills (markdown files) - edit `skills/<name>/SKILL.md` to customize:
 
 ```
-commands/
-├── create_project.md    # Structure and metadata
-├── create_research.md   # Research approach
-├── create_design.md     # Design decisions (WHAT & WHY)
-├── create_execution.md  # Execution plan (HOW)
-├── implement_tasks.md   # TDD implementation
-├── validate_execution.md # Implementation validation
-├── create_handoff.md    # Session handoff
-├── resume_handoff.md    # Resume from handoff
-└── update_status.md     # Status synchronization
+skills/
+├── create_project/SKILL.md    # Structure and metadata
+├── create_research/SKILL.md   # Research approach
+├── create_design/SKILL.md     # Design decisions (WHAT & WHY)
+├── create_execution/SKILL.md  # Execution plan (HOW)
+├── implement_tasks/SKILL.md   # TDD implementation
+├── validate_execution/SKILL.md # Implementation validation
+├── create_handoff/SKILL.md    # Session handoff
+├── resume_handoff/SKILL.md    # Resume from handoff
+└── update_status/SKILL.md     # Status synchronization
 ```
 
 ---

@@ -305,7 +305,7 @@ Deterministic automation on events?  → hook
 
 ## What This Means for This Repository
 
-The wb plugin's `commands/` files continue to work unchanged — plugin commands and plugin skills both resolve to `/wb:*`. Current assessment:
+The wb plugin migrated to the canonical layout in v2.0.0: all former `commands/*.md` files now live at `skills/<name>/SKILL.md`, with `disable-model-invocation: true` on workflow steps and `user-invocable: false` on background-discipline skills. Remaining candidates:
 
 1. **Keep the explicit `/wb:*` workflow**, but the old rationale ("commands are user-invoked, skills are not") is obsolete. The modern equivalent of that intent is `disable-model-invocation: true`, which also keeps all 14 command descriptions out of baseline context.
 2. **The wb skills (tdd-discipline, verification-before-completion, status-sync, etc.) are the "Claude-only" pattern** — they could declare `user-invocable: false` explicitly.

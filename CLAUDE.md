@@ -9,9 +9,8 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 ## Repository Structure (Plugin Layout)
 
 - `.claude-plugin/` - Plugin manifest
-- `commands/` - Slash commands (`/wb:*`)
+- `skills/` - All skills (`skills/<name>/SKILL.md`): user-invoked workflow commands (`/wb:*`, with `disable-model-invocation: true`) and auto-activated background capabilities (`user-invocable: false`)
 - `agents/` - Specialized subagent definitions
-- `skills/` - Auto-activated background capabilities
 - `hooks/` - Event handlers (SessionStart, PostToolUse)
 - `scripts/` - Utility scripts (lint, lint-hook)
 - `docs/` - Documentation and guides

@@ -827,7 +827,7 @@ bd list   # Find correct ID
 
 ## Additional Resources
 
-- [Commands Reference](../claude-code/commands/wb/README.md) - Detailed command documentation
+- [Commands Reference](commands-reference.md) - Detailed command documentation
 - [AGENTS.md](../AGENTS.md) - Beads workflow protocol
 - [Skills Guide](claude-code-skills-guide.md) - Skills documentation
 - [Hooks README](../.claude/hooks/README.md) - Hook setup and beads mode detection

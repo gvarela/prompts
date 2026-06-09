@@ -111,9 +111,9 @@ workbench/
 ├── .claude-plugin/     # Plugin manifest + marketplace
 │   ├── plugin.json
 │   └── marketplace.json
-├── commands/           # Slash commands (/wb:*)
+├── skills/             # All skills: /wb:* workflow commands + background capabilities
+│   └── <name>/SKILL.md
 ├── agents/             # Specialized subagents
-├── skills/             # Auto-activated capabilities
 ├── hooks/              # Event handlers
 ├── scripts/            # Utility scripts (lint)
 ├── docs/               # Guides and documentation
