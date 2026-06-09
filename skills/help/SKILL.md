@@ -1,4 +1,5 @@
 ---
+name: help
 description: Quick reference for wb workflow commands and beads integration
 argument-hint: [topic]
 ---

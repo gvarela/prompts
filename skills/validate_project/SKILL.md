@@ -1,6 +1,8 @@
 ---
+name: validate_project
 description: Validate project documentation follows wb workflow correctly
 argument-hint: [project-directory]
+disable-model-invocation: true
 ---
 
 # Validate Project

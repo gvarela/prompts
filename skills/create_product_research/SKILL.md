@@ -1,6 +1,8 @@
 ---
+name: create_product_research
 description: Research codebase from a product perspective - features, user flows, behaviors, and patterns
 argument-hint: [project-directory] [research-question]
+disable-model-invocation: true
 ---
 
 # Generate Product Research Document

@@ -1,6 +1,8 @@
 ---
+name: resume_handoff
 description: Resume work from a handoff document created in a previous session
 argument-hint: [handoff-file-path]
+disable-model-invocation: true
 ---
 
 # Resume Handoff

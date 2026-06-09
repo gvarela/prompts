@@ -2,6 +2,7 @@
 name: status-sync
 description: Monitors beads status and reminds about bd sync at session end or when phases complete.
 allowed-tools: Read, Glob, Grep, Bash(bd:*)
+user-invocable: false
 ---
 
 # Status Sync Reminder

@@ -1,6 +1,8 @@
 ---
+name: create_mockup
 description: Research UI patterns and create initial mockup with clarifying questions
 argument-hint: [project-directory] [feature-description]
+disable-model-invocation: true
 ---
 
 # Create Mockup

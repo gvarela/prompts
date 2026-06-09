@@ -1,6 +1,8 @@
 ---
+name: implement_tasks
 description: Implement tasks following TDD practices with phase boundaries
 argument-hint: [project-directory] [phase-number|continue]
+disable-model-invocation: true
 ---
 
 # Implement Tasks

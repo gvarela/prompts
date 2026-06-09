@@ -1,6 +1,8 @@
 ---
+name: create_handoff
 description: Create a handoff document to transfer work context to another session or agent
 argument-hint: [project-directory] [handoff-reason]
+disable-model-invocation: true
 ---
 
 # Create Handoff

@@ -2,17 +2,7 @@
 name: mockup-iteration
 description: Iterate on UI mockups, capturing keeps/removes/changes with full fidelity. Versions each iteration and maintains decision log.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(ls:*, mkdir:*), mcp__plugin_playwright_playwright__browser_navigate, mcp__plugin_playwright_playwright__browser_take_screenshot, mcp__plugin_playwright_playwright__browser_snapshot
-triggers:
-  - mockup feedback
-  - iterate on mockup
-  - change the mockup
-  - keep this
-  - remove this
-  - update mockup
-  - next version
-  - refine design
-  - show mockup
-  - preview mockup
+when_to_use: When the user gives mockup feedback ("keep this", "remove this", "change the mockup"), asks to iterate, update, or preview a mockup, requests the next version, or wants to refine a design after /wb:create_mockup.
 ---
 
 # Mockup Iteration Skill

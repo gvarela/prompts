@@ -1,6 +1,7 @@
 ---
 name: project-structure
 description: Enforces project documentation structure in docs/plans/ directories - research.md for facts, design.md for decisions, tasks.md for implementation, thoughts/ for explorations.
+user-invocable: false
 ---
 
 # Project Structure

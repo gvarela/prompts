@@ -1,6 +1,8 @@
 ---
+name: update_status
 description: Update status across all project documentation files based on progress
 argument-hint: [project-directory]
+disable-model-invocation: true
 ---
 
 # Update Project Status
