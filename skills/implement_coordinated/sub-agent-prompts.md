@@ -111,7 +111,7 @@ markdown report with Status: PASS or FAIL.
 **Retry 1:**
 
 ```
-Verification failed. Spawn a fix worker using the general-purpose agent with opus model.
+Verification failed. Spawn a fix worker using the task-worker agent with an opus model override.
 
 Provide:
 - Task ID: ${taskId}

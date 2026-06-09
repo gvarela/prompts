@@ -3,6 +3,8 @@ name: validate_execution
 description: Validate that execution plan was correctly implemented and verify all success criteria
 argument-hint: [project-directory]
 disable-model-invocation: true
+model: sonnet
+effort: high
 ---
 
 # Validate Execution

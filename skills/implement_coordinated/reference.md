@@ -48,49 +48,10 @@ const contextPackage = {
 };
 ```
 
-## Determine Worker Model (Step 5)
+## Worker Model Selection (Step 5)
 
-```javascript
-function determineModel(taskDetails) {
-  // Extract complexity indicators from task
-  const description = taskDetails.description.toLowerCase();
-  const title = taskDetails.title.toLowerCase();
-  const combined = `${title} ${description}`;
+Retired: the `determineModel()` keyword-regex spec was replaced by coordinator judgment (2026-06, prompts-0my) — the coordinator reads the task content and picks haiku (mechanical config/docs/renames), sonnet (standard implementation), or opus (bugs/refactors/architecture; default when unsure), passing the choice as a per-spawn model override on the `task-worker` agent.
 
-  // Haiku for simple tasks (config, docs, renames)
-  const haikuPatterns = [
-    /\b(config|configuration|env|environment variable)/,
-    /\b(documentation|readme|comment|doc string)/,
-    /\b(rename|move|delete)\s+(file|directory|folder)/,
-    /\b(update|change)\s+(version|dependency)/,
-    /\btypo\b/
-  ];
-
-  for (const pattern of haikuPatterns) {
-    if (pattern.test(combined)) {
-      return 'haiku';
-    }
-  }
-
-  // Sonnet for straightforward implementation tasks
-  const sonnetPatterns = [
-    /\b(implement|add|create|build|write)\s+(test|unit test)/,
-    /\b(add|create)\s+(function|method|class|component)/,
-    /\b(wire up|integrate|connect)\b/,
-    /\b(update|modify)\s+(existing|current)/
-  ];
-
-  for (const pattern of sonnetPatterns) {
-    if (pattern.test(combined)) {
-      return 'sonnet';
-    }
-  }
-
-  // Default → opus (conservative, better at complex tasks)
-  // This includes: bug fixing, refactoring, architecture, algorithms, security
-  return 'opus';
-}
-```
 
 ## Worker Failure Playbook (Step 6)
 

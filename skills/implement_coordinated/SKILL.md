@@ -55,7 +55,7 @@ All principles from `implement_tasks` PLUS:
 2. **Context Extraction**: Build minimal context packages for workers
 3. **Sequential Execution**: Simple, predictable, one task at a time
 4. **Worker Isolation**: Each worker operates in fresh context
-5. **Model Selection**: Right model for task complexity (haiku/sonnet/opus)
+5. **Model Selection**: Right model per task via per-spawn override on the task-worker agent (haiku/sonnet/opus)
 6. **Main Session Stays Clean**: No context accumulation in coordinator
 
 ### CRITICAL: NO SCOPE ADDITIONS - NONE
@@ -177,12 +177,11 @@ bd ready
 
 1. **Get next task**: Run `bd ready` to find available work
 2. **Check task details**: Run `bd show [task-id]` for requirements
-3. **Determine model**:
+3. **Determine model** (coordinator judgment — read the task content and pick the tier):
    - Haiku: Simple tasks (config, docs, renames)
    - Sonnet: Standard implementation (tests, new functions, integrations)
-   - Opus: Everything else (bugs, refactoring, architecture) - DEFAULT
-   - The precise selection spec is the `determineModel()` function in [reference.md](reference.md) — consult it when the tier isn't obvious.
-4. **Spawn worker agent** as `general-purpose` with the chosen model. **Read [sub-agent-prompts.md](sub-agent-prompts.md) NOW** and build the worker prompt from its "Worker Prompt Template" — task ID/title/description, the context package, beads commands (`bd update [id] --claim`, `bd close [id]`), the TDD cycle, and the expected-output contract. Use the template verbatim with values filled in.
+   - Opus: Everything else (bugs, refactoring, architecture) - DEFAULT when unsure
+4. **Spawn the `task-worker` agent** with the chosen model as a per-spawn override (the agent has the tdd-discipline skill preloaded and carries the TDD contract in its own definition). **Read [sub-agent-prompts.md](sub-agent-prompts.md) NOW** and build the worker prompt from its "Worker Prompt Template" — task ID/title/description, the context package, beads commands (`bd update [id] --claim`, `bd close [id]`), and the expected-output contract. Use the template verbatim with values filled in.
 5. **Collect worker output** when complete
 6. **Proceed to verification** (Step 6)
 

@@ -7,7 +7,7 @@ user-invocable: false
 
 # Status Sync Reminder
 
-Reminds about beads synchronization when completing work or ending sessions.
+Interactive deep-check for beads state at phase boundaries and session end. The deterministic session-end reminder is handled by the plugin's SessionEnd hook (`hooks/beads-drift-check.sh`) — this skill is for the richer check: phase milestones left open, in-progress issues that should be closed, and drift the hook's git-only signal can't see.
 
 ## When to Activate
 
