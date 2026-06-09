@@ -2,9 +2,9 @@
 project: prompt-modernization
 ticket: prompts-fkz
 created: 2026-06-09
-status: ready
+status: implementing
 last_updated: 2026-06-09
-git_commit: db40dea
+git_commit: b87c809
 git_branch: modernize-2.0
 repository: workbench
 designer: gabe@vare.la

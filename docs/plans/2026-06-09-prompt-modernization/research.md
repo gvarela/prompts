@@ -8,7 +8,7 @@ git_branch: modernize-2.0
 repository: workbench
 researcher: gabe@vare.la
 audience: maintainer
-beads_issue: prompts-fkz
+ticket: prompts-fkz
 revision: 2
 revision_note: "Rev 2 after maintainer pushback: re-evaluated against the HumanLayer provenance of these prompts; several Rev 1 verdicts reversed or narrowed. See Provenance & Evaluation Standard."
 ---

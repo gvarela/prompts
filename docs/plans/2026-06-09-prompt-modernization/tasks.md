@@ -2,15 +2,15 @@
 project: prompt-modernization
 ticket: prompts-fkz
 created: 2026-06-09
-status: not-started
+status: in-progress
 last_updated: 2026-06-09
-git_commit: db40dea
+git_commit: b87c809
 git_branch: modernize-2.0
 repository: workbench
 assignee: gabe@vare.la
 current_phase: 1
 total_tasks: 28
-completed_tasks: 0
+completed_tasks: 8
 depends_on: [research.md, design.md]
 beads_epic: prompts-y2a
 beads_phases:
