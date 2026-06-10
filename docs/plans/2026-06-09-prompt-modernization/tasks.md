@@ -8,7 +8,7 @@ git_commit: b87c809
 git_branch: modernize-2.0
 repository: workbench
 assignee: gabe@vare.la
-current_phase: 2
+current_phase: 3
 total_tasks: 28
 completed_tasks: 8
 depends_on: [research.md, design.md]
@@ -454,6 +454,7 @@ bd blocked    # live view
 - [2026-06-09] prompts-yuf PARITY GATE: PASS. Pre/post-split structural dry-runs (headless --plugin-dir, identical prompts) compared: identical 9-step sequence with all 5 gates in place, identical worker-prompt field list (role, task triple, 6 pattern fields, design context, TDD 5-step with --claim, 5 constraints, 6-item output contract, error clause), identical verification gate sequence (crash path, verifier inputs, PASS/FAIL parse, 2-retry opus policy, surface-at-boundary), identical report headings. Post-split run explicitly read all three supporting files unprompted — imperative pointers work. Artifacts: pilot-parity/. Rollout unblocked.
 - [2026-06-09] Phase 2 rollout complete: 13 remaining skills split (1 inline, 12 via parallel worker agents with verbatim-move specs). Total SKILL.md core: 8,439 -> 5,275 lines (-37.5%), 28 supporting files. Verified: lint clean, all pointers resolve, gate inventories identical in every SKILL.md (create_execution -1 expected: template-internal CHECKPOINT moved with the template). Dedup: 8 skills point at docs/reference (~90 duplicated lines removed; operative snippets inline; agents self-contained). Headless smoke: split create_research loads and prompts correctly.
 - [2026-06-09] Post-rollout conservation audit (maintainer-requested): mechanical byte-equivalence check of all 22 Task() blocks against pre-split git blobs caught a real defect the worker reports missed — create_mockup's worker had stripped the Task() wrappers, dropping subagent_type and model fields (the haiku hints kept in prompts-skb). Restored verbatim from git history; re-check now 22/22 byte-equivalent, zero leftover Task() blocks in cores. Lesson: worker self-reports are claims; the conservation check is the evidence.
+- [2026-06-09] Phase 3 validations + pilot: skills preload VALIDATED (plain name resolves; Iron Law verbatim in worker context, empirical headless test); SessionEnd fires reliably (marker test), visibility via systemMessage JSON. Pilot prompts-4wg: task-worker ran strict TDD on a synthetic task (RED failed for the right reason, GREEN passed, worker closed its own issue) and — bonus — the first attempt validated the error contract (sandbox blocker -> left in_progress with structured report, did NOT false-close). task-verifier gated PASS with honest static-evidence fallback when its sandbox blocked python. Drift hook: silent-when-clean and dirty-reminder verified, warm timing ~5ms. Pilot caveat: headless --allowedTools narrowing caused worker Write-block workaround; not a production config.
 
 ---
 
