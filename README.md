@@ -23,14 +23,14 @@ For local development:
 ```bash
 # Clone and test locally (changes take effect immediately)
 git clone git@github.com:gvarela/workbench.git
-claude --plugin-dir /path/to/workbench
+claude --plugin-dir /path/to/workbench/plugin
 ```
 
 ### Updating
 
 To release new commands/skills/agents:
 
-1. Bump `version` in **both** `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` (must match)
+1. Bump `version` in **both** `plugin/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` (must match)
 2. Commit and push to GitHub
 3. Users run from their shell (not a slash command):
 
@@ -102,21 +102,22 @@ Background capabilities that Claude automatically invokes:
 ### Hooks
 
 - **SessionStart** - Auto-detects beads mode (stealth/git)
+- **SessionEnd** - Reminds about uncommitted beads state (silent when clean)
 - **PostToolUse** - Lints markdown files after Write/Edit operations
 
 ## Plugin Structure
 
 ```
 workbench/
-├── .claude-plugin/     # Plugin manifest + marketplace
-│   ├── plugin.json
-│   └── marketplace.json
-├── skills/             # All skills: /wb:* workflow commands + background capabilities
-│   └── <name>/SKILL.md
-├── agents/             # Specialized subagents
-├── hooks/              # Event handlers
-├── scripts/            # Utility scripts (lint)
-├── docs/               # Guides and documentation
+├── .claude-plugin/     # Marketplace manifest (source: ./plugin)
+├── plugin/             # The shipped runtime — the only thing installs cache
+│   ├── .claude-plugin/plugin.json
+│   ├── skills/<name>/SKILL.md   # /wb:* workflow commands + background capabilities
+│   ├── agents/         # Specialized subagents
+│   ├── hooks/          # Event handlers
+│   ├── scripts/        # Utility scripts (lint)
+│   └── docs/reference/ # Runtime-referenced shared docs
+├── docs/               # Maintainer guides + project plans (not shipped)
 └── general/            # General-purpose prompts
 ```
 
@@ -143,16 +144,16 @@ Commands create/track beads issues for phases, tasks, and UI questions. SessionS
 ### Linting
 
 ```bash
-./scripts/lint           # Lint changed files
-./scripts/lint --fix     # Auto-fix issues
-./scripts/lint --all     # Lint all markdown files
+./plugin/scripts/lint           # Lint changed files
+./plugin/scripts/lint --fix     # Auto-fix issues
+./plugin/scripts/lint --all     # Lint all markdown files
 ```
 
 ### Testing Changes
 
 ```bash
-# Run with local plugin
-claude --plugin-dir /path/to/this/repo
+# Run with local plugin (point at the plugin/ subdirectory)
+claude --plugin-dir /path/to/this/repo/plugin
 
 # Reload after changes (inside Claude Code)
 /reload-plugins

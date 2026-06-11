@@ -8,12 +8,14 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 
 ## Repository Structure (Plugin Layout)
 
-- `.claude-plugin/` - Plugin manifest
-- `skills/` - All skills (`skills/<name>/SKILL.md`): user-invoked workflow commands (`/wb:*`, with `disable-model-invocation: true`) and auto-activated background capabilities (`user-invocable: false`)
-- `agents/` - Specialized subagent definitions
-- `hooks/` - Event handlers (SessionStart, PostToolUse)
-- `scripts/` - Utility scripts (lint, lint-hook)
-- `docs/` - Documentation and guides
+- `.claude-plugin/` - Marketplace manifest (plugin manifest lives in `plugin/.claude-plugin/`)
+- `plugin/` - The shipped runtime: everything below is what installers receive
+- `plugin/skills/` - All skills (`skills/<name>/SKILL.md`): user-invoked workflow commands (`/wb:*`, with `disable-model-invocation: true`) and auto-activated background capabilities (`user-invocable: false`)
+- `plugin/agents/` - Specialized subagent definitions
+- `plugin/hooks/` - Event handlers (SessionStart, SessionEnd, PostToolUse)
+- `plugin/scripts/` - Utility scripts (lint, lint-hook)
+- `plugin/docs/reference/` - Runtime-referenced shared docs (skills link to these)
+- `docs/` - Maintainer documentation, guides, and project plans (never shipped to installs)
 - `general/` - General-purpose prompts and templates
 - `.claude/` - Local development configuration
 
@@ -23,16 +25,16 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 
 ```bash
 # Lint changed markdown files
-./scripts/lint
+./plugin/scripts/lint
 
 # Auto-fix markdown issues
-./scripts/lint --fix
+./plugin/scripts/lint --fix
 
 # Lint specific files
-./scripts/lint file1.md file2.md
+./plugin/scripts/lint file1.md file2.md
 
 # Lint all markdown files
-./scripts/lint --all
+./plugin/scripts/lint --all
 ```
 
 **Automatic Linting**: PostToolUse hooks automatically lint markdown files after Write/Edit operations.
@@ -49,8 +51,8 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 ### Testing the Plugin
 
 ```bash
-# Test locally
-claude --plugin-dir /path/to/this/repo
+# Test locally (NOTE: point at the plugin/ subdirectory, not the repo root)
+claude --plugin-dir /path/to/this/repo/plugin
 
 # Reload after changes
 /reload-plugins
@@ -62,7 +64,7 @@ claude --plugin-dir /path/to/this/repo
 
 When adding new commands, skills, or agents:
 
-1. Bump `version` in `.claude-plugin/plugin.json` (e.g., 1.0.0 → 1.1.0 for features, 1.0.0 → 1.0.1 for fixes)
+1. Bump `version` in `plugin/.claude-plugin/plugin.json` (e.g., 1.0.0 → 1.1.0 for features, 1.0.0 → 1.0.1 for fixes)
 2. Bump matching `version` in `.claude-plugin/marketplace.json` (must match plugin.json)
 3. Commit and push
 4. Users run `claude plugin update wb@gvarela-workbench` from the **shell** (not a slash command — it's a CLI command, run with `!` prefix or in a separate terminal)
@@ -74,7 +76,7 @@ When adding new commands, skills, or agents:
 - Pushing to git — the marketplace clone at `~/.claude/plugins/marketplaces/<name>/` doesn't auto-pull
 - Bumping version without `claude plugin update` — the cache stays at the old version
 
-For local dev (`--plugin-dir` install), changes take effect immediately without a version bump.
+For local dev (`--plugin-dir` install), changes take effect immediately without a version bump — `--plugin-dir` always serves the working tree and shadows the installed plugin even at an equal version. **Gotcha**: a session started *without* `--plugin-dir` serves the installed (cached) version; working-tree changes are invisible to it, including to its `/reload-skills`.
 
 ## Command Workflow
 
@@ -187,7 +189,7 @@ When creating new prompts or commands:
 
 - The main branch is `main`
 - Commit messages should be descriptive
-- Run `./scripts/lint` before committing markdown files
+- Run `./plugin/scripts/lint` before committing markdown files
 - Keep the repository organized by category
 
 ## Beads Issue Tracking
