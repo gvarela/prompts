@@ -153,3 +153,21 @@ These workflow prompts descend from HumanLayer's `.claude/commands` (Dex Horthy'
 | "Beads Not Initialized" error | 2 | docs/reference/beads-not-initialized.md | ~13 |
 | Persist-beads-state prose | 4 | keep script, point prose at beads-mode.md | ~25 |
 | TDD cycle restatement | 2 | implement_coordinated worker prompt references tdd-discipline skill (R13 makes this automatic via skills: preload) | — |
+
+---
+
+## Final Disposition (2026-06-11)
+
+Project closes at Phase 3 + release; Phase 4 trims deferred to a successor project that will run after the wb-eval-harness ships (its Tier 3 scenarios against the Faraday fixture become the trims' evidence base — see docs/plans/2026-06-10-wb-eval-harness/).
+
+| Recommendation | Disposition |
+|---|---|
+| R2 (phantom-barrier fixes) | APPLIED Phase 1 — plus two maintainer-decided gate *promotions* (validate_execution BARRIER 3, validate_project BARRIER 2) |
+| R5 (Configuration boilerplate) | APPLIED Phase 1 |
+| R8 (bd CLI correctness) | APPLIED Phase 1 (8 truncation sites, 14 claim sites, mode predicate, milestone checks) |
+| R9 (model-hint review) | APPLIED Phase 1 per maintainer decisions (mockup haiku kept; validate_execution:97 deferred to frontmatter; :149 sonnet kept) |
+| R6, R7, R10, R11 (relocations/splits/dedup) | APPLIED Phase 2 — 8,439 → 5,275 core lines, parity-gated, adversarially audited |
+| R12 (verification pins), R13 (task-worker), R14 (SessionEnd drift hook) | APPLIED Phase 3, assumption-validated and piloted |
+| R1 (budget keywords), R4 (strategic placement) | DEFERRED to successor — pending harness Tier 3 behavioral evidence (prompts-41c/7jx/9wg/pnr deferred in beads) |
+| R3 (barrier formatting) | DEFERRED, still downgraded — decide on parity evidence or skip |
+| R15, R16 (preprocessing, named args) | PARKED — open decision prompts-s6c, nothing blocked |
