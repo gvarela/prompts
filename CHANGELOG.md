@@ -30,6 +30,8 @@ The modernization release. One coordinated breaking change covering the Claude C
 - Phantom barrier references removed from three sync summaries; two real pre-report gates added to the validation skills (validate_execution BARRIER 3, validate_project BARRIER 2).
 - PostToolUse lint hook reads hook input from stdin JSON — it had been silently no-opping since Claude Code stopped setting `CLAUDE_TOOL_ARGS`.
 
+- Workflow skills carry `allowed-tools: Read` — pre-approves file reads while the skill is active, so the on-demand supporting files (templates, sub-agent prompts, reference) load without permission prompts when your session is in a different project. Found in release testing; reads outside the active skill still follow your normal permission settings once the skill completes.
+
 ### Added
 
 - `hooks/beads-drift-check.sh` (SessionEnd): one-line reminder when `.beads/` has uncommitted changes; silent when clean.

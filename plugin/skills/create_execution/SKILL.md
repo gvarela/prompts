@@ -3,6 +3,7 @@ name: create_execution
 description: Transform design into detailed phased execution plan with embedded tasks
 argument-hint: [project-directory]
 disable-model-invocation: true
+allowed-tools: Read
 ---
 
 # Create Execution Plan

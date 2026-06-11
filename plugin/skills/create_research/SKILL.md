@@ -3,6 +3,7 @@ name: create_research
 description: Research codebase using parallel agents to document how things work
 argument-hint: [project-directory] [research-question]
 disable-model-invocation: true
+allowed-tools: Read
 ---
 
 # Generate Research Document

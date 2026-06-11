@@ -3,6 +3,7 @@ name: implement_coordinated
 description: Coordinate task implementation using sequential worker agents with fresh context
 argument-hint: [project-directory] [phase-number|continue]
 disable-model-invocation: true
+allowed-tools: Read
 ---
 
 # Implement Tasks (Coordinated)

@@ -3,6 +3,7 @@ name: create_design
 description: Create architectural design decisions based on validated research
 argument-hint: [project-directory]
 disable-model-invocation: true
+allowed-tools: Read
 ---
 
 # Create Design Document
