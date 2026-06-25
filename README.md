@@ -14,15 +14,15 @@ A personal workbench of tools and workflows for Claude Code. Streamlines softwar
 
 ```bash
 # Add the marketplace and install the plugin
-claude plugin marketplace add gvarela/workbench
-claude plugin install wb@gvarela-workbench
+claude plugin marketplace add thescubageek/workbench
+claude plugin install wb@thescubageek-workbench
 ```
 
 For local development:
 
 ```bash
 # Clone and test locally (changes take effect immediately)
-git clone git@github.com:gvarela/workbench.git
+git clone git@github.com:thescubageek/workbench.git
 claude --plugin-dir /path/to/workbench
 ```
 
@@ -35,7 +35,7 @@ To release new commands/skills/agents:
 3. Users run from their shell (not a slash command):
 
    ```bash
-   claude plugin update wb@gvarela-workbench
+   claude plugin update wb@thescubageek-workbench
    ```
 
 4. Restart Claude (or `/reload-plugins`) to apply
@@ -76,6 +76,8 @@ Slash commands for project documentation and task management:
 - **`/wb:validate_project`** - Validate project documentation structure
 - **`/wb:create_handoff`** - Create session handoff for work continuity
 - **`/wb:resume_handoff`** - Resume from handoff document
+- **`/wb:resolve_questions`** - Walk through open questions one at a time and record answers
+- **`/wb:forge`** - Run a ticket through the full pipeline (research → validate); end-to-end sequencer
 - **`/wb:update_status`** - Intelligently sync status across all documentation files
 - **`/wb:help`** - Quick reference for all commands
 
@@ -137,6 +139,19 @@ Commands create/track beads issues for phases, tasks, and UI questions. SessionS
 - **Explicit Barriers**: Synchronization points prevent rushing ahead
 - **Dual Verification**: Automated (tests, CI) + Manual (UX, edge cases)
 - **Zero Scope Creep**: Tasks only from plans - no ad-hoc additions
+
+## Output Discipline (optional opt-in)
+
+The `/wb:*` commands already keep narration terse (act on barriers silently, emit a one-line completion summary instead of recapping the written document). To enforce the same discipline **globally** across all your Claude Code work — not just wb — add this to your own `~/.claude/CLAUDE.md` (user-wide) or a project `CLAUDE.md`:
+
+```markdown
+## Output Discipline
+- Act on barriers/checkpoints silently; don't restate the plan between steps.
+- After writing a file, don't reproduce its contents in chat — emit a one-line summary.
+- Surface only blockers, decisions awaiting input, and errors.
+```
+
+The plugin cannot (and does not) write to your personal config — this rule is opt-in by design.
 
 ## Development
 
