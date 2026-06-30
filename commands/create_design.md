@@ -179,7 +179,29 @@ Based on research and agent findings, clearly articulate:
 
 ### Step 4: Solution Exploration
 
-**Interactive Design Discussion**
+**⛔ TRACER BULLET GATE: Before presenting options, ask if one probe would collapse the set**
+
+**think deeply about the single load-bearing uncertainty**
+
+The candidate approaches usually share one assumption you cannot yet evaluate — and the answer changes which paths are even viable. Don't list options on paper and defer that unknown to a "validate later" beads issue. Resolve it now if you cheaply can.
+
+Fire a tracer bullet when **ALL** hold:
+
+1. The viability of multiple approaches hinges on the same unverified assumption.
+2. One bounded action would resolve it — read the one file end-to-end, run a minimal end-to-end slice, make the one API call, run the one query, write one throwaway spike.
+3. Resolving it eliminates options or reorders significant downstream work.
+
+If so, run that single bounded probe **before** generating options, then **report the cull**:
+
+```
+Tracer bullet: [what was probed] → [evidence found].
+This kills Option [X] / confirms [assumption].
+Surviving options: [...]
+```
+
+Keep it bounded: one assumption (the highest-leverage one), throwaway or thin, stop the moment it resolves. If there is no single decisive unknown, skip the probe and proceed — don't manufacture one.
+
+See the `tracer-bullet` skill for the full discipline.
 
 1. **Generate design options**:
 
@@ -469,9 +491,10 @@ Use agent findings to strengthen design:
 
 1. **⛔ BARRIER 1**: After reading research - ensure full understanding
 2. **⛔ BARRIER 2**: After agent spawning - wait for ALL agents
-3. **⛔ DECISION POINT**: After presenting options - get approach approval
-4. **⛔ BARRIER 3**: Before writing - verify no placeholders
-5. **⛔ APPROVAL GATE**: After writing design - get explicit approval
+3. **⛔ TRACER BULLET GATE**: Before presenting options - probe the load-bearing unknown if one cheap dive would collapse the set
+4. **⛔ DECISION POINT**: After presenting options - get approach approval
+5. **⛔ BARRIER 3**: Before writing - verify no placeholders
+6. **⛔ APPROVAL GATE**: After writing design - get explicit approval
 
 ## Configuration
 

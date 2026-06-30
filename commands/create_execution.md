@@ -166,6 +166,16 @@ Based on the gap between current and target state, and agent findings:
    - Enable incremental validation
    - Follow patterns from similar implementations
 
+**⛔ TRACER BULLET CHECK: Does the whole plan rest on one unverified assumption?**
+
+**think deeply about the single load-bearing unknown**
+
+A multi-phase plan built on "assuming X works..." is a gamble — if X is false, every phase after it is wasted. Before finalizing phases, ask: is there one assumption whose failure would invalidate large parts of the plan, and would one bounded probe resolve it?
+
+If so, make it **Phase 0: Tracer Bullet** — a single bounded spike (a thin end-to-end slice, one query, one throwaway prototype) that resolves the unknown before the real build. Phase 1+ then plan against a known answer, not a guess. Keep it bounded: one assumption, stop the moment it resolves, then plan the rest. If there is no single decisive unknown, skip Phase 0 — don't manufacture one.
+
+This is distinct from minor discoveries you make as you code (see "Handling Implementation Discoveries"): a tracer bullet is for the *decisive* unknown that reorders the plan. See the `tracer-bullet` skill for the full discipline.
+
 ### Step 4: Generate Execution Plan
 
 Update or create tasks.md with the following structure:
@@ -742,10 +752,11 @@ Some things can only be determined during coding:
    - Update with findings as discovered
    - Adjust tasks if needed
 
-2. **Don't Block on Unknowns**:
-   - Make reasonable assumptions
+2. **Don't Block on Minor Unknowns**:
+   - Make reasonable assumptions for low-stakes details
    - Plan to test and adjust
    - Document the uncertainty
+   - **But**: if an unknown is *load-bearing* (its failure invalidates whole phases), don't assume — resolve it with a Phase 0 tracer bullet first (see Step 3)
 
 3. **Update During Implementation**:
    - Add discovered constraints
@@ -774,9 +785,10 @@ Tasks should be:
 
 1. **⛔ BARRIER 1**: After reading documents - ensure full context
 2. **⛔ BARRIER 2**: After spawning agents - wait for ALL agents
-3. **⛔ BARRIER 3**: Before writing tasks.md - verify no placeholders
-4. **Step 5**: Create beads issues for phase tracking
-5. **⛔ CHECKPOINT**: Between phases - require human verification
+3. **⛔ TRACER BULLET CHECK**: Before finalizing phases - promote a load-bearing unknown to a Phase 0 spike
+4. **⛔ BARRIER 3**: Before writing tasks.md - verify no placeholders
+5. **Step 5**: Create beads issues for phase tracking
+6. **⛔ CHECKPOINT**: Between phases - require human verification
 
 ## Configuration
 

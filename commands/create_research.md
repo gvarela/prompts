@@ -78,6 +78,10 @@ When invoked, check for arguments:
 
 ### Step 4: Spawn Parallel Research Agents
 
+**⛔ SCOPING PROBE: If you're unsure where the feature lives, aim before you fan out**
+
+A `tracer-bullet` move adapted for research: spawning the heavy analyzer/pattern fleet at the wrong subsystem wastes the whole round. If the research areas from Step 3 rest on an unverified guess about *where* the code lives, run **one** quick locator pass first to confirm the target, then aim the parallel agents at the confirmed location. This is scoping, not approach-culling — you're still a documentarian. If the location is already clear from Step 1's files, skip the probe and fan out directly. Don't manufacture a probe.
+
 Create multiple Task agents to research different aspects concurrently using our specialized agents:
 
 **CRITICAL: Sub-agents are READ-ONLY. They gather information and return findings. They do NOT write files. YOU (the main agent) will write research.md after synthesizing their findings.**
@@ -416,8 +420,9 @@ Next: Review the research and run `/create_design` when ready to create design d
 ### Synchronization Points
 
 1. ⛔ **BARRIER 1**: After reading mentioned files - Do not proceed until ALL files are read
-2. ⛔ **BARRIER 2**: After spawning agents - Wait for ALL agents to complete
-3. ⛔ **BARRIER 3**: Before writing output - Verify no placeholder values
+2. ⛔ **SCOPING PROBE**: Before fanning out - confirm where the feature lives if unsure, so agents are aimed correctly
+3. ⛔ **BARRIER 2**: After spawning agents - Wait for ALL agents to complete
+4. ⛔ **BARRIER 3**: Before writing output - Verify no placeholder values
 
 ## Configuration
 
