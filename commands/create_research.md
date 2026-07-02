@@ -42,6 +42,21 @@ When invoked, check for arguments:
 
 ## Steps to Execute After Receiving the Research Query
 
+### Step 0: Ticket Context Bootstrap (if a Jira ticket is available)
+
+Before decomposing the research, load any context the ticket already carries — other teams or agents may have captured it there. Reusing it ("hiveminding" off the ticket) avoids re-deriving what's already known.
+
+**Delegate to the `jira-context` skill.** If a Jira key (`[A-Z]+-\d+`) is available — from the arguments, the existing `research.md` frontmatter `ticket:` field, or the research question — invoke the `jira-context` skill with that key. It fetches the ticket via the Atlassian MCP, and if the description has an **Agents** section, follows those instructions to read in the files/docs/subsystems it points to and reports what was loaded.
+
+Use the skill's report as high-priority scoping input for the rest of this command:
+
+- Read fully (per the Step 1 protocol) any files it surfaced.
+- Aim Step 4's parallel agents at the subsystems and entry points it named.
+
+The `Agents` section shapes **where** you look; it does not change **what** you produce. The Documentarian Rule still holds — document what exists, no recommendations.
+
+**⛔ Best-effort, never blocking**: no ticket, no Atlassian MCP, or no `Agents` section must NOT stop research. Fall through to Step 1.
+
 ### Step 1: Read Any Directly Mentioned Files First (CRITICAL)
 
 - If the user mentions specific files (docs, JSON, configs), read them FULLY first

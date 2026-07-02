@@ -63,29 +63,36 @@ When invoked:
 ## Per-phase behavior
 
 ### Phase: create_project
+
 - Only runs if no project directory exists.
 - Invoke `/wb:create_project` semantics (read `commands/create_project.md`); collect project name, base dir, ticket ref.
 - Output: timestamped project directory with stub research/design/tasks files.
 
 ### Phase: create_research
+
 - Invoke `/wb:create_research` semantics.
+- **Pass the ticket ref through.** If forge was given a Jira ticket ref (`$1`) or the project has a `ticket:` frontmatter field, ensure create_research receives it so its **Ticket Context Bootstrap** (Step 0) runs the `jira-context` skill: fetch the ticket via the Atlassian MCP and, if the description has an **Agents** section, follow those instructions to shortcut context lookup ("hivemind" off the ticket).
 - ⛔ BARRIER on completion: list any `Q:` items in beads. If any are unresolved, **stop and surface them to the user** before advancing. Forge does not skip blockers.
 
 ### Phase: create_design
+
 - Invoke `/wb:create_design` semantics.
 - ⛔ BARRIER on completion: list any `Decide:` items in beads. If any are unresolved, **stop and surface them**.
 
 ### Phase: create_execution
+
 - Invoke `/wb:create_execution` semantics.
 - Creates beads phases.
 - ⛔ BARRIER: explicitly ask the user "ready to implement?" before advancing. Default stop-after value is here.
 
 ### Phase: implement_tasks
+
 - Loop: `bd ready` → claim phase → invoke `/wb:implement_tasks` for that phase → close → next.
 - Stop the loop if any phase fails verification.
 - Surface failed task IDs to the user.
 
 ### Phase: validate_execution
+
 - Invoke `/wb:validate_execution` semantics.
 - Surface diff between plan and actual implementation.
 
