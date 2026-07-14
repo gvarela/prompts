@@ -198,6 +198,10 @@ exhausting the rolling **5-hour usage window** or ignoring your calendar.
 1. Write the digest to `.context/daily-digest/<YYYY-MM-DD>.md` using
    [digest-template.md](digest-template.md). **PHI-free** (see guardrail). This is the
    durable artifact — a cold context (or you at 2pm) can reload the plan from it.
+   **Every PR / ticket / Sentry reference is a clickable markdown link** to the URL its
+   collector returned (`gh` `url`, Jira `webUrl`, Sentry permalink) — the digest is a
+   click-through launchpad, not just a status list. Preserve these URLs through Phase 2
+   reconciliation so a merged work item keeps all its source links.
 2. Record the run: write today's ISO date to `.context/daily-digest/last-run` so the
    next digest's window starts here.
 3. **Present tightly.** Lead with the headline, not the process:

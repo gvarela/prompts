@@ -29,27 +29,27 @@ sources_gap: [sentry, notion, gmail]   # unavailable this run + why (below)
 
 | # | Work item | Sources | Bucket-note | Complexity | Model / Effort | Fan out | Entry point |
 | - | --------- | ------- | ----------- | ---------- | -------------- | ------- | ----------- |
-| 1 | <key/title> | JIRA-123, PR#45 | sprint P1 | Complex | opus / high | no | /wb:forge JIRA-123 |
-| 2 | <title> | PR#48 | changes requested | Moderate | sonnet / medium | ok | /pr-feedback |
+| 1 | [JIRA-123](https://your.atlassian.net/browse/JIRA-123) — <title> | [JIRA-123](https://your.atlassian.net/browse/JIRA-123), [#45](https://github.com/o/r/pull/45) | sprint P1 | Complex | opus / high | no | /wb:forge JIRA-123 |
+| 2 | <title> | [#48](https://github.com/o/r/pull/48) | changes requested | Moderate | sonnet / medium | ok | [address on #48](https://github.com/o/r/pull/48) |
 | 3 | <title> | bd-12 | ready | Trivial | haiku / low | ✅ batch | — |
 
 ## 👀 Needs review
 
 **You owe (blocks others):**
 
-- <PR#/key> — <title> — <who's waiting> → `<review skill>`
+- [#PR](https://github.com/o/r/pull/PR) — <title> — <who's waiting> → `<review skill>`
 
 **Awaiting others (your work):**
 
-- <PR#/key> — <title> — <state / nudge?>
+- [#PR](https://github.com/o/r/pull/PR) — <title> — <state / nudge?>
 
 ## ✅ Progress since <window>
 
-- <PR#/key> — <title> (merged/closed/resolved)
+- [#PR](https://github.com/o/r/pull/PR) / [KEY](https://your.atlassian.net/browse/KEY) — <title> (merged/closed/resolved)
 
 ## ⛔ Blocked
 
-- <key/title> — blocked on <what> → unblocks when <condition>
+- [KEY](https://your.atlassian.net/browse/KEY) — blocked on <what> → unblocks when <condition>
 
 ## 🗓 Day plan (session-sustainable)
 
@@ -66,8 +66,15 @@ sources_gap: [sentry, notion, gmail]   # unavailable this run + why (below)
 
 Rendering notes:
 
+- **Every source reference is a clickable link.** Render each PR, ticket, and Sentry
+  issue as a markdown link to the URL its collector returned — `gh`'s `url`, Jira's
+  `webUrl`, Sentry's permalink. Never emit a bare `#123` or `TB-2934` when you have its
+  URL; the whole point of the digest is one-click navigation to exactly what's needed.
+  Link the **Work item** and **Sources** cells, the **Entry point** cell when it targets
+  a specific PR/issue, and every bullet in Needs-review / Progress / Blocked. If a
+  collector returned no URL for an item, leave it as plain text and don't invent one.
 - **Reconciled rows only.** If JIRA-123, PR#45, and bd-12 are the same work, they are
-  ONE row with all three in the Sources column — never three rows.
+  ONE row with all three (each linked) in the Sources column — never three rows.
 - **Effort tiers are required** on every Today row (from the SKILL.md rubric).
 - **Diff, not dump.** Progress lists what changed since the window, not the full board.
 - Keep Needs-review's "you owe" list first — it usually blocks other people.
