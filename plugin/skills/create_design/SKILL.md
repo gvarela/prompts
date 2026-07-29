@@ -92,7 +92,7 @@ const designFile = `${projectDir}/design.md`;
    bd list -n 0 --status=closed | grep "Decide:"   # Find recorded decisions
    ```
 
-   Identify the record for THIS project — its close reason references thoughts doc(s) under `[project-dir]/thoughts/`. If one exists:
+   The grep is a substring match — a record is an issue whose **title begins with** `Decide:`; ignore mid-title mentions. Identify the record for THIS project — its close reason references thoughts doc(s) under `[project-dir]/thoughts/`. If one exists:
    - Run `bd show [id]` and read the close reason fully (chosen direction + rationale)
    - Read FULLY every thoughts doc the close reason references
    - This record changes Step 4: you will formalize the recorded decision instead of generating options

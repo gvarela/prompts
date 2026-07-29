@@ -133,7 +133,7 @@ bd list -n 0 --status=open | grep "Q:"       # unresolved research questions
 bd list -n 0 --status=open | grep "Decide:"  # decisions already pending
 ```
 
-Open `Q:` issues that bear on the decision should be surfaced during framing. An open `Decide:` issue for this same decision means a prior session framed it — adopt it rather than creating a duplicate (close it at Step 6 instead of creating a new one).
+Both greps are substring matches — count only issues whose **title begins with** the prefix; ignore mid-title mentions. Open `Q:` issues that bear on the decision should be surfaced during framing. An open `Decide:` issue for this same decision means a prior session framed it — adopt it rather than creating a duplicate (close it at Step 6 instead of creating a new one).
 
 **think deeply about what is actually being decided** — the stated question is often one layer above or below the real fork.
 
@@ -236,7 +236,7 @@ that /wb:create_design formalizes.)
    bd list -n 0 --status=closed | grep "Decide:"
    ```
 
-3. **Verify the record is queryable**: run that exact command and confirm the new issue appears.
+3. **Verify the record is queryable**: run that exact command and confirm the new issue appears. (The grep is a substring match — consumers count only titles that BEGIN with `Decide:`, which is why the record's title must carry the prefix in first position.)
 
 If any `bd` command fails: run `bd info` to diagnose, report the specific error, fix (see Error Handling), and retry. Do not finish the stage with the beads record missing.
 

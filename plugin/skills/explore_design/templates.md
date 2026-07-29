@@ -99,4 +99,4 @@ Requirements for the close reason (this is what `/wb:create_design` reads cold):
 bd list -n 0 --status=closed | grep "Decide:"
 ```
 
-The new record must appear. This exact query is how `/wb:create_design` discovers decisions of record.
+The new record must appear. This exact query is how `/wb:create_design` discovers decisions of record. The title MUST begin with `Decide:` (first position) — consumers ignore mid-title mentions, since the grep is a substring match.
