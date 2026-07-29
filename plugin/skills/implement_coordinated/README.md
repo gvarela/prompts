@@ -44,7 +44,7 @@ Token usage: Main stays constant, workers are isolated
 
 **Sequential**: All tasks use the same model (usually sonnet).
 
-**Coordinated**: Right model per task — haiku for simple config/docs, sonnet for standard implementation, opus for everything else (default). Cost optimization per task.
+**Coordinated**: Right model per task — haiku for mechanical config/docs only, sonnet (at `effort: xhigh`) for standard implementation including bugs and refactors (default when unsure), opus for architectural, cross-cutting, or previously-failed tasks. Cost optimization per task; verified failures escalate to opus fix workers.
 
 ## Migration from implement_tasks
 
