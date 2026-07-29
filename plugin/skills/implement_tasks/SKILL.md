@@ -146,7 +146,7 @@ Mode is already detected: read `$BEADS_MODE` (set by the SessionStart hook). For
 
 Check that tasks.md frontmatter has beads tracking: `beads_epic`, `beads_phases`, and `beads_tasks` must all be present. For the exact shape, read the "Beads Tracking Frontmatter Shape" section of [templates.md](templates.md).
 
-**If frontmatter is missing beads tracking**: Tell user "Beads tracking not configured. Run `/wb:create_execution` to set up beads issues for all tasks."
+**If frontmatter is missing beads tracking**: Tell user "Beads tracking not configured. Run `/wb:create_tasks` to set up beads issues for all tasks."
 
 #### Find Available Work
 

@@ -284,6 +284,6 @@ Ready to iterate? Just tell me what to keep, change, or remove.
 3. [Iterate with mockup-iteration skill]
 4. `/wb:explore_design` - (optional) Explore architecture directions, record decision
 5. `/wb:create_design` - Finalize design from mockup decisions
-6. `/wb:create_execution` - Plan implementation
+6. `/wb:create_tasks` - Plan implementation
 
 The mockup process feeds into design.md with validated requirements.

@@ -2,6 +2,26 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [2.2.0] — Unreleased
+
+The create_tasks rename, plus the model-strategy recalibration.
+
+### Added
+
+- `skills/create_tasks`: canonical name for the execution-planning skill (the `create_*` family names its artifact — this one writes `tasks.md` — and it pairs with `implement_tasks`). Identical behavior; all docs and cross-references updated.
+
+### Changed
+
+- `implement_coordinated` worker tiers recalibrated: sonnet (at `effort: xhigh`) is the default when unsure, including bugs and refactors; haiku is mechanical-only; opus is reserved for architectural, cross-cutting, or previously-failed tasks. Fix workers stay opus.
+- `implement_coordinated` verification FAILs now distinguish implementation defects (fix-worker retries) from plan defects — a new Plan-Defect Deviation Protocol files a design-revision issue, blocks dependents, and halts the phase instead of burning retries on tasks that are wrong as specified.
+- `create_mockup` research agents moved from haiku to sonnet at `effort: low`; analyzer/verifier agents carry explicit `effort` annotations.
+- `create_tasks` gains a must-NOT-contain list (no new scope, no re-deciding design, no invented requirements).
+- Per-stage session-model guidance added to the workflow guide (Fable for explore_design, Opus for decomposition/coordination, Sonnet elsewhere).
+
+### Deprecated
+
+- `/wb:create_execution` — now a stub that redirects to `/wb:create_tasks`. Removed at 3.0.0.
+
 ## [2.1.0] — Unreleased
 
 The explore_design release. Adds an optional architecture-discussion stage between research and design, with durable decision records the rest of the pipeline consumes.

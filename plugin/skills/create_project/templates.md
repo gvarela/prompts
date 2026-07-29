@@ -27,7 +27,7 @@ This directory contains documentation for [project-name].
 2. ⏳ Research phase (`/create_research [directory]`)
 3. ⏳ Design exploration (optional) (`/explore_design [directory]`)
 4. ⏳ Design phase (`/create_design [directory]`)
-5. ⏳ Execution planning (`/create_execution [directory]`)
+5. ⏳ Execution planning (`/create_tasks [directory]`)
 6. ⏳ Implementation (`/implement_tasks [directory]`)
 7. ⏳ Testing & Verification
 
@@ -44,7 +44,7 @@ This directory contains documentation for [project-name].
 /create_design [this-directory]
 
 # Generate execution plan with tasks
-/create_execution [this-directory]
+/create_tasks [this-directory]
 
 # Implement tasks with TDD
 /implement_tasks [this-directory]
@@ -268,13 +268,13 @@ tags: [tasks, tracking, [project-name]]
 - [ ] Complete research using `/create_research [directory]`
 - [ ] Explore design options using `/explore_design [directory]` (optional)
 - [ ] Create design document using `/create_design [directory]`
-- [ ] Generate execution plan using `/create_execution [directory]`
+- [ ] Generate execution plan using `/create_tasks [directory]`
 
 ---
 
 ## Implementation Phases
 
-[To be populated by /create_execution after design is approved]
+[To be populated by /create_tasks after design is approved]
 
 ---
 

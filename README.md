@@ -51,7 +51,7 @@ Note: `/reload-plugins` alone does NOT pull updates — the cache is keyed by ve
 /wb:create_mockup docs/plans/... "UI component"  # Optional for UI
 /wb:explore_design docs/plans/...  # Optional for big architecture decisions
 /wb:create_design docs/plans/...
-/wb:create_execution docs/plans/...
+/wb:create_tasks docs/plans/...
 /wb:implement_tasks docs/plans/...
 /wb:validate_execution docs/plans/...
 ```
@@ -71,7 +71,7 @@ Slash commands for project documentation and task management:
 - **`/wb:create_mockup`** - Research UI patterns and create HTML mockups with visual validation
 - **`/wb:explore_design`** - Explore architecture directions and record the decision (optional)
 - **`/wb:create_design`** - Create architectural design decisions (WHAT and WHY)
-- **`/wb:create_execution`** - Transform design into phased execution plan (HOW)
+- **`/wb:create_tasks`** - Transform design into phased execution plan (HOW)
 - **`/wb:implement_tasks`** - Implement with TDD (Red-Green-Refactor)
 - **`/wb:implement_coordinated`** - Coordinate implementation with worker agents
 - **`/wb:validate_execution`** - Validate implementation matches plan

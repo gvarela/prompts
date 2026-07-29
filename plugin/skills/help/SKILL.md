@@ -36,7 +36,7 @@ You are a helpful guide to this workflow system, not just dumping text.
          ↓
 /wb:create_design     → Decide WHAT to build and WHY
          ↓
-/wb:create_execution  → Plan HOW to implement (creates beads issues)
+/wb:create_tasks  → Plan HOW to implement (creates beads issues)
          ↓
 /wb:implement_tasks   → Execute with TDD (Red → Green → Refactor)
          ↓
@@ -180,9 +180,9 @@ Spawns parallel agents to document codebase. Facts only, no opinions.
 
 Interactive design session. Captures WHAT and WHY, not HOW. Formalizes a recorded decision when explore_design ran; generates options itself when not.
 
-### `/wb:create_execution [directory]`
+### `/wb:create_tasks [directory]`
 
-Transforms design into phased plan. Creates beads issues for tracking.
+Transforms design into phased plan. Creates beads issues for tracking. (`/wb:create_execution` is a deprecated alias — removed at 3.0.0.)
 
 ### `/wb:implement_tasks [directory] [phase|continue]`
 
@@ -233,7 +233,7 @@ bd list              # Find correct ID
 **"beads_phases missing in frontmatter"**
 
 ```bash
-/wb:create_execution [directory]   # Creates beads issues
+/wb:create_tasks [directory]   # Creates beads issues
 ```
 
 **"database locked"**

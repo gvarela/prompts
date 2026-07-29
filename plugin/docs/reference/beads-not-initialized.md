@@ -1,6 +1,6 @@
 # Beads Not Initialized — Standard Response
 
-Shared reference for wb skills that require beads tracking (`implement_tasks`, `implement_coordinated`, `create_execution`, and others). When `bd info` fails or beads is otherwise unavailable, present this and stop:
+Shared reference for wb skills that require beads tracking (`implement_tasks`, `implement_coordinated`, `create_tasks`, and others). When `bd info` fails or beads is otherwise unavailable, present this and stop:
 
 ```
 ⚠️ Beads Not Initialized
@@ -13,7 +13,7 @@ To initialize beads for this project:
     bd init            # git mode (.beads/ committed)
     bd init --stealth  # stealth mode (.beads/ gitignored)
 
-Then run /wb:create_execution to set up beads issues for all tasks.
+Then run /wb:create_tasks to set up beads issues for all tasks.
 ```
 
 **Stop and wait for the user to initialize beads before proceeding.** Do not fall back to markdown checkboxes or TaskCreate/TodoWrite — beads is the only sanctioned status tracker in the wb workflow.

@@ -123,7 +123,7 @@ bd create "Decide: [brief decision]" --type=task --priority=1 \
   -d "Options: [A, B, C]. Trade-offs: [summary]. Blocks: [what]"
 ```
 
-Note: Decisions blocking execution should be resolved before `/create_execution`.
+Note: Decisions blocking execution should be resolved before `/create_tasks`.
 
 ## References
 
