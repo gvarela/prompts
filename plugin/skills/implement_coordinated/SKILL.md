@@ -218,8 +218,11 @@ After each worker completes:
 
    ```javascript
    // Agent returns text like: "### Status: PASS" or "### Status: FAIL"
-   const passed = verificationReport.includes("### Status: PASS");
-   const failed = verificationReport.includes("### Status: FAIL");
+   // FAIL wins: a report containing both markers, or neither, is a FAIL —
+   // ambiguous verification is failed verification
+   const failed = verificationReport.includes("### Status: FAIL") ||
+                  !verificationReport.includes("### Status: PASS");
+   const passed = !failed;
    ```
 
    **If PASS**:

@@ -80,7 +80,7 @@ Beads helps ensure nothing falls through the cracks during planning:
 bd list -n 0 --status=open | grep -E "Q:|Decide:|Validate:|UI Q:"
 ```
 
-**`Decide:` lifecycle**: an **open** `Decide:` issue is a pending decision (blocks as above); a **closed** one means the decision was made — chosen direction and rationale live in the close reason. `/wb:explore_design` creates and closes its record in one session; `/wb:create_design` finds it via:
+**`Decide:` lifecycle**: an **open** `Decide:` issue is a pending decision (blocks as above); a **closed** one means the decision was made — chosen direction and rationale live in the close reason. Prefixes count only when the title BEGINS with them — mid-title mentions are ignored. `/wb:explore_design` creates and closes its record in one session; `/wb:create_design` finds it via:
 
 ```bash
 bd list -n 0 --status=closed | grep "Decide:"
