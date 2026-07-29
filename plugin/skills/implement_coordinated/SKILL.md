@@ -147,7 +147,7 @@ beads_tasks:
   # ... all tasks
 ```
 
-**If frontmatter is missing**: Tell user "Run `/wb:create_execution` to configure beads tracking."
+**If frontmatter is missing**: Tell user "Run `/wb:create_tasks` to configure beads tracking."
 
 ### Step 3: Extract Context Package
 

@@ -248,7 +248,7 @@ The template includes `bd create` command snippets for tracking assumptions and 
 
    ```
    Once you're satisfied with the design, please confirm approval.
-   After approval, run `/create_execution` to build the implementation plan.
+   After approval, run `/create_tasks` to build the implementation plan.
    ```
 
 ## Important Guidelines

@@ -134,7 +134,7 @@ for (const section of sections) {
    Location: [project-dir]/tasks.md
    Cause: File does not exist
    Impact: Cannot track implementation work
-   Fix: Run /wb:create_execution to generate tasks.md
+   Fix: Run /wb:create_tasks to generate tasks.md
 ```
 
 ```

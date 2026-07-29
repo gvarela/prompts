@@ -29,7 +29,7 @@ These MUST be fixed for the project to follow wb workflow correctly:
 **File**: tasks.md frontmatter
 **Issue**: `beads_epic` field is missing
 **Impact**: No way to track project-level work in beads
-**Fix**: Run `/wb:create_execution` to set up beads tracking
+**Fix**: Run `/wb:create_tasks` to set up beads tracking
 
 ### 2. Status Inconsistency
 **Files**: design.md (status: ready), research.md (status: draft)

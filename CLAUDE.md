@@ -83,7 +83,7 @@ For local dev (`--plugin-dir` install), changes take effect immediately without 
 The commands follow a strict sequential workflow:
 
 ```
-/wb:create_project → /wb:create_research → [/wb:explore_design (optional)] → /wb:create_design → /wb:create_execution → /wb:implement_tasks → /wb:validate_execution
+/wb:create_project → /wb:create_research → [/wb:explore_design (optional)] → /wb:create_design → /wb:create_tasks → /wb:implement_tasks → /wb:validate_execution
 ```
 
 For multi-session work:

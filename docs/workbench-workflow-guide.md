@@ -50,7 +50,7 @@ bd init             # For personal projects (beads in git)
 /wb:create_design docs/plans/2025-01-15-TICKET-123-my-feature
 
 # 6. Create execution plan
-/wb:create_execution docs/plans/2025-01-15-TICKET-123-my-feature
+/wb:create_tasks docs/plans/2025-01-15-TICKET-123-my-feature
 
 # 7. Implement with TDD
 /wb:implement_tasks docs/plans/2025-01-15-TICKET-123-my-feature
@@ -69,7 +69,7 @@ The stage skills run in whatever session model you start; agents they spawn pick
 | create_research / create_product_research | Sonnet (high effort) | Synthesis of subagent reports |
 | explore_design | **Fable** (Opus fallback) | Divergent, judgment-dense discussion — the skill self-checks and warns on lighter models |
 | create_design | Opus; Sonnet is fine when formalizing a recorded decision | Decision-making vs. documentation |
-| create_execution | Opus | Decomposition quality determines how well cheap workers perform |
+| create_tasks | Opus | Decomposition quality determines how well cheap workers perform |
 | implement_tasks | Sonnet (xhigh effort) | The session does the coding itself |
 | implement_coordinated | Opus | Coordinator judges tiers and parses reports; workers do the coding |
 | validate_execution | Any (skill pins sonnet + high effort) | Pinned in skill frontmatter |
@@ -231,7 +231,7 @@ Creates architectural design decisions (WHAT and WHY).
 
 ### Stage 6: Execution Plan
 
-**Command**: `/wb:create_execution`
+**Command**: `/wb:create_tasks`
 
 Transforms design into detailed phased execution plan.
 
@@ -463,7 +463,7 @@ bd create "UI Assumption: Using 2-column layout" \
   -d "Assuming desktop-first. If wrong: need responsive design"
 ```
 
-**`/wb:create_execution`**:
+**`/wb:create_tasks`**:
 
 ```bash
 # Creates epic

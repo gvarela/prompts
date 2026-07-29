@@ -135,7 +135,7 @@ Present the created structure:
    /create_design [directory]
 
 3. Then generate execution plan:
-   /create_execution [directory]
+   /create_tasks [directory]
 
 4. Implement with TDD:
    /implement_tasks [directory]

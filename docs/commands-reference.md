@@ -21,7 +21,7 @@ Claude Code slash commands for managing project documentation, research, plannin
 ## Command Workflow
 
 ```mermaid
-/create_project → /create_research → /create_mockup → /explore_design → /create_design → /create_execution → /implement_tasks → /validate_execution
+/create_project → /create_research → /create_mockup → /explore_design → /create_design → /create_tasks → /implement_tasks → /validate_execution
        ↓                  ↓                 ↓                ↓                 ↓                 ↓                   ↓                   ↓
   [Structure]       [Research.md]      [Mockups/]    [Decision record]    [Design.md]       [Tasks.md]       [Implementation]      [Validation]
                           ↓                 ↓                ↓                 ↓                 ↓                   ↓                   ↓
@@ -58,7 +58,7 @@ bd init             # Git: .beads/ tracked in git (personal projects)
 **How commands use beads**:
 
 - **`/create_mockup`**: Creates `UI Q:` and `UI Assumption:` issues, blocks finalization until resolved
-- **`/create_execution`**: Creates phase milestone and task issues with dependency chains
+- **`/create_tasks`**: Creates phase milestone and task issues with dependency chains
 - **`/implement_tasks`**: Uses `bd ready`/`bd update`/`bd close` to track implementation
 - **`/update_status`**: Reads beads state as source of truth for status
 - **`/create_handoff`**: Includes open beads issues in handoff context
@@ -324,14 +324,14 @@ Creates architectural design decisions based on validated research. Focuses on W
 
 ---
 
-### `/create_execution` - Create Execution Plan
+### `/create_tasks` - Create Execution Plan
 
 Transforms approved design into detailed phased execution plan with embedded tasks.
 
 **Usage**:
 
 ```bash
-/create_execution docs/plans/2025-10-07-my-feature
+/create_tasks docs/plans/2025-10-07-my-feature
 ```
 
 **Planning Process**:
@@ -623,7 +623,7 @@ Interactive discussion → Design decisions (WHAT and WHY). Includes UI requirem
 #### 6. Create Execution Plan
 
 ```bash
-/create_execution docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+/create_tasks docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
 
 Generates phased plan with specific tasks (HOW to implement).
@@ -729,7 +729,7 @@ skills/
 ├── create_research/SKILL.md   # Research approach
 ├── explore_design/SKILL.md    # Architecture discussion (optional)
 ├── create_design/SKILL.md     # Design decisions (WHAT & WHY)
-├── create_execution/SKILL.md  # Execution plan (HOW)
+├── create_tasks/SKILL.md  # Execution plan (HOW)
 ├── implement_tasks/SKILL.md   # TDD implementation
 ├── validate_execution/SKILL.md # Implementation validation
 ├── create_handoff/SKILL.md    # Session handoff
