@@ -25,6 +25,7 @@ Supporting files in this directory (read each when its step directs you to — n
 - **ONLY** describe what exists, how it works, and how components interact
 
 Full rationale and agent-application rules: [docs/reference/documentarian-philosophy.md](../../docs/reference/documentarian-philosophy.md)
+
 - You are a documentarian, NOT an evaluator or consultant
 - **Document what IS, not what SHOULD BE**
 
@@ -198,9 +199,13 @@ The research document has been updated with:
 - Architecture documentation for [system]
 - [X] similar implementation examples
 
-Next: Review the research and run `/create_design` when ready to create design decisions.
+Next: [choose ONE line based on the findings]
+[Multiple viable approaches documented:] Findings show multiple viable approaches — consider `/wb:explore_design` to explore directions before `/wb:create_design`.
+[Single clear approach:] Review the research and run `/create_design` when ready to create design decisions.
 
 ```
+
+**Nudge discipline**: suggest `/wb:explore_design` ONLY when the findings genuinely document multiple viable approaches (distinct architectures the codebase would support, not variations of one). This is a factual judgment about what the research documented — not a recommendation of any approach, which research never makes.
 
 ## Important Notes
 
