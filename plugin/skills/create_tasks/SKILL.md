@@ -207,6 +207,8 @@ TASK1 ──► TASK2 ──► TASK3
 - For each task, ask: "which task's OUTPUT does this consume?" (code it creates, a schema it changes, an interface it defines). Those tasks — and only those — are its dependencies
 - The test is concrete: name the artifact of A that B consumes. If you cannot name one, there is no edge
 - Listing order alone NEVER creates an edge — a near-linear chain over 4+ tasks is a signal you encoded authoring order, not data flow; re-examine it
+- **File-overlap exception**: two data-independent tasks that modify the same file will collide if drawn in parallel — pick an order, add the edge, and say in the dependent task's description that it serializes file access (so a future planner doesn't mistake it for data flow)
+- **Structure-before-behavior exception**: when a phase includes a structural task (pure refactoring/moving, no behavior change), every behavioral task in that phase takes an edge to it — the tidying lands first, behavior builds on the tidied code
 - Phase milestone depends on ALL phase tasks
 - Next phase milestone depends on previous phase milestone
 

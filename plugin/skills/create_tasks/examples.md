@@ -80,3 +80,18 @@ TASK1 ──► TASK2 ──► TASK3
 ```
 
 After TASK2 closes, `bd ready` shows both TASK3 and TASK4 — that width is what coordinated execution draws from.
+
+Two exceptions add edges beyond consumed outputs — label them so they aren't mistaken for data flow:
+
+```bash
+# File overlap: if TASK3 and TASK4 were data-independent but BOTH modified
+# api/routes.ts, pick an order and record why the edge exists:
+bd dep add [TASK4_ID] [TASK3_ID]
+bd update [TASK4_ID] --notes="Edge to TASK3 serializes api/routes.ts access — not a data dependency"
+
+# Structure before behavior: if the phase had a structural task
+# ("Extract shared helper from api/routes.ts", TASK0), every behavioral
+# task in the phase takes an edge to it:
+bd dep add [TASK2_ID] [TASK0_ID]
+bd dep add [TASK4_ID] [TASK0_ID]
+```
