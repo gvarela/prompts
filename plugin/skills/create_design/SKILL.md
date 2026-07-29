@@ -86,7 +86,18 @@ const designFile = `${projectDir}/design.md`;
    - Note any existing design decisions
    - Identify what needs updating
 
-3. **Extract key design inputs**:
+3. **Check for a recorded decision** (from `/wb:explore_design`):
+
+   ```bash
+   bd list -n 0 --status=closed | grep "Decide:"   # Find recorded decisions
+   ```
+
+   Identify the record for THIS project — its close reason references thoughts doc(s) under `[project-dir]/thoughts/`. If one exists:
+   - Run `bd show [id]` and read the close reason fully (chosen direction + rationale)
+   - Read FULLY every thoughts doc the close reason references
+   - This record changes Step 4: you will formalize the recorded decision instead of generating options
+
+4. **Extract key design inputs**:
    - What exists that we must work with
    - What patterns should we follow
    - What constraints limit our options
@@ -131,6 +142,27 @@ Based on research and agent findings, clearly articulate:
    - Time/resource constraints
 
 ### Step 4: Solution Exploration
+
+This step runs in one of two modes, set by the BARRIER 1 decision-record check:
+
+**If a closed `Decide:` record exists for this project** — the architectural decision was already made in `/wb:explore_design`. Do NOT generate options. Present the recorded decision for confirmation:
+
+```
+Research and exploration already converged on a recorded decision:
+
+**Recorded decision**: [Decide: title] ([issue-id], closed)
+**Chosen direction**: [name from close reason]
+**Rationale**: [rationale from close reason]
+**Exploration record**: [thoughts doc path(s)]
+
+I'll formalize this into design.md. Confirm, or tell me if the decision
+should be revisited.
+```
+
+- **On confirmation**: treat the recorded direction as the approved approach and proceed to Step 5. The thoughts doc(s) supply the rejected alternatives and rationale for the design document.
+- **If the user wants to revisit**: suggest re-running `/wb:explore_design [project-dir]` — do not re-litigate the decision here with freshly generated options.
+
+**If no decision record exists**, proceed below — unchanged:
 
 **Interactive Design Discussion**
 
@@ -297,6 +329,6 @@ Use agent findings to strengthen design:
 
 1. **⛔ BARRIER 1**: After reading research - ensure full understanding
 2. **⛔ BARRIER 2**: After agent spawning - wait for ALL agents
-3. **⛔ DECISION POINT**: After presenting options - get approach approval
+3. **⛔ DECISION POINT**: After presenting options - get approach approval (with a closed `Decide:` record: confirmation of the recorded decision instead)
 4. **⛔ BARRIER 3**: Before writing - verify no placeholders
 5. **⛔ APPROVAL GATE**: After writing design - get explicit approval
