@@ -2,6 +2,18 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [2.1.0] — Unreleased
+
+The explore_design release. Adds an optional architecture-discussion stage between research and design, with durable decision records the rest of the pipeline consumes.
+
+### Added
+
+- `skills/explore_design`: optional, user-only facilitated architecture discussion (frame → diverge → discuss → converge → record). Produces an elastic exploration record under `thoughts/` and a fixed-shape decision record as a closed `Decide:` beads issue. Recommended model: Fable (Opus fallback); the skill self-checks and surfaces lighter models without blocking.
+- `create_design` cold-start consumption: BARRIER 1 checks `bd list -n 0 --status=closed | grep "Decide:"` and reads referenced thoughts docs; Step 4 formalizes the recorded decision on confirmation instead of generating options. With no record, behavior is byte-identical to 2.0.0 (verified against a pre-edit parity baseline).
+- `create_research` and `create_product_research` completion summaries conditionally suggest `/wb:explore_design` — only when findings show multiple viable approaches.
+- `validate_project` orphan detection exempts planning-prefix issues (`Q:`, `Decide:`, `Validate:`, `UI Q:`) — planning-phase records are intentionally not anchored in tasks.md frontmatter.
+- Documentation sweep: the optional stage appears in every workflow rendering (help, CLAUDE.md, README, commands reference, workflow guide, generated project templates); help additionally documents `Decide:` lifecycle semantics (open = pending, closed = decided, rationale in close reason).
+
 ## [2.0.0] — Unreleased
 
 The modernization release. One coordinated breaking change covering the Claude Code skills unification, the beads 1.0.2 CLI migration, and a repository restructure.
