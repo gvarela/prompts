@@ -17,7 +17,8 @@ Find and document:
 
 Return with file:line references. DO NOT suggest improvements.`,
   subagent_type: "codebase-analyzer",
-  model: "haiku"
+  model: "sonnet",
+  effort: "low"
 })
 ```
 
@@ -36,7 +37,8 @@ Find and document:
 
 Return with file:line references. DO NOT suggest improvements.`,
   subagent_type: "codebase-analyzer",
-  model: "haiku"
+  model: "sonnet",
+  effort: "low"
 })
 ```
 
@@ -56,7 +58,8 @@ Find and document:
 
 Return with file:line references. DO NOT suggest improvements.`,
   subagent_type: "codebase-analyzer",
-  model: "haiku"
+  model: "sonnet",
+  effort: "low"
 })
 ```
 
@@ -74,7 +77,8 @@ Find examples of:
 
 Return with file:line references. DO NOT suggest improvements.`,
   subagent_type: "pattern-finder",
-  model: "haiku"
+  model: "sonnet",
+  effort: "low"
 })
 ```
 
@@ -96,6 +100,7 @@ Find and document:
 Return exact patterns found. If NO icon system exists, state that clearly.
 DO NOT suggest adding an icon library if none exists.`,
   subagent_type: "codebase-analyzer",
-  model: "haiku"
+  model: "sonnet",
+  effort: "low"
 })
 ```

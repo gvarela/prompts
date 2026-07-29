@@ -10,6 +10,14 @@ allowed-tools: Read
 
 Transforms design decisions into a detailed, phased execution plan with embedded tasks. Focuses on HOW to implement what was designed.
 
+## CRITICAL: This Document is About HOW - It Must NOT Contain
+
+- **NO new scope** — every task derives from design.md; if something seems missing, STOP and surface it, do not add it
+- **NO re-deciding WHAT or WHY** — design decisions are settled input; if one looks wrong, halt and send it back to `/wb:create_design`, don't quietly plan around it
+- **NO invented requirements** — no extra hardening, edge cases, or "improvements" the design doesn't call for
+- **NO research content** — reference research.md by file:line; don't restate or extend its findings
+- **NO placeholders** — every task specific and executable (enforced at BARRIER 3)
+
 Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
 
 - [sub-agent-prompts.md](sub-agent-prompts.md) — verbatim Task() spawn prompts for the Step 2 analysis agents

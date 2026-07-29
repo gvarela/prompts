@@ -10,19 +10,19 @@ Lints markdown files using markdownlint.
 
 ```bash
 # Lint only changed markdown files (default)
-./scripts/lint
+./plugin/scripts/lint
 
 # Auto-fix issues in changed files
-./scripts/lint --fix
+./plugin/scripts/lint --fix
 
 # Lint all markdown files in the project
-./scripts/lint --all
+./plugin/scripts/lint --all
 
 # Auto-fix all markdown files
-./scripts/lint --all --fix
+./plugin/scripts/lint --all --fix
 
 # Show help
-./scripts/lint --help
+./plugin/scripts/lint --help
 ```
 
 **Features:**
@@ -63,7 +63,7 @@ The project uses `.markdownlintrc` for markdownlint configuration. Current setti
 
 The project has automatic markdown linting configured via Claude Code hooks in `.claude/settings.local.json`:
 - **PostToolUse hooks** for Write and Edit tools
-- Automatically runs `./scripts/lint-hook` after any markdown file is created or modified
+- Automatically runs `./plugin/scripts/lint-hook` after any markdown file is created or modified
 - Attempts to auto-fix common markdown issues
 - Shows brief status messages in the Claude Code interface
 
