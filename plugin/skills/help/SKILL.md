@@ -32,6 +32,8 @@ You are a helpful guide to this workflow system, not just dumping text.
          ↓
 /wb:create_research   → Document what EXISTS (facts only)
          ↓
+/wb:explore_design    → (optional) Explore architecture directions, record decision
+         ↓
 /wb:create_design     → Decide WHAT to build and WHY
          ↓
 /wb:create_execution  → Plan HOW to implement (creates beads issues)
@@ -42,6 +44,7 @@ You are a helpful guide to this workflow system, not just dumping text.
 ```
 
 **Session Management:**
+
 ```
 /wb:create_handoff    → Save context for later
 /wb:resume_handoff    → Restore context and continue
@@ -49,6 +52,7 @@ You are a helpful guide to this workflow system, not just dumping text.
 ```
 
 **UI Mockup Workflow:**
+
 ```
 /wb:create_mockup     → Research UI patterns + create v001
 [iterate with feedback] → Keep/remove/change decisions captured
@@ -65,7 +69,7 @@ Beads tracks work across sessions. Required for this workflow.
 Beads helps ensure nothing falls through the cracks during planning:
 
 | What to Track | When | Why |
-|---------------|------|-----|
+| --------------- | ------ | ----- |
 | `Q: [question]` | Research finds unknowns | Blocks design until answered |
 | `Decide: [choice]` | Design needs stakeholder input | Blocks execution until decided |
 | `Validate: [assumption]` | Design assumes something | Must verify during implementation |
@@ -76,14 +80,22 @@ Beads helps ensure nothing falls through the cracks during planning:
 bd list -n 0 --status=open | grep -E "Q:|Decide:|Validate:|UI Q:"
 ```
 
+**`Decide:` lifecycle**: an **open** `Decide:` issue is a pending decision (blocks as above); a **closed** one means the decision was made — chosen direction and rationale live in the close reason. `/wb:explore_design` creates and closes its record in one session; `/wb:create_design` finds it via:
+
+```bash
+bd list -n 0 --status=closed | grep "Decide:"
+```
+
 ### Execution Phase (Phases & Tasks)
 
 ### Initialize (once per project)
+
 ```bash
 bd init
 ```
 
 ### Execution Workflow
+
 ```bash
 bd ready                              # Find available work
 bd update [phase-id] --claim          # Claim it
@@ -97,7 +109,7 @@ bd close [phase-id] --reason "Done"   # Complete it
 Use these instead of CLI when working in Claude Code:
 
 | Command | When to Use |
-|---------|-------------|
+| --------- | ------------- |
 | `/beads:ready` | Start of session - find available work |
 | `/beads:list` | See all issues with filters |
 | `/beads:show [id]` | Review issue details before starting |
@@ -109,8 +121,9 @@ Use these instead of CLI when working in Claude Code:
 | `/beads:stats` | Project health and progress |
 
 **Less Common:**
+
 | Command | When to Use |
-|---------|-------------|
+| --------- | ------------- |
 | `/beads:init` | First time setup in a project |
 | `/beads:search` | Find issues by text |
 | `/beads:epic` | Manage epics and their children |
@@ -134,6 +147,7 @@ bd close prompts-abc --reason "Done"
 ```
 
 ### Beads + Git Workflow
+
 ```bash
 # End of session (.beads/issues.jsonl is auto-flushed by beads)
 git add .beads/      # Stage beads changes (git mode)
@@ -151,33 +165,47 @@ bd dolt pull         # Pull beads database from Dolt remote
 ## Command Details
 
 ### `/wb:create_project [name] [directory] [ticket]`
+
 Creates project structure with research.md, design.md, tasks.md.
 
 ### `/wb:create_research [directory]`
+
 Spawns parallel agents to document codebase. Facts only, no opinions.
 
+### `/wb:explore_design [directory]`
+
+(optional) Facilitated architecture discussion between research and design. Invoke when research surfaced multiple viable approaches, the change is cross-cutting or introduces a new subsystem, or the choice is hard to reverse. Skip for small well-scoped fixes, single-approach research, or when create_design's built-in option step is proportionate. Records the decision as a closed `Decide:` issue plus a thoughts/ doc; create_design detects and formalizes it.
+
 ### `/wb:create_design [directory]`
-Interactive design session. Captures WHAT and WHY, not HOW.
+
+Interactive design session. Captures WHAT and WHY, not HOW. Formalizes a recorded decision when explore_design ran; generates options itself when not.
 
 ### `/wb:create_execution [directory]`
+
 Transforms design into phased plan. Creates beads issues for tracking.
 
 ### `/wb:implement_tasks [directory] [phase|continue]`
+
 TDD implementation. Claims phase in beads, updates on completion.
 
 ### `/wb:validate_execution [directory]`
+
 Verifies implementation matches plan. Run after completing work.
 
 ### `/wb:update_status [directory]`
+
 Syncs status across all files. Uses beads as source of truth.
 
 ### `/wb:create_mockup [directory] [feature]`
+
 Researches existing UI patterns, asks clarifying questions, creates versioned mockup. Use mockup-iteration skill to refine.
 
 ### `/wb:create_handoff [directory] [reason]`
+
 Captures context for session transfer. Includes beads state.
 
 ### `/wb:resume_handoff [handoff-file]`
+
 Restores context from handoff. Syncs beads and continues work.
 
 ## Core Principles
@@ -191,16 +219,19 @@ Restores context from handoff. Syncs beads and continues work.
 ## Quick Troubleshooting
 
 **"beads not initialized"**
+
 ```bash
 bd init
 ```
 
 **"issue not found"**
+
 ```bash
 bd list              # Find correct ID
 ```
 
 **"beads_phases missing in frontmatter"**
+
 ```bash
 /wb:create_execution [directory]   # Creates beads issues
 ```

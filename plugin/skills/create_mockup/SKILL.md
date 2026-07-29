@@ -187,7 +187,7 @@ Does this match your app's visual style?
 If anything looks off, let me know and I'll adjust.
 ```
 
-4. **If similar feature found in research**:
+1. **If similar feature found in research**:
    - Offer to navigate to similar page for comparison
    - Take screenshot of existing feature
    - Show side-by-side comparison
@@ -239,7 +239,7 @@ Ready to iterate? Just tell me what to keep, change, or remove.
 ## Output Files
 
 | File | Purpose |
-|------|---------|
+| ------ | --------- |
 | `mockups/mockup-log.md` | Track all versions and running requirements |
 | `mockups/v001/mockup.md` | ASCII structure and specifications |
 | `mockups/v001/mockup.html` | Working HTML mockup with app's actual styles |
@@ -282,7 +282,8 @@ Ready to iterate? Just tell me what to keep, change, or remove.
 1. `/wb:create_research` - Understand the codebase
 2. **`/wb:create_mockup`** - Research UI + create initial mockup
 3. [Iterate with mockup-iteration skill]
-4. `/wb:create_design` - Finalize design from mockup decisions
-5. `/wb:create_execution` - Plan implementation
+4. `/wb:explore_design` - (optional) Explore architecture directions, record decision
+5. `/wb:create_design` - Finalize design from mockup decisions
+6. `/wb:create_execution` - Plan implementation
 
 The mockup process feeds into design.md with validated requirements.

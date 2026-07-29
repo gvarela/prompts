@@ -132,5 +132,6 @@ Based on the research findings:
 1. [Suggested next action based on findings]
 2. [Another logical next step]
 3. Review with engineering team for accuracy
-4. Run `/wb:create_design` when ready to make design decisions
+4. [Only when findings show multiple viable approaches: Consider `/wb:explore_design` to explore directions before design]
+5. Run `/wb:create_design` when ready to make design decisions
 ````

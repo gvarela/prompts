@@ -43,16 +43,19 @@ bd init             # For personal projects (beads in git)
 # 3. Create mockup (optional - for UI features)
 /wb:create_mockup docs/plans/2025-01-15-TICKET-123-my-feature "settings panel"
 
-# 4. Design decisions
+# 4. Explore design options (optional - for big architecture decisions)
+/wb:explore_design docs/plans/2025-01-15-TICKET-123-my-feature
+
+# 5. Design decisions
 /wb:create_design docs/plans/2025-01-15-TICKET-123-my-feature
 
-# 5. Create execution plan
+# 6. Create execution plan
 /wb:create_execution docs/plans/2025-01-15-TICKET-123-my-feature
 
-# 6. Implement with TDD
+# 7. Implement with TDD
 /wb:implement_tasks docs/plans/2025-01-15-TICKET-123-my-feature
 
-# 7. Validate implementation
+# 8. Validate implementation
 /wb:validate_execution docs/plans/2025-01-15-TICKET-123-my-feature
 ```
 
@@ -65,6 +68,7 @@ bd init             # For personal projects (beads in git)
 Creates timestamped documentation structure with metadata tracking.
 
 **Creates**:
+
 ```
 docs/plans/2025-01-15-TICKET-123-feature-name/
 ├── README.md      # Navigation and overview
@@ -74,6 +78,7 @@ docs/plans/2025-01-15-TICKET-123-feature-name/
 ```
 
 **Captures**:
+
 - Git metadata (commit, branch, repository)
 - User information
 - Timestamps
@@ -86,6 +91,7 @@ docs/plans/2025-01-15-TICKET-123-feature-name/
 Documents codebase objectively using parallel research agents.
 
 **Process**:
+
 1. Reads mentioned files FULLY (⛔ BARRIER 1)
 2. Spawns parallel agents (⛔ BARRIER 2 - wait for ALL):
    - Code Locator: WHERE components live
@@ -105,6 +111,7 @@ Documents codebase objectively using parallel research agents.
 **For UI features only** - researches UI patterns and creates HTML mockups.
 
 **Process**:
+
 1. Research existing UI (5 parallel agents):
    - Layout patterns
    - Component library
@@ -118,6 +125,7 @@ Documents codebase objectively using parallel research agents.
 6. Iterate with `mockup-iteration` skill
 
 **Creates**:
+
 ```
 mockups/
 ├── mockup-log.md          # Decision log
@@ -129,18 +137,21 @@ mockups/
 ```
 
 **Beads Integration**:
+
 - Creates `UI Q: [question]` issues for unresolved questions
 - Creates `UI Assumption: [assumption]` issues for unvalidated beliefs
 - Blocks finalization until all UI issues resolved
 - Uses `bd list --status=open | grep "UI Q:"` to check
 
 **Icon Handling**:
+
 - **Never uses emojis** in HTML mockups
 - Uses discovered icon system from research
 - Creates beads issue if icon system unclear
 - Asks user before adding icons if no system found
 
 **Iteration**:
+
 ```bash
 # User provides feedback
 "Keep the card layout but remove the sidebar"
@@ -159,20 +170,38 @@ mockups/
 → Lists REMOVE decisions as out of scope
 ```
 
-### Stage 4: Design
+### Stage 4: Explore Design Options (Optional)
+
+**Command**: `/wb:explore_design`
+
+Facilitated architecture discussion between research and design — explores directions as possibilities and records the decision durably.
+
+**When to use**: research surfaced multiple viable approaches; the change is cross-cutting or introduces a new subsystem; the choice is hard to reverse. Skip for well-scoped fixes or single-approach research.
+
+**Process**:
+
+1. Reads research and prior thoughts/ docs fully
+2. Frames the decision space (user confirms)
+3. Explores 2–4 distinct directions with trade-offs
+4. Converges only on explicit approval (⛔ CHECKPOINT)
+5. Records: thoughts/ doc + closed `Decide:` issue (chosen direction and rationale in the close reason)
+
+### Stage 5: Design
 
 **Command**: `/wb:create_design`
 
 Creates architectural design decisions (WHAT and WHY).
 
 **Process**:
-1. Reads research and mockup decisions
+
+1. Reads research, mockup decisions, and any recorded `Decide:` decision
 2. Spawns verification agents
-3. Presents design options with trade-offs
+3. Presents design options with trade-offs (or confirms the recorded decision when explore_design ran)
 4. Interactive discussion
 5. Documents approved design
 
 **Structure**:
+
 - Problem statement
 - Design approach with rationale
 - Technical decisions
@@ -183,13 +212,14 @@ Creates architectural design decisions (WHAT and WHY).
 
 **Critical**: WHAT and WHY only - never HOW
 
-### Stage 5: Execution Plan
+### Stage 6: Execution Plan
 
 **Command**: `/wb:create_execution`
 
 Transforms design into detailed phased execution plan.
 
 **Process**:
+
 1. Reads research and design completely
 2. Spawns analysis agents:
    - Dependency analysis
@@ -228,11 +258,12 @@ bd create "Write tests for [Component]" \
 ```
 
 **Result**: Dependency chain where:
+
 - Tasks must complete before phase milestones
 - Phases must complete before epic
 - `bd ready` shows only unblocked work
 
-### Stage 6: Implementation
+### Stage 7: Implementation
 
 **Command**: `/wb:implement_tasks`
 
@@ -283,37 +314,41 @@ bd ready
 ```
 
 **Critical Rules**:
+
 - ZERO SCOPE CREEP - only implement tasks from tasks.md
 - Follow TDD cycle strictly
 - Respect phase boundaries
 - Stop at checkpoints for human verification
 
-### Stage 7: Validation
+### Stage 8: Validation
 
 **Command**: `/wb:validate_execution`
 
 Validates implementation matches plan.
 
 **Process**:
+
 1. Spawns validation agents
 2. Compares actual vs planned implementation
 3. Identifies deviations
 4. Generates comprehensive report
 
 **Checks**:
+
 - All tasks completed
 - Success criteria met
 - Test coverage adequate
 - Documentation updated
 - No unintended changes
 
-### Stage 8: Status Updates
+### Stage 9: Status Updates
 
 **Command**: `/wb:update_status`
 
 Syncs status across all files based on actual progress.
 
 **Process**:
+
 1. Reads ALL files fully
 2. Reads beads state (source of truth)
 3. Determines actual state
@@ -321,6 +356,7 @@ Syncs status across all files based on actual progress.
 5. Applies consistently
 
 **Status Progressions**:
+
 ```
 research.md: draft → in-progress → complete
 design.md: draft → ready → implementing → complete
@@ -332,11 +368,13 @@ tasks.md: not-started → in-progress → complete
 **Commands**: `/wb:create_handoff`, `/wb:resume_handoff`
 
 **Create Handoff**:
+
 ```bash
 /wb:create_handoff docs/plans/2025-01-15-TICKET-123-feature
 ```
 
 Captures:
+
 - Current progress and phase
 - Critical learnings not in docs
 - Problems solved
@@ -346,11 +384,13 @@ Captures:
 - Git state
 
 **Resume Handoff**:
+
 ```bash
 /wb:resume_handoff docs/plans/2025-01-15-TICKET-123-feature/handoff-2025-01-15.md
 ```
 
 Restores:
+
 - Full context
 - Learnings and patterns
 - Continues from exact point
@@ -365,6 +405,7 @@ Beads provides persistent, git-backed task tracking that survives context compac
 ### Beads Modes
 
 **Stealth Mode** (`.beads/` not committed):
+
 - `.beads/` added to `.git/info/exclude`
 - Beads state stays local
 - Good for work repos where you don't want to expose task tracking
@@ -372,6 +413,7 @@ Beads provides persistent, git-backed task tracking that survives context compac
 - State doesn't persist across machines
 
 **Git Mode** (`.beads/` tracked in git):
+
 - `.beads/` committed like normal code
 - Beads state persists across machines
 - Good for personal projects
@@ -379,6 +421,7 @@ Beads provides persistent, git-backed task tracking that survives context compac
 - Full team collaboration on task state
 
 **Auto-detection**: SessionStart hook (`.claude/hooks/setup-beads-mode.sh`) checks:
+
 ```bash
 if git check-ignore -q .beads/; then
   export BEADS_MODE=stealth
@@ -390,6 +433,7 @@ fi
 ### Command-Specific Usage
 
 **`/wb:create_mockup`**:
+
 ```bash
 # Creates UI questions
 bd create "UI Q: Which color for primary button?" \
@@ -403,6 +447,7 @@ bd create "UI Assumption: Using 2-column layout" \
 ```
 
 **`/wb:create_execution`**:
+
 ```bash
 # Creates epic
 bd create "Add Authentication System" --type=epic
@@ -419,6 +464,7 @@ bd create "Implement JWT middleware" \
 ```
 
 **`/wb:implement_tasks`**:
+
 ```bash
 # Find work
 bd ready
@@ -437,6 +483,7 @@ git commit -m "Update task state"
 ```
 
 **`mockup-iteration` skill**:
+
 ```bash
 # Before finalization
 bd list --status=open | grep -E "UI Q:|UI Assumption:"
@@ -481,12 +528,14 @@ bd show [task-id]
 ### When to Use
 
 Use `/wb:create_mockup` for:
+
 - New UI features
 - UI redesigns
 - Complex layouts
 - Features requiring visual validation
 
 Skip for:
+
 - Backend-only features
 - API changes
 - Simple text changes
@@ -504,6 +553,7 @@ Spawns 5 parallel agents:
 ### Icon System Research
 
 **What it finds**:
+
 - Library name and version
 - Where icons imported/defined (file:line)
 - Usage pattern (`<i class="fa-solid fa-save">` vs `<Icon name="save">`)
@@ -512,6 +562,7 @@ Spawns 5 parallel agents:
 - Examples with file:line references
 
 **If no system found**:
+
 - Documents "None - text only"
 - Creates beads issue if icons needed: `bd create "UI Q: Icon system?"`
 - Never defaults to emojis
@@ -519,12 +570,14 @@ Spawns 5 parallel agents:
 ### Mockup Creation
 
 **ASCII Structure** (mockup.md):
+
 - Quick layout discussion
 - Component specifications
 - State documentation
 - Interaction flows
 
 **HTML Mockup** (mockup.html):
+
 - Imports app's actual stylesheets
 - Uses component HTML from research (file:line)
 - Applies actual CSS classes (no placeholders)
@@ -532,6 +585,7 @@ Spawns 5 parallel agents:
 - Standalone - opens directly in browser
 
 **Example HTML**:
+
 ```html
 <!DOCTYPE html>
 <html>
@@ -578,6 +632,7 @@ Shows screenshot to user for validation.
 ### Iteration
 
 **Feedback Classification**:
+
 - **KEEP**: Confirmed requirement → add to mockup-log.md "Confirmed"
 - **REMOVE**: Rejected idea → add to "Rejected" with reason
 - **CHANGE**: Modification needed → note for next version
@@ -615,11 +670,13 @@ bd list --status=open | grep -E "UI Q:|UI Assumption:"
 ```
 
 **If open issues exist**:
+
 - Must resolve questions
 - Must validate assumptions
 - Or close as "deferred to implementation"
 
 **After all resolved**:
+
 - Compile all KEEP decisions → requirements
 - List all REMOVE decisions → out of scope
 - Export to design.md section:
@@ -656,12 +713,14 @@ _Explicitly excluded during mockup iteration_
 Research describes what EXISTS, not what should be changed.
 
 **Why**:
+
 - Clear understanding of current state
 - Unbiased analysis
 - Better planning decisions
 - Reduced assumptions
 
 **Agent Instructions**:
+
 ```
 You are documenting the codebase as it exists.
 DO NOT suggest improvements or identify issues.
@@ -673,12 +732,14 @@ Document what IS, not what SHOULD BE.
 Synchronization points prevent rushing ahead.
 
 **Types**:
+
 - **⛔ BARRIER 1**: After file reading - full context required
 - **⛔ BARRIER 2**: After agent spawning - wait for ALL
 - **⛔ BARRIER 3**: Before writing - no placeholders allowed
 - **⛔ CHECKPOINT**: Between phases - human verification required
 
 **Why**:
+
 - Prevents incomplete context
 - Ensures parallel work completes
 - Validates before proceeding
@@ -689,12 +750,14 @@ Synchronization points prevent rushing ahead.
 Separate automated and manual checks.
 
 **Automated** (CI can run):
+
 - Unit tests
 - Integration tests
 - Linting
 - Build verification
 
 **Manual** (Human required):
+
 - UI functionality
 - UX validation
 - Performance testing
@@ -706,6 +769,7 @@ Separate automated and manual checks.
 Tasks come ONLY from plans.
 
 **Why**:
+
 - Predictable delivery
 - Clear expectations
 - Controlled changes
@@ -713,6 +777,7 @@ Tasks come ONLY from plans.
 - Measurable progress
 
 **Enforcement**:
+
 - Beads issues created from plan only
 - No ad-hoc task creation during implementation
 - Changes require design update → new execution plan
@@ -757,11 +822,13 @@ Tasks come ONLY from plans.
 ### Session Management
 
 **At session end**:
+
 - Close completed beads issues
 - Git mode: commit .beads/ (issues.jsonl is auto-flushed)
 - Create handoff if needed
 
 **At session start**:
+
 - Git mode: `git pull`
 - Check `bd ready`
 - Review `bd show [id]`
@@ -772,15 +839,18 @@ Tasks come ONLY from plans.
 ### Beads Issues
 
 **"beads not initialized"**:
+
 ```bash
 bd init --stealth   # or bd init
 ```
 
 **"database locked"**:
+
 - Wait and retry
 - Check for stale processes
 
 **"issue not found"**:
+
 ```bash
 bd list   # Find correct ID
 ```
@@ -788,16 +858,19 @@ bd list   # Find correct ID
 ### Mockup Issues
 
 **No icon system found**:
+
 - Document as "None - text only"
 - Create beads issue if icons needed
 - Ask user for direction
 
 **HTML mockup not rendering**:
+
 - Check stylesheet imports
 - Verify paths are correct
 - Use CDN links for testing
 
 **Screenshot not showing**:
+
 - Check Playwright is installed
 - Verify file path is absolute
 - Check browser can access file
@@ -805,11 +878,13 @@ bd list   # Find correct ID
 ### Agent Issues
 
 **Agents not finding files**:
+
 - Be specific about directories
 - Check file patterns in prompts
 - Verify files exist
 
 **Placeholder values in output**:
+
 - ⛔ BARRIER 3 violation
 - Re-run with complete context
 - Never proceed with placeholders
@@ -817,11 +892,13 @@ bd list   # Find correct ID
 ### Status Issues
 
 **Status progression blocked**:
+
 - Verify all tasks complete
 - Check beads state: `bd list`
 - Ensure checkpoints passed
 
 **Inconsistent status across files**:
+
 - Run `/wb:update_status`
 - Let it sync from beads (source of truth)
 
