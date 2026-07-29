@@ -179,32 +179,34 @@ Read the "Task Creation Examples (Step 5d)" section of [examples.md](examples.md
 
 #### 5e. Set Up Task Dependencies
 
-Link tasks to their phase milestone and to each other:
+Link every task to its phase milestone (always), then add task-to-task edges ONLY for genuine prerequisites — an edge means "B cannot start until A lands", never "B was written after A":
 
 ```bash
-# All Phase 1 tasks block the Phase 1 milestone
+# All Phase 1 tasks block the Phase 1 milestone (always)
 bd dep add [PHASE1_MILESTONE_ID] [TASK1_ID]
 bd dep add [PHASE1_MILESTONE_ID] [TASK2_ID]
 bd dep add [PHASE1_MILESTONE_ID] [TASK3_ID]
 bd dep add [PHASE1_MILESTONE_ID] [TASK4_ID]
 
-# Implementation tasks depend on setup tasks being done
-bd dep add [TASK2_ID] [TASK1_ID]
+# Task-to-task edges: only where the earlier task's OUTPUT is consumed
+bd dep add [TASK2_ID] [TASK1_ID]   # TASK2 builds in the directory TASK1 creates
+bd dep add [TASK3_ID] [TASK2_ID]   # TASK3 tests the interface TASK2 defines
+bd dep add [TASK4_ID] [TASK1_ID]   # TASK4 also consumes TASK1's output — but is
+                                   # independent of TASK2/TASK3, so no edge to them
+```
 
-# Testing tasks depend on implementation
-bd dep add [TASK3_ID] [TASK2_ID]
+The resulting graph should branch, not chain — independent tasks stay independent so `bd ready` shows real parallel width:
 
-# Integration depends on both implementation and testing
-bd dep add [TASK4_ID] [TASK2_ID]
-bd dep add [TASK4_ID] [TASK3_ID]
+```
+TASK1 ──► TASK2 ──► TASK3
+   └────► TASK4              (ready as soon as TASK1 closes)
 ```
 
 **Dependency Principles**:
 
-- Setup tasks have no dependencies (start immediately)
-- Implementation depends on setup
-- Testing depends on implementation
-- Integration depends on implementation and testing
+- For each task, ask: "which task's OUTPUT does this consume?" (code it creates, a schema it changes, an interface it defines). Those tasks — and only those — are its dependencies
+- The test is concrete: name the artifact of A that B consumes. If you cannot name one, there is no edge
+- Listing order alone NEVER creates an edge — a near-linear chain over 4+ tasks is a signal you encoded authoring order, not data flow; re-examine it
 - Phase milestone depends on ALL phase tasks
 - Next phase milestone depends on previous phase milestone
 

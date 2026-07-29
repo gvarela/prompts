@@ -54,3 +54,29 @@ bd create "Connect [Component] to [ExistingSystem]" \
   -d "Phase 1 integration. Update API endpoint at api/routes.ts:78."
 # → Created prompts-mno (save as TASK4_ID)
 ```
+
+## Task Dependency Examples (Step 5e)
+
+Edges follow consumed outputs, not listing order. For the four tasks above:
+
+```bash
+# TASK2 (component class) is created inside the directory TASK1 makes → edge
+bd dep add [TASK2_ID] [TASK1_ID]
+
+# TASK3 (unit tests) exercises the class TASK2 creates → edge
+bd dep add [TASK3_ID] [TASK2_ID]
+
+# TASK4 (API integration) wires up the class TASK2 creates → edge to TASK2 only.
+# It does not consume anything TASK3 produces, so NO edge to TASK3 —
+# tests and integration run in parallel once the component exists.
+bd dep add [TASK4_ID] [TASK2_ID]
+```
+
+Resulting graph (branching, not a chain):
+
+```
+TASK1 ──► TASK2 ──► TASK3
+             └────► TASK4     (parallel with TASK3)
+```
+
+After TASK2 closes, `bd ready` shows both TASK3 and TASK4 — that width is what coordinated execution draws from.
