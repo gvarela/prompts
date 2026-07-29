@@ -205,7 +205,7 @@ Next: [choose ONE line based on the findings]
 
 ```
 
-**Nudge discipline**: suggest `/wb:explore_design` ONLY when the findings genuinely document multiple viable approaches (distinct architectures the codebase would support, not variations of one). This is a factual judgment about what the research documented — not a recommendation of any approach, which research never makes.
+**Nudge discipline**: suggest `/wb:explore_design` ONLY when the findings document multiple viable approaches. The test: would each option produce a **different design.md** — different integration points, contracts, or subsystems? Options that fill the SAME architectural slot and differ only by algorithm, library, or configuration are variations of one approach — count them as ONE and use the single-approach line. Two named, precedented options are NOT automatically two approaches. This is a factual judgment about what the research documented — not a recommendation of any approach, which research never makes.
 
 ## Important Notes
 
