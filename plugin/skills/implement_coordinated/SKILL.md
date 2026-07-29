@@ -179,9 +179,11 @@ bd ready
 1. **Get next task**: Run `bd ready` to find available work
 2. **Check task details**: Run `bd show [task-id]` for requirements
 3. **Determine model** (coordinator judgment — read the task content and pick the tier):
-   - Haiku: Simple tasks (config, docs, renames)
-   - Sonnet: Standard implementation (tests, new functions, integrations)
-   - Opus: Everything else (bugs, refactoring, architecture) - DEFAULT when unsure
+   - Haiku: Mechanical only (config, docs, renames)
+   - Sonnet: Standard implementation including bugs and refactors - DEFAULT when unsure
+   - Opus: Architectural, cross-cutting, or previously-failed tasks
+
+   When spawning with sonnet or opus, set `effort: xhigh` for the coding work. Never set effort on haiku spawns (errors on Haiku 4.5). The verify-then-retry loop below is what makes the cheap default safe — fix workers stay opus, a true escalation.
 4. **Spawn the `task-worker` agent** with the chosen model as a per-spawn override (the agent has the tdd-discipline skill preloaded and carries the TDD contract in its own definition). **Read [sub-agent-prompts.md](sub-agent-prompts.md) NOW** and build the worker prompt from its "Worker Prompt Template" — task ID/title/description, the context package, beads commands (`bd update [id] --claim`, `bd close [id]`), and the expected-output contract. Use the template verbatim with values filled in.
 5. **Collect worker output** when complete
 6. **Proceed to verification** (Step 6)

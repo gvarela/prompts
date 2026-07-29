@@ -157,11 +157,14 @@ All generated documentation files use consistent YAML frontmatter:
 
 ## Agent Spawning with Model Selection
 
-Commands support model hints when spawning agents:
+Commands support model hints when spawning agents. Pay for judgment, not throughput:
 
-- `haiku`: File searches, pattern matching, simple tasks
-- `sonnet`: Code analysis, integration planning, test design
-- `opus`: Complex reasoning, critical decisions
+- `haiku`: File searches, pattern matching, mechanical tasks. No `effort` support — never annotate haiku agents or spawns
+- `sonnet`: Default for analysis AND implementation (near-Opus coding quality at lower cost)
+- `opus`: Design, decomposition, and escalation after verified failure
+- `fable`: Architecture-critical discussion (the explore_design stage)
+
+`effort` (`low` → `xhigh`) is a second cost lever on sonnet/opus spawns: "sonnet at low effort" usually beats dropping to haiku for judgment-bearing work — quality degrades gracefully instead of falling off a tier. Typical annotations: implementation workers `xhigh`, analyzers `medium`, verifiers `high`.
 
 ## Working with Commands
 
