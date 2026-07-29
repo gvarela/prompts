@@ -59,6 +59,23 @@ bd init             # For personal projects (beads in git)
 /wb:validate_execution docs/plans/2025-01-15-TICKET-123-my-feature
 ```
 
+### Choosing a Session Model
+
+The stage skills run in whatever session model you start; agents they spawn pick their own tiers. Guiding principle: pay for judgment, not throughput — a stage's model should track its degrees of freedom, not its artifact's difficulty.
+
+| Stage | Suggested session model | Why |
+| ------- | ------------------------- | ----- |
+| create_project, create_handoff, help | Sonnet | Interviews and doc writing |
+| create_research / create_product_research | Sonnet (high effort) | Synthesis of subagent reports |
+| explore_design | **Fable** (Opus fallback) | Divergent, judgment-dense discussion — the skill self-checks and warns on lighter models |
+| create_design | Opus; Sonnet is fine when formalizing a recorded decision | Decision-making vs. documentation |
+| create_execution | Opus | Decomposition quality determines how well cheap workers perform |
+| implement_tasks | Sonnet (xhigh effort) | The session does the coding itself |
+| implement_coordinated | Opus | Coordinator judges tiers and parses reports; workers do the coding |
+| validate_execution | Any (skill pins sonnet + high effort) | Pinned in skill frontmatter |
+
+These are defaults, not gates — usage limits and task size legitimately move you down a tier.
+
 ## Complete Workflow
 
 ### Stage 1: Project Initialization

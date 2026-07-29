@@ -243,7 +243,7 @@ _Include this section if mockups/ directory exists:_
 ## Session Metadata
 
 - **Session Duration**: [X hours Y minutes]
-- **Model Used**: [claude-3-sonnet/opus/haiku]
+- **Model Used**: [haiku/sonnet/opus/fable]
 - **Tasks Attempted**: [N]
 - **Tasks Completed**: [M]
 - **Tests Written**: [Count]

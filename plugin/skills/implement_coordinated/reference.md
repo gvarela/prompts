@@ -52,7 +52,6 @@ const contextPackage = {
 
 Retired: the `determineModel()` keyword-regex spec was replaced by coordinator judgment (2026-06, prompts-0my) — the coordinator reads the task content and picks haiku (mechanical config/docs/renames), sonnet (standard implementation), or opus (bugs/refactors/architecture; default when unsure), passing the choice as a per-spawn model override on the `task-worker` agent.
 
-
 ## Worker Failure Playbook (Step 6)
 
 If a worker leaves its task in `in_progress` (didn't close the beads issue), the worker crashed or couldn't complete. Verification is NOT run when the worker didn't finish — that path is for verification FAILs after successful completion.
@@ -76,3 +75,29 @@ Verification agent is NOT run if worker didn't finish.
 
 How should I proceed?
 ```
+
+## Plan-Defect Deviation Protocol (Step 6)
+
+For verification FAILs where the task cannot succeed AS SPECIFIED — the design assumption doesn't survive contact with the code. Retrying burns fix workers on a task that is wrong by construction; deviate instead.
+
+**Signals it's a plan defect, not an implementation defect**:
+
+- The verifier cites a requirement the codebase cannot satisfy (missing interface, contradicted constraint, false precondition)
+- The worker followed the spec exactly and tests still fail on the specified behavior
+- The fix would change design.md, not code
+
+**Protocol**:
+
+1. **File the defect**:
+
+   ```bash
+   bd create --title="Design revision: [assumption that failed]" \
+     --description="Task [task-id] cannot succeed as specified: [verifier evidence]. Affected design section: [design.md reference]" \
+     --type=task --priority=1
+   ```
+
+2. **Block dependents**: `bd dep add [dependent-task-id] [revision-issue-id]` for every not-yet-run task that builds on the failed assumption
+
+3. **Halt the phase**: stop spawning workers; present a checkpoint to the user with the failed task, the verifier evidence, and the revision issue ID
+
+4. **Route the fix**: the revision goes through `/wb:create_design` (preceded by `/wb:explore_design` if it reopens an architectural choice) — never through fix workers
