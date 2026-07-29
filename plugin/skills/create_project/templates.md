@@ -25,16 +25,20 @@ This directory contains documentation for [project-name].
 
 1. ✅ Project structure created
 2. ⏳ Research phase (`/create_research [directory]`)
-3. ⏳ Design phase (`/create_design [directory]`)
-4. ⏳ Execution planning (`/create_execution [directory]`)
-5. ⏳ Implementation (`/implement_tasks [directory]`)
-6. ⏳ Testing & Verification
+3. ⏳ Design exploration (optional) (`/explore_design [directory]`)
+4. ⏳ Design phase (`/create_design [directory]`)
+5. ⏳ Execution planning (`/create_execution [directory]`)
+6. ⏳ Implementation (`/implement_tasks [directory]`)
+7. ⏳ Testing & Verification
 
 ## Quick Commands
 
 ```bash
 # Continue with research (analyzes codebase)
 /create_research [this-directory]
+
+# Explore design options (optional - for big architecture decisions)
+/explore_design [this-directory]
 
 # Create design decisions
 /create_design [this-directory]
@@ -262,6 +266,7 @@ tags: [tasks, tracking, [project-name]]
 ### 📋 Documentation Setup
 - [x] Create project structure (completed [YYYY-MM-DD HH:MM])
 - [ ] Complete research using `/create_research [directory]`
+- [ ] Explore design options using `/explore_design [directory]` (optional)
 - [ ] Create design document using `/create_design [directory]`
 - [ ] Generate execution plan using `/create_execution [directory]`
 

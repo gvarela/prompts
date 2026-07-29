@@ -274,7 +274,7 @@ The document includes:
 - Engineering approach and patterns
 - Technical appendix for engineering discussions
 
-Next: Review the research and run `/wb:create_design` when ready.
+Next: Review the research and run `/wb:create_design` when ready (or `/wb:explore_design` first if multiple viable approaches surfaced).
 ```
 
 ## Important Notes
