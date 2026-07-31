@@ -18,6 +18,8 @@ claude plugin marketplace add gvarela/workbench
 claude plugin install wb@gvarela-workbench
 ```
 
+> **Using the pre-2.0 version?** The final 1.x release (v1.1.0, old `commands/` layout, pre-embedded-Dolt beads) lives on the [`1.x` branch](https://github.com/gvarela/workbench/tree/1.x). It receives critical fixes only — see [RELEASING.md](RELEASING.md) and the [2.0.0 migration notes](CHANGELOG.md) before upgrading.
+
 For local development:
 
 ```bash

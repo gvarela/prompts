@@ -2,7 +2,7 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
-## [2.2.0] — Unreleased
+## [2.2.0] — 2026-07-31
 
 The create_tasks rename, plus the model-strategy recalibration.
 
@@ -22,7 +22,7 @@ The create_tasks rename, plus the model-strategy recalibration.
 
 - `/wb:create_execution` — now a stub that redirects to `/wb:create_tasks`. Removed at 3.0.0. **Gotcha**: a session started before this rename may hold a cached pre-rename skill body and reference supporting files by their old paths — restart the session (or `/reload-skills`) after updating; the stub directory keeps pointer files for its old supporting files so stale references degrade gracefully instead of erroring.
 
-## [2.1.0] — Unreleased
+## [2.1.0] — 2026-07-31
 
 The explore_design release. Adds an optional architecture-discussion stage between research and design, with durable decision records the rest of the pipeline consumes.
 
@@ -34,7 +34,7 @@ The explore_design release. Adds an optional architecture-discussion stage betwe
 - `validate_project` orphan detection exempts planning-prefix issues (`Q:`, `Decide:`, `Validate:`, `UI Q:`) — planning-phase records are intentionally not anchored in tasks.md frontmatter.
 - Documentation sweep: the optional stage appears in every workflow rendering (help, CLAUDE.md, README, commands reference, workflow guide, generated project templates); help additionally documents `Decide:` lifecycle semantics (open = pending, closed = decided, rationale in close reason).
 
-## [2.0.0] — Unreleased
+## [2.0.0] — 2026-07-31
 
 The modernization release. One coordinated breaking change covering the Claude Code skills unification, the beads 1.0.2 CLI migration, and a repository restructure.
 
