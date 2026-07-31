@@ -58,6 +58,8 @@ Note: `/reload-plugins` alone does NOT pull updates — the cache is keyed by ve
 
 **Skills** (auto-activated): `project-structure`, `mockup-iteration`, `tdd-discipline`, `verification-before-completion`, `status-sync`, `review-prep`
 
+Auto-activation depends on the model electing these skills, which in practice happens rarely inside workflow-command sessions. During coordinated execution the discipline is guaranteed structurally instead: task-workers preload `tdd-discipline` and every task passes through `task-verifier`. The auto-activated skills primarily protect **solo and ad-hoc** changes made outside the workflow commands.
+
 **[Full Commands Reference](docs/commands-reference.md)**
 
 ## What's Inside

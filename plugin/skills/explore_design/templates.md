@@ -93,6 +93,19 @@ Requirements for the close reason (this is what `/wb:create_design` reads cold):
 - **Thoughts path(s)** must be repo-relative so a fresh session can read them
 - Keep it a summary — depth lives in the thoughts doc's Synthesis section
 
+### Amend (after close)
+
+If the record needs correcting later — a finding withdrawn, a constraint added:
+
+```bash
+bd show [issue-id]    # READ the current notes FIRST — the next command REPLACES them
+bd update [issue-id] --notes="[existing notes carried forward verbatim]
+
+AMENDMENT [YYYY-MM-DD]: [what changed and why]"
+```
+
+**⚠️ `--notes` replaces wholesale — it does NOT append.** Writing notes without carrying the existing text forward silently destroys prior amendments (this happened in production). If `bd comments` is available, prefer `bd comments add [issue-id] "[amendment]"` — comments append by nature and preserve history.
+
 ### Verify
 
 ```bash

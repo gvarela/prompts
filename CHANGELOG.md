@@ -20,7 +20,7 @@ The create_tasks rename, plus the model-strategy recalibration.
 
 ### Deprecated
 
-- `/wb:create_execution` — now a stub that redirects to `/wb:create_tasks`. Removed at 3.0.0.
+- `/wb:create_execution` — now a stub that redirects to `/wb:create_tasks`. Removed at 3.0.0. **Gotcha**: a session started before this rename may hold a cached pre-rename skill body and reference supporting files by their old paths — restart the session (or `/reload-skills`) after updating; the stub directory keeps pointer files for its old supporting files so stale references degrade gracefully instead of erroring.
 
 ## [2.1.0] — Unreleased
 
