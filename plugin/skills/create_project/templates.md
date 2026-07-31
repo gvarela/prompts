@@ -24,33 +24,33 @@ This directory contains documentation for [project-name].
 ## Workflow
 
 1. ✅ Project structure created
-2. ⏳ Research phase (`/create_research [directory]`)
-3. ⏳ Design exploration (optional) (`/explore_design [directory]`)
-4. ⏳ Design phase (`/create_design [directory]`)
-5. ⏳ Execution planning (`/create_tasks [directory]`)
-6. ⏳ Implementation (`/implement_tasks [directory]`)
+2. ⏳ Research phase (`/wb:create_research [directory]`)
+3. ⏳ Design exploration (optional) (`/wb:explore_design [directory]`)
+4. ⏳ Design phase (`/wb:create_design [directory]`)
+5. ⏳ Execution planning (`/wb:create_tasks [directory]`)
+6. ⏳ Implementation (`/wb:implement_tasks [directory]`)
 7. ⏳ Testing & Verification
 
 ## Quick Commands
 
 ```bash
 # Continue with research (analyzes codebase)
-/create_research [this-directory]
+/wb:create_research [this-directory]
 
 # Explore design options (optional - for big architecture decisions)
-/explore_design [this-directory]
+/wb:explore_design [this-directory]
 
 # Create design decisions
-/create_design [this-directory]
+/wb:create_design [this-directory]
 
 # Generate execution plan with tasks
-/create_tasks [this-directory]
+/wb:create_tasks [this-directory]
 
 # Implement tasks with TDD
-/implement_tasks [this-directory]
+/wb:implement_tasks [this-directory]
 
 # Update status across all files
-/update_status [this-directory]
+/wb:update_status [this-directory]
 ```
 
 ## Git Information
@@ -87,7 +87,7 @@ tags: [research, codebase, [project-name]]
 
 ## Research Question
 
-[What are we trying to understand? To be filled by /create_research]
+[What are we trying to understand? To be filled by /wb:create_research]
 
 ## Summary
 
@@ -95,7 +95,7 @@ tags: [research, codebase, [project-name]]
 
 ## Detailed Findings
 
-[Research findings will be documented here by /create_research]
+[Research findings will be documented here by /wb:create_research]
 
 ### Component Analysis
 [How components work - to be added]
@@ -129,7 +129,7 @@ Quick reference to key files:
 
 ## Next Steps
 
-1. Run `/create_research [directory]` to populate this document
+1. Run `/wb:create_research [directory]` to populate this document
 2. Review findings before design
 
 ## References
@@ -165,7 +165,7 @@ depends_on: research.md
 
 ## Problem Statement
 
-[What problem we're solving and why - to be filled by /create_design]
+[What problem we're solving and why - to be filled by /wb:create_design]
 
 ### Success Metrics
 - [ ] [To be defined]
@@ -265,16 +265,16 @@ tags: [tasks, tracking, [project-name]]
 
 ### 📋 Documentation Setup
 - [x] Create project structure (completed [YYYY-MM-DD HH:MM])
-- [ ] Complete research using `/create_research [directory]`
-- [ ] Explore design options using `/explore_design [directory]` (optional)
-- [ ] Create design document using `/create_design [directory]`
-- [ ] Generate execution plan using `/create_tasks [directory]`
+- [ ] Complete research using `/wb:create_research [directory]`
+- [ ] Explore design options using `/wb:explore_design [directory]` (optional)
+- [ ] Create design document using `/wb:create_design [directory]`
+- [ ] Generate execution plan using `/wb:create_tasks [directory]`
 
 ---
 
 ## Implementation Phases
 
-[To be populated by /create_tasks after design is approved]
+[To be populated by /wb:create_tasks after design is approved]
 
 ---
 
@@ -289,7 +289,7 @@ tags: [tasks, tracking, [project-name]]
 ### Current Blockers
 | Blocker | Impact | Action | Owner | Due Date |
 |---------|--------|--------|-------|----------|
-| Research needed | Can't design | Run /create_research | [username] | [date] |
+| Research needed | Can't design | Run /wb:create_research | [username] | [date] |
 
 ### Implementation Notes
 - Project initialized on [YYYY-MM-DD]
@@ -303,5 +303,5 @@ tags: [tasks, tracking, [project-name]]
 - **Design**: [design.md](design.md)
 
 ### Next Action
-**Run**: `/create_research [this-directory]`
+**Run**: `/wb:create_research [this-directory]`
 ````

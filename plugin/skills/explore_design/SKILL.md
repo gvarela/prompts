@@ -226,7 +226,7 @@ that /wb:create_design formalizes.)
 
 **⛔ BARRIER 2: Complete BOTH records — the hand-off is not durable until both exist ⛔**
 
-1. **Finalize the thoughts doc**: add the required **Synthesis** section (converged direction, rejected-with-reasons, deferred items) per the template. Verify frontmatter is complete.
+1. **Finalize the thoughts doc**: add the required **Synthesis** section (converged direction, rejected-with-reasons, deferred items) per the template. Verify frontmatter is complete. When editing, locate sections by their headings — the doc has been continuously rewritten during Steps 3–5, so earlier placeholder or template text may no longer exist verbatim.
 
 2. **Create and close the `Decide:` record**: read the "Decide: Record Shapes" section of [templates.md](templates.md) NOW and follow it exactly — create the issue with options + trade-offs in the description, then close it with the chosen direction + rationale + relative thoughts-doc path(s) in the close reason.
 

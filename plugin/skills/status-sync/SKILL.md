@@ -1,6 +1,6 @@
 ---
 name: status-sync
-description: Monitors beads status at session end or when phases complete - reminds about committing beads state and closing finished phase milestones.
+description: Use when ending a session, wrapping up work, or completing a phase - monitors beads status and reminds about committing beads state and closing finished phase milestones.
 allowed-tools: Read, Glob, Grep, Bash(bd:*)
 user-invocable: false
 ---
