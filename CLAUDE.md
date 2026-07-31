@@ -8,13 +8,14 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 
 ## Repository Structure (Plugin Layout)
 
-- `.claude-plugin/` - Plugin manifest
-- `commands/` - Slash commands (`/wb:*`)
-- `agents/` - Specialized subagent definitions
-- `skills/` - Auto-activated background capabilities
-- `hooks/` - Event handlers (SessionStart, PostToolUse)
-- `scripts/` - Utility scripts (lint, lint-hook)
-- `docs/` - Documentation and guides
+- `.claude-plugin/` - Marketplace manifest (plugin manifest lives in `plugin/.claude-plugin/`)
+- `plugin/` - The shipped runtime: everything below is what installers receive
+- `plugin/skills/` - All skills (`skills/<name>/SKILL.md`): user-invoked workflow commands (`/wb:*`, with `disable-model-invocation: true`) and auto-activated background capabilities (`user-invocable: false`)
+- `plugin/agents/` - Specialized subagent definitions
+- `plugin/hooks/` - Event handlers (SessionStart, SessionEnd, PostToolUse)
+- `plugin/scripts/` - Utility scripts (lint, lint-hook)
+- `plugin/docs/reference/` - Runtime-referenced shared docs (skills link to these)
+- `docs/` - Maintainer documentation, guides, and project plans (never shipped to installs)
 - `general/` - General-purpose prompts and templates
 - `.claude/` - Local development configuration
 
@@ -24,16 +25,16 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 
 ```bash
 # Lint changed markdown files
-./scripts/lint
+./plugin/scripts/lint
 
 # Auto-fix markdown issues
-./scripts/lint --fix
+./plugin/scripts/lint --fix
 
 # Lint specific files
-./scripts/lint file1.md file2.md
+./plugin/scripts/lint file1.md file2.md
 
 # Lint all markdown files
-./scripts/lint --all
+./plugin/scripts/lint --all
 ```
 
 **Automatic Linting**: PostToolUse hooks automatically lint markdown files after Write/Edit operations.
@@ -50,8 +51,8 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 ### Testing the Plugin
 
 ```bash
-# Test locally
-claude --plugin-dir /path/to/this/repo
+# Test locally (NOTE: point at the plugin/ subdirectory, not the repo root)
+claude --plugin-dir /path/to/this/repo/plugin
 
 # Reload after changes
 /reload-plugins
@@ -63,7 +64,7 @@ claude --plugin-dir /path/to/this/repo
 
 When adding new commands, skills, or agents:
 
-1. Bump `version` in `.claude-plugin/plugin.json` (e.g., 1.0.0 → 1.1.0 for features, 1.0.0 → 1.0.1 for fixes)
+1. Bump `version` in `plugin/.claude-plugin/plugin.json` (e.g., 1.0.0 → 1.1.0 for features, 1.0.0 → 1.0.1 for fixes)
 2. Bump matching `version` in `.claude-plugin/marketplace.json` (must match plugin.json)
 3. Commit and push
 4. Users run `claude plugin update wb@gvarela-workbench` from the **shell** (not a slash command — it's a CLI command, run with `!` prefix or in a separate terminal)
@@ -75,14 +76,14 @@ When adding new commands, skills, or agents:
 - Pushing to git — the marketplace clone at `~/.claude/plugins/marketplaces/<name>/` doesn't auto-pull
 - Bumping version without `claude plugin update` — the cache stays at the old version
 
-For local dev (`--plugin-dir` install), changes take effect immediately without a version bump.
+For local dev (`--plugin-dir` install), changes take effect immediately without a version bump — `--plugin-dir` always serves the working tree and shadows the installed plugin even at an equal version. **Gotcha**: a session started *without* `--plugin-dir` serves the installed (cached) version; working-tree changes are invisible to it, including to its `/reload-skills`.
 
 ## Command Workflow
 
 The commands follow a strict sequential workflow:
 
 ```
-/wb:create_project → /wb:create_research → /wb:create_design → /wb:create_execution → /wb:implement_tasks → /wb:validate_execution
+/wb:create_project → /wb:create_research → [/wb:explore_design (optional)] → /wb:create_design → /wb:create_tasks → /wb:implement_tasks → /wb:validate_execution
 ```
 
 For multi-session work:
@@ -119,7 +120,7 @@ The workflow separates three distinct concerns:
 
 If any `bd` command fails:
 
-1. **Diagnose**: Run `bd doctor` to check for issues
+1. **Diagnose**: Run `bd info` to check for issues
 2. **Report**: Tell the user the specific error and suggest fixes
 3. **Fix**: Common fixes:
    - "beads not initialized" → `bd init`
@@ -156,11 +157,14 @@ All generated documentation files use consistent YAML frontmatter:
 
 ## Agent Spawning with Model Selection
 
-Commands support model hints when spawning agents:
+Commands support model hints when spawning agents. Pay for judgment, not throughput:
 
-- `haiku`: File searches, pattern matching, simple tasks
-- `sonnet`: Code analysis, integration planning, test design
-- `opus`: Complex reasoning, critical decisions
+- `haiku`: File searches, pattern matching, mechanical tasks. No `effort` support — never annotate haiku agents or spawns
+- `sonnet`: Default for analysis AND implementation (near-Opus coding quality at lower cost)
+- `opus`: Design, decomposition, and escalation after verified failure
+- `fable`: Architecture-critical discussion (the explore_design stage)
+
+`effort` (`low` → `xhigh`) is a second cost lever on sonnet/opus spawns: "sonnet at low effort" usually beats dropping to haiku for judgment-bearing work — quality degrades gracefully instead of falling off a tier. Typical annotations: implementation workers `xhigh`, analyzers `medium`, verifiers `high`.
 
 ## Working with Commands
 
@@ -188,7 +192,7 @@ When creating new prompts or commands:
 
 - The main branch is `main`
 - Commit messages should be descriptive
-- Run `./scripts/lint` before committing markdown files
+- Run `./plugin/scripts/lint` before committing markdown files
 - Keep the repository organized by category
 
 ## Beads Issue Tracking
@@ -200,9 +204,9 @@ This repository uses [beads](https://github.com/steveyegge/beads) for task track
 ```bash
 bd ready              # Find available work (no blockers)
 bd show <id>          # View issue details
-bd update <id> --status in_progress  # Claim work
+bd update <id> --claim  # Claim work
 bd close <id>         # Complete work
-bd sync               # Sync with git (run at session end)
+# beads auto-flushes .beads/issues.jsonl; commit .beads/ at session end (git mode)
 ```
 
 ### Session Protocol
@@ -210,13 +214,12 @@ bd sync               # Sync with git (run at session end)
 See [AGENTS.md](AGENTS.md) for the full session close protocol. Key points:
 
 1. **Before ending**: Close completed issues with `bd close`
-2. **Sync**: Run `bd sync` to persist changes
+2. **Persist**: beads auto-flushes `.beads/issues.jsonl` — commit `.beads/` (git mode)
 3. **Push**: Commit and push to remote
 
 ### Integration with wb Commands
 
 The workbench commands (`/wb:*`) automatically detect beads and use it for phase tracking. See [docs/commands-reference.md](docs/commands-reference.md) for details.
-
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
 ## Beads Issue Tracker
@@ -248,17 +251,20 @@ bd close <id>         # Complete work
 2. **Run quality gates** (if code changed) - Tests, linters, builds
 3. **Update issue status** - Close finished work, update in-progress items
 4. **PUSH TO REMOTE** - This is MANDATORY:
+
    ```bash
    git pull --rebase
    bd dolt push
    git push
    git status  # MUST show "up to date with origin"
    ```
+
 5. **Clean up** - Clear stashes, prune remote branches
 6. **Verify** - All changes committed AND pushed
 7. **Hand off** - Provide context for next session
 
 **CRITICAL RULES:**
+
 - Work is NOT complete until `git push` succeeds
 - NEVER stop before pushing - that leaves work stranded locally
 - NEVER say "ready to push when you are" - YOU must push

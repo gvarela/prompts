@@ -21,12 +21,12 @@ Claude Code slash commands for managing project documentation, research, plannin
 ## Command Workflow
 
 ```mermaid
-/create_project → /create_research → /create_mockup → /create_design → /create_execution → /implement_tasks → /validate_execution
-     ↓                   ↓                 ↓                 ↓                 ↓                    ↓                   ↓
-[Structure]        [Research.md]      [Mockups/]        [Design.md]       [Tasks.md]         [Implementation]    [Validation]
-                        ↓                 ↓                 ↓                 ↓                    ↓                   ↓
-                   [What EXISTS]    [UI Patterns]    [WHAT & WHY]      [HOW to do it]      [TDD Cycle]        [Verification]
-                                         ↓
+/create_project → /create_research → /create_mockup → /explore_design → /create_design → /create_tasks → /implement_tasks → /validate_execution
+       ↓                  ↓                 ↓                ↓                 ↓                 ↓                   ↓                   ↓
+  [Structure]       [Research.md]      [Mockups/]    [Decision record]    [Design.md]       [Tasks.md]       [Implementation]      [Validation]
+                          ↓                 ↓                ↓                 ↓                 ↓                   ↓                   ↓
+                    [What EXISTS]     [UI Patterns]    [Directions]     [WHAT & WHY]     [HOW to do it]        [TDD Cycle]        [Verification]
+                                            ↓
                                   [HTML + Screenshots]
 
 For multi-session work:
@@ -38,11 +38,12 @@ For multi-session work:
 1. **Initialize**: Create project structure with metadata
 2. **Research**: Document codebase as it EXISTS today (facts only)
 3. **Mockup** (optional): Research UI patterns and create interactive HTML mockups
-4. **Design**: Decide WHAT to build and WHY (architectural decisions)
-5. **Execution**: Plan HOW to implement (phased plan with tasks)
-6. **Implement**: Execute using TDD with checkpoints
-7. **Validate**: Verify implementation matches plan
-8. **Handoff** (optional): Transfer context between sessions
+4. **Explore** (optional): Discuss architecture directions and record the decision
+5. **Design**: Decide WHAT to build and WHY (architectural decisions)
+6. **Execution**: Plan HOW to implement (phased plan with tasks)
+7. **Implement**: Execute using TDD with checkpoints
+8. **Validate**: Verify implementation matches plan
+9. **Handoff** (optional): Transfer context between sessions
 
 ### Beads Integration (Required)
 
@@ -57,20 +58,21 @@ bd init             # Git: .beads/ tracked in git (personal projects)
 **How commands use beads**:
 
 - **`/create_mockup`**: Creates `UI Q:` and `UI Assumption:` issues, blocks finalization until resolved
-- **`/create_execution`**: Creates phase milestone and task issues with dependency chains
+- **`/create_tasks`**: Creates phase milestone and task issues with dependency chains
 - **`/implement_tasks`**: Uses `bd ready`/`bd update`/`bd close` to track implementation
 - **`/update_status`**: Reads beads state as source of truth for status
 - **`/create_handoff`**: Includes open beads issues in handoff context
 - **`mockup-iteration` skill**: Creates UI questions, validates all resolved before finalization
 
 **Beads workflow**:
+
 ```bash
 bd ready                                    # Find available work (no blockers)
 bd show [id]                                # Review task details
 bd update [id] --status in_progress         # Claim task
 # ... implement ...
 bd close [id] --reason "..."                # Complete task
-bd sync                                     # Export to .beads/issues.jsonl
+# beads auto-flushes .beads/issues.jsonl after mutations
 # Git mode: commit .beads/ to persist across machines
 # Stealth mode: .beads/ stays uncommitted (local only)
 ```
@@ -322,14 +324,14 @@ Creates architectural design decisions based on validated research. Focuses on W
 
 ---
 
-### `/create_execution` - Create Execution Plan
+### `/create_tasks` - Create Execution Plan
 
 Transforms approved design into detailed phased execution plan with embedded tasks.
 
 **Usage**:
 
 ```bash
-/create_execution docs/plans/2025-10-07-my-feature
+/create_tasks docs/plans/2025-10-07-my-feature
 ```
 
 **Planning Process**:
@@ -602,23 +604,31 @@ Spawns parallel agents, documents findings objectively.
 
 Researches UI patterns, creates HTML mockup with app styles, iterates with visual feedback.
 
-#### 4. Create Design
+#### 4. Explore Design Options (Optional - for big architecture decisions)
+
+```bash
+/explore_design docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+```
+
+Facilitated architecture discussion: frames the decision, explores 2–4 directions with trade-offs, converges on explicit approval. Records the decision as a closed `Decide:` issue plus a thoughts/ doc. Invoke when research surfaced multiple viable approaches or the choice is hard to reverse; skip for well-scoped fixes.
+
+#### 5. Create Design
 
 ```bash
 /create_design docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
 
-Interactive discussion → Design decisions (WHAT and WHY). Includes UI requirements from mockup if created.
+Interactive discussion → Design decisions (WHAT and WHY). Includes UI requirements from mockup if created. Formalizes the recorded decision when explore_design ran.
 
-#### 5. Create Execution Plan
+#### 6. Create Execution Plan
 
 ```bash
-/create_execution docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
+/create_tasks docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
 ```
 
 Generates phased plan with specific tasks (HOW to implement).
 
-#### 6. Implement with TDD
+#### 7. Implement with TDD
 
 ```bash
 /implement_tasks docs/projects/2025-10-07-LINEAR-789-add-auth-middleware
@@ -711,19 +721,20 @@ Flexible ticket support:
 
 ### Extending Commands
 
-All commands are markdown files - edit to customize:
+All commands are skills (markdown files) - edit `skills/<name>/SKILL.md` to customize:
 
 ```
-commands/
-├── create_project.md    # Structure and metadata
-├── create_research.md   # Research approach
-├── create_design.md     # Design decisions (WHAT & WHY)
-├── create_execution.md  # Execution plan (HOW)
-├── implement_tasks.md   # TDD implementation
-├── validate_execution.md # Implementation validation
-├── create_handoff.md    # Session handoff
-├── resume_handoff.md    # Resume from handoff
-└── update_status.md     # Status synchronization
+skills/
+├── create_project/SKILL.md    # Structure and metadata
+├── create_research/SKILL.md   # Research approach
+├── explore_design/SKILL.md    # Architecture discussion (optional)
+├── create_design/SKILL.md     # Design decisions (WHAT & WHY)
+├── create_tasks/SKILL.md  # Execution plan (HOW)
+├── implement_tasks/SKILL.md   # TDD implementation
+├── validate_execution/SKILL.md # Implementation validation
+├── create_handoff/SKILL.md    # Session handoff
+├── resume_handoff/SKILL.md    # Resume from handoff
+└── update_status/SKILL.md     # Status synchronization
 ```
 
 ---

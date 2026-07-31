@@ -18,19 +18,21 @@ claude plugin marketplace add gvarela/workbench
 claude plugin install wb@gvarela-workbench
 ```
 
+> **Using the pre-2.0 version?** The final 1.x release (v1.1.0, old `commands/` layout, pre-embedded-Dolt beads) lives on the [`1.x` branch](https://github.com/gvarela/workbench/tree/1.x). It receives critical fixes only — see [RELEASING.md](RELEASING.md) and the [2.0.0 migration notes](CHANGELOG.md) before upgrading.
+
 For local development:
 
 ```bash
 # Clone and test locally (changes take effect immediately)
 git clone git@github.com:gvarela/workbench.git
-claude --plugin-dir /path/to/workbench
+claude --plugin-dir /path/to/workbench/plugin
 ```
 
 ### Updating
 
 To release new commands/skills/agents:
 
-1. Bump `version` in **both** `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` (must match)
+1. Bump `version` in **both** `plugin/.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json` (must match)
 2. Commit and push to GitHub
 3. Users run from their shell (not a slash command):
 
@@ -49,13 +51,16 @@ Note: `/reload-plugins` alone does NOT pull updates — the cache is keyed by ve
 /wb:create_project my-feature docs/plans TICKET-123
 /wb:create_research docs/plans/2025-01-15-TICKET-123-my-feature
 /wb:create_mockup docs/plans/... "UI component"  # Optional for UI
+/wb:explore_design docs/plans/...  # Optional for big architecture decisions
 /wb:create_design docs/plans/...
-/wb:create_execution docs/plans/...
+/wb:create_tasks docs/plans/...
 /wb:implement_tasks docs/plans/...
 /wb:validate_execution docs/plans/...
 ```
 
 **Skills** (auto-activated): `project-structure`, `mockup-iteration`, `tdd-discipline`, `verification-before-completion`, `status-sync`, `review-prep`
+
+Auto-activation depends on the model electing these skills, which in practice happens rarely inside workflow-command sessions. During coordinated execution the discipline is guaranteed structurally instead: task-workers preload `tdd-discipline` and every task passes through `task-verifier`. The auto-activated skills primarily protect **solo and ad-hoc** changes made outside the workflow commands.
 
 **[Full Commands Reference](docs/commands-reference.md)**
 
@@ -68,8 +73,9 @@ Slash commands for project documentation and task management:
 - **`/wb:create_project`** - Initialize structured documentation with rich metadata
 - **`/wb:create_research`** - Document codebase using parallel research agents
 - **`/wb:create_mockup`** - Research UI patterns and create HTML mockups with visual validation
+- **`/wb:explore_design`** - Explore architecture directions and record the decision (optional)
 - **`/wb:create_design`** - Create architectural design decisions (WHAT and WHY)
-- **`/wb:create_execution`** - Transform design into phased execution plan (HOW)
+- **`/wb:create_tasks`** - Transform design into phased execution plan (HOW)
 - **`/wb:implement_tasks`** - Implement with TDD (Red-Green-Refactor)
 - **`/wb:implement_coordinated`** - Coordinate implementation with worker agents
 - **`/wb:validate_execution`** - Validate implementation matches plan
@@ -102,21 +108,22 @@ Background capabilities that Claude automatically invokes:
 ### Hooks
 
 - **SessionStart** - Auto-detects beads mode (stealth/git)
+- **SessionEnd** - Reminds about uncommitted beads state (silent when clean)
 - **PostToolUse** - Lints markdown files after Write/Edit operations
 
 ## Plugin Structure
 
 ```
 workbench/
-├── .claude-plugin/     # Plugin manifest + marketplace
-│   ├── plugin.json
-│   └── marketplace.json
-├── commands/           # Slash commands (/wb:*)
-├── agents/             # Specialized subagents
-├── skills/             # Auto-activated capabilities
-├── hooks/              # Event handlers
-├── scripts/            # Utility scripts (lint)
-├── docs/               # Guides and documentation
+├── .claude-plugin/     # Marketplace manifest (source: ./plugin)
+├── plugin/             # The shipped runtime — the only thing installs cache
+│   ├── .claude-plugin/plugin.json
+│   ├── skills/<name>/SKILL.md   # /wb:* workflow commands + background capabilities
+│   ├── agents/         # Specialized subagents
+│   ├── hooks/          # Event handlers
+│   ├── scripts/        # Utility scripts (lint)
+│   └── docs/reference/ # Runtime-referenced shared docs
+├── docs/               # Maintainer guides + project plans (not shipped)
 └── general/            # General-purpose prompts
 ```
 
@@ -143,16 +150,16 @@ Commands create/track beads issues for phases, tasks, and UI questions. SessionS
 ### Linting
 
 ```bash
-./scripts/lint           # Lint changed files
-./scripts/lint --fix     # Auto-fix issues
-./scripts/lint --all     # Lint all markdown files
+./plugin/scripts/lint           # Lint changed files
+./plugin/scripts/lint --fix     # Auto-fix issues
+./plugin/scripts/lint --all     # Lint all markdown files
 ```
 
 ### Testing Changes
 
 ```bash
-# Run with local plugin
-claude --plugin-dir /path/to/this/repo
+# Run with local plugin (point at the plugin/ subdirectory)
+claude --plugin-dir /path/to/this/repo/plugin
 
 # Reload after changes (inside Claude Code)
 /reload-plugins

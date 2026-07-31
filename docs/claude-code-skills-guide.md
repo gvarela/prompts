@@ -247,7 +247,7 @@ Hook output supports `continue`, `systemMessage`, `suppressOutput`, and event-sp
 
 Hooks can now also live in **skill frontmatter** (active while the skill runs) and **agent frontmatter** (active while the agent runs), not just settings and plugin manifests. Hook types beyond `command` exist: `http`, `mcp_tool`, `prompt`, and `agent`.
 
-Events especially relevant to this repo: `SessionEnd`/`Stop` (deterministic `bd sync` reminders instead of skill-based ones), `PreCompact`/`PostCompact` (sync/restore beads state at context boundaries), `SubagentStop` (verify worker output automatically).
+Events especially relevant to this repo: `SessionEnd`/`Stop` (deterministic beads-persistence reminders instead of skill-based ones), `PreCompact`/`PostCompact` (sync/restore beads state at context boundaries), `SubagentStop` (verify worker output automatically).
 
 ---
 
@@ -305,7 +305,7 @@ Deterministic automation on events?  → hook
 
 ## What This Means for This Repository
 
-The wb plugin's `commands/` files continue to work unchanged — plugin commands and plugin skills both resolve to `/wb:*`. Current assessment:
+The wb plugin migrated to the canonical layout in v2.0.0: all former `commands/*.md` files now live at `skills/<name>/SKILL.md`, with `disable-model-invocation: true` on workflow steps and `user-invocable: false` on background-discipline skills. Remaining candidates:
 
 1. **Keep the explicit `/wb:*` workflow**, but the old rationale ("commands are user-invoked, skills are not") is obsolete. The modern equivalent of that intent is `disable-model-invocation: true`, which also keeps all 14 command descriptions out of baseline context.
 2. **The wb skills (tdd-discipline, verification-before-completion, status-sync, etc.) are the "Claude-only" pattern** — they could declare `user-invocable: false` explicitly.
@@ -313,7 +313,7 @@ The wb plugin's `commands/` files continue to work unchanged — plugin commands
    - `context: fork` for research-heavy commands (`create_research`, `create_product_research`)
    - `skills: [tdd-discipline]` preload + `maxTurns` on worker agents used by `implement_coordinated`
    - `memory: project` on research agents to accumulate codebase knowledge
-   - `SessionEnd`/`PreCompact` hooks for deterministic `bd sync` instead of relying on the status-sync skill activating
+   - `SessionEnd`/`PreCompact` hooks for deterministic beads persistence instead of relying on the status-sync skill activating
    - `displayName` in plugin.json
 
 ---

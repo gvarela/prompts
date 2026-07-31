@@ -11,6 +11,7 @@ Captured during the integration of beads with the wb workflow (prompts-917).
 **Discovery**: When adding tool permissions incrementally during a session, you can end up with redundant specific permissions alongside a wildcard that covers them all.
 
 **Before** (redundant):
+
 ```json
 "Bash(bd list:*)",
 "Bash(bd doctor)",
@@ -19,6 +20,7 @@ Captured during the integration of beads with the wb workflow (prompts-917).
 ```
 
 **After** (clean):
+
 ```json
 "Bash(bd:*)"
 ```
@@ -49,11 +51,13 @@ bd stats 2>/dev/null && echo "BEADS_AVAILABLE=true" || echo "BEADS_AVAILABLE=fal
 ```
 
 **Design principle**: Beads should enhance the workflow, not break it. If beads isn't initialized:
+
 - Fall back to markdown-only tracking
 - Don't error or require beads
 - Keep the existing workflow functional
 
 **Integration pattern**:
+
 1. Keep tasks.md as human-readable documentation (always created)
 2. Add beads issues as structured tracking layer (optional)
 3. Link them via frontmatter (`beads_epic`, `beads_phases`)
@@ -64,12 +68,14 @@ bd stats 2>/dev/null && echo "BEADS_AVAILABLE=true" || echo "BEADS_AVAILABLE=fal
 **Decision**: Create beads issues at the **phase level**, not individual task level.
 
 **Rationale**:
+
 - Phases are natural checkpoints (have dependencies, success criteria)
 - Individual tasks are too granular (would create noise)
 - Markdown checkboxes work well for within-phase tracking
 - Beads handles cross-session, cross-phase coordination
 
 **Structure**:
+
 ```
 Epic: "Project Implementation"
   └── Phase 1 issue (blocks Phase 2)
@@ -91,11 +97,13 @@ Tasks within phases stay as markdown checkboxes in tasks.md.
 | Beads | Cross-session | Yes (git-backed) | Phase/milestone tracking |
 
 **Integration pattern**:
+
 - Use **TodoWrite** for "what am I doing right now" (granular tasks)
 - Use **Beads** for "what phase am I in" (coarse milestones)
 - Both can be active simultaneously
 
 **Resume workflow with both**:
+
 1. `bd ready` - What phases are available?
 2. `bd update [phase] --status in_progress` - Claim the phase
 3. `TodoWrite([...])` - Set up session tasks
@@ -108,6 +116,7 @@ Tasks within phases stay as markdown checkboxes in tasks.md.
 **Context**: Reading bd show output during workflow
 
 **Key fields displayed**:
+
 - **DEPENDS ON**: Tasks this one waits for (shows ✓ if complete)
 - **BLOCKS**: Tasks waiting on this one
 - **Owner**: Who claimed it
@@ -126,6 +135,7 @@ ls .beads/beads.db 2>/dev/null && echo "BEADS_PROJECT" || echo "MARKDOWN_ONLY"
 ```
 
 **Why this matters**: Skills and commands should work in both:
+
 - Beads-enabled projects (use bd commands)
 - Markdown-only projects (use original behavior)
 
@@ -138,6 +148,7 @@ This keeps the workflow portable and non-breaking for users who haven't adopted 
 **Key insight**: `bd sync` is to beads what "commit and push" is to git.
 
 **Session close checklist** (beads projects):
+
 1. `bd close` any completed issues
 2. `bd sync` to persist to JSONL/git
 3. `git add .beads/ && git commit && git push`
@@ -155,11 +166,13 @@ bd show [phase-id]  # Authoritative status
 ```
 
 **Why markdown may lag**:
+
 - Checkboxes are manually updated
 - Frontmatter requires explicit update
 - Beads status changes immediately with `bd close`
 
 **Reconciliation strategy**:
+
 1. Read beads state first (`bd list`, `bd show`)
 2. Cross-check against markdown
 3. If mismatch, beads wins
@@ -203,6 +216,7 @@ The wb workflow now supports beads with graceful degradation:
 ### Critical Fix: Beads Detection Method
 
 **Problem**: Inconsistent detection across files:
+
 - Some used `bd stats 2>/dev/null` (tests if CLI works)
 - Some used `ls .beads/beads.db` (tests if project initialized)
 
@@ -215,6 +229,7 @@ The wb workflow now supports beads with graceful degradation:
 **Problem**: Mixed signals about whether TodoWrite is fallback or complement.
 
 **Resolution**: Made explicit:
+
 - **Always use TodoWrite** for session tracking
 - **Additionally use beads** (if available) for cross-session tracking
 - They are complementary, not mutually exclusive
@@ -222,13 +237,28 @@ The wb workflow now supports beads with graceful degradation:
 ### Verified: bd dep add Syntax
 
 Confirmed `bd dep add <blocked-id> <blocker-id>` is correct:
+
 - `bd dep add phase2 phase1` = "phase2 depends on phase1"
 - Phase 2 is blocked by Phase 1 ✓
 
 ### Remaining Token Optimization (prompts-qh5)
 
 Not addressed yet:
+
 1. README.md duplicates wb/README.md beads section (~400 tokens)
 2. Step 5 in create_execution.md could reference external doc (~1000 tokens)
 3. Beads command syntax repeated in 3+ places
 4. Consider extracting common patterns to references
+
+---
+
+## Addendum: bd 1.0.2 Embedded-Dolt Migration (2026-06-09)
+
+The learnings above were written against the SQLite-era beads CLI. bd 1.0.2 changed the persistence model; references to `bd sync` and `bd doctor` in the historical sections above no longer reflect the current CLI:
+
+- **`bd sync` removed**. Beads now uses an embedded Dolt backend that auto-commits mutations and auto-flushes `.beads/issues.jsonl`. There is no manual export step; in git mode, just commit `.beads/` at session end. Remote database sync (separate from git) is `bd dolt push` / `bd dolt pull` when a Dolt remote is configured.
+- **`bd doctor` unsupported in embedded mode**. Use `bd info` (initialization check) or `bd status` (overview, aliased as `bd stats`).
+- **Git hooks installed by `bd init`** (`.beads/hooks/prepare-commit-msg`, `pre-push`) keep the JSONL consistent at commit time. A broken/half-migrated database will abort `git commit` via these hooks — the fix is `bd export` (backup), then `bd init --force --prefix <prefix>`, then `bd import`.
+- **Issue IDs are hash-style** (`prompts-a3f2`) in 1.0.2; sequential IDs from older versions are re-keyed on import.
+
+All wb skills and docs were updated for this in the 2.0.0 modernization; this addendum preserves the context for why older sections read differently.
