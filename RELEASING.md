@@ -5,7 +5,7 @@ How changes reach installers, and the process that keeps that deliberate. Contex
 ## The channel model
 
 | Channel | Who | What they get | When |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Dev | Maintainer, canaries | The working tree, live | `claude --plugin-dir <repo>/plugin` — always serves current files, shadows any installed version (even an equal one), no bump needed |
 | Release | Installers | The `plugin/` subtree at the manifest version | Only when the version bumps AND they run `claude plugin update wb@gvarela-workbench` |
 
@@ -33,6 +33,12 @@ Bump `version` in **both** `plugin/.claude-plugin/plugin.json` and `.claude-plug
 ## Rollback
 
 There is no downgrade mechanism. Rollback = revert commit(s) + new **patch** version + `claude plugin update`. Roll forward, always.
+
+## Maintenance branches
+
+- **`1.x`** holds the final pre-modernization release (v1.1.0: `commands/` layout, root-level `.claude-plugin/`, pre-embedded-Dolt beads). Created 2026-07-31 from the last pre-2.0 main tip, tagged `v1.1.0`.
+- Policy: **critical fixes only, no new features.** Fixes land directly on `1.x` (cherry-pick from main when applicable), bump the patch version in the branch's own manifests, tag `v1.1.x`.
+- `main` carries 2.x forward and is the install channel; users on 1.x install by pointing at the branch (`--plugin-dir` on a `1.x` checkout, or a marketplace registration targeting that branch).
 
 ## Update mechanics (for reference)
 
