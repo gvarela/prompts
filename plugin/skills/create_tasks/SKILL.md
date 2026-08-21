@@ -365,9 +365,26 @@ Use agent findings throughout execution plan:
 Tasks should be:
 
 - **Specific**: "Create PaymentRetry class at src/retry/PaymentRetry.ts"
-- **Sized**: 1-4 hours of work typically
+- **Sized**: 1-4 hours of work typically, AND within a delegated worker's tool-call budget (see below)
 - **Testable**: Clear completion criteria
 - **Independent**: Minimal blocking between tasks
+
+### Tool-Call Budget
+
+Wall-clock time does not predict whether a task fits a single delegated worker; tool calls do. A one-hour task touching 3 files is ~20 calls; a one-hour task touching 12 files is ~80. Subagents hard-stop when they exhaust their tool-call budget (observed near ~70 calls — measured evidence, not a guaranteed constant), and truncation always eats the finishing tail: the last test conversions, the verification runs, the issue close.
+
+Project each task's cost with rough arithmetic:
+
+| Step | Calls |
+| --- | --- |
+| Read the files the task must not break | 4-8 |
+| Discovery (finding affected tests/callers) | 3-6 |
+| Write source changes | 4-10 |
+| Convert/update N test files | 1-2 each |
+| Run the suite (RED, GREEN, after refactor, final) | 3-5 |
+| Lint, verification, close the issue | 3-5 |
+
+**A task projecting past ~50 calls should be split at its natural seam** — usually source change, then test conversion, which are separately verifiable anyway. Write the split as separate tasks with a dependency between them.
 
 ## Synchronization Points
 
