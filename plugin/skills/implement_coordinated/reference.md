@@ -40,7 +40,11 @@ const contextPackage = {
     coverage: "npm test -- --coverage | pytest --cov"
   },
 
-  // File references relevant to this phase
+  // File references relevant to this phase.
+  // Be precise and generous here: every file:line fact you supply is a Read the
+  // worker doesn't spend, and naming the exact files a task must change removes
+  // its discovery sweep entirely. Coordinator context is already loaded; worker
+  // tool-call budget is scarce.
   relevantFiles: [
     "src/feature/file1.ts:123 - existing pattern to follow",
     "tests/feature/test1.spec.ts:45 - test structure example"
@@ -54,7 +58,28 @@ Retired: the `determineModel()` keyword-regex spec was replaced by coordinator j
 
 ## Worker Failure Playbook (Step 6)
 
-If a worker leaves its task in `in_progress` (didn't close the beads issue), the worker crashed or couldn't complete. Verification is NOT run when the worker didn't finish — that path is for verification FAILs after successful completion.
+If a worker leaves its task in `in_progress` (didn't close the beads issue), the worker did not finish. Verification is NOT run when the worker didn't finish — that path is for verification FAILs after successful completion.
+
+An unfinished worker is one of **two distinct events with opposite remedies** — diagnose before acting. Run `git status` and `git diff --stat` to inventory what the worker actually landed, and look at how its output ends.
+
+### Case A: Truncation (budget exhaustion)
+
+Subagents stop when they exhaust their tool-call budget (observed as a hard stop near ~70 calls — measured evidence from one session/model, not a guaranteed constant; treat the symptom, not the number).
+
+**Signature**: files ARE changed but the bead is still open; the worker's output cuts off mid-sequence rather than reporting a blocker. The missing work is always the *tail* — the last test conversions, final verification runs, the `bd close`. The worker did nothing wrong; the task was too large for one delegation.
+
+**Remedy**:
+
+1. Inventory the landed work (`git status`, `git diff`) — do NOT skip this; partial changes are sitting in the tree unexamined
+2. **Finish the remainder directly yourself**, or re-delegate ONLY the remaining slice as a fresh worker with a smaller prompt that names the exact files still to change
+3. Close the bead once the tail is done, then run verification (Step 6) on the completed whole
+4. **Never retry the whole task**: same task + same context = same budget, truncating at the same point
+
+(The reason truncation is even detectable is the worker contract making `bd close` the final action — a truncated worker surfaces as `in_progress` with partial work instead of looking finished. Keep that contract.)
+
+### Case B: Genuine failure (crash or blocker)
+
+**Signature**: little or nothing landed, and/or the worker explicitly reported errors or blockers it could not resolve.
 
 Present:
 
@@ -63,15 +88,12 @@ Present:
 
 Task ${taskId} status: in_progress (should be closed)
 Worker reported: ${workerError}
-
-This means the worker crashed or couldn't complete the task.
-Verification agent is NOT run if worker didn't finish.
+Landed changes: ${gitStatusSummary}
 
 **Options**:
-1. Retry worker with same context
-2. Retry worker with additional context
-3. Mark task as blocked, investigate
-4. Manual intervention required
+1. Retry worker with additional context
+2. Mark task as blocked, investigate
+3. Manual intervention required
 
 How should I proceed?
 ```

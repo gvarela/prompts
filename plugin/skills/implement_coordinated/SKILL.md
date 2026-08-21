@@ -178,15 +178,16 @@ bd ready
 
 1. **Get next task**: Run `bd ready` to find available work
 2. **Check task details**: Run `bd show [task-id]` for requirements
-3. **Determine model** (coordinator judgment — read the task content and pick the tier):
+3. **Project delegation size** (coordinator judgment): estimate the worker's tool-call cost — reads of files it must not break (4-8) + discovery (3-6, or ~0 if the context package names the exact files) + source edits (4-10) + 1-2 calls per test file touched + suite runs (3-5) + lint/verification/close (3-5). Subagents hard-stop when they exhaust their tool-call budget (observed near ~70 calls), and the truncated work is always the finishing tail. **A task projecting past ~50 calls: split it at its natural seam before spawning** — usually source change, then test conversion — as separate beads issues (`bd create` the slices, `bd dep add` to order them, close the original with `--reason "split"`)
+4. **Determine model** (coordinator judgment — read the task content and pick the tier):
    - Haiku: Mechanical only (config, docs, renames)
    - Sonnet: Standard implementation including bugs and refactors - DEFAULT when unsure
    - Opus: Architectural, cross-cutting, or previously-failed tasks
 
    When spawning with sonnet or opus, set `effort: xhigh` for the coding work. Never set effort on haiku spawns (errors on Haiku 4.5). The verify-then-retry loop below is what makes the cheap default safe — fix workers stay opus, a true escalation.
-4. **Spawn the `task-worker` agent** with the chosen model as a per-spawn override (the agent has the tdd-discipline skill preloaded and carries the TDD contract in its own definition). **Read [sub-agent-prompts.md](sub-agent-prompts.md) NOW** and build the worker prompt from its "Worker Prompt Template" — task ID/title/description, the context package, beads commands (`bd update [id] --claim`, `bd close [id]`), and the expected-output contract. Use the template verbatim with values filled in.
-5. **Collect worker output** when complete
-6. **Proceed to verification** (Step 6)
+5. **Spawn the `task-worker` agent** with the chosen model as a per-spawn override (the agent has the tdd-discipline skill preloaded and carries the TDD contract in its own definition). **Read [sub-agent-prompts.md](sub-agent-prompts.md) NOW** and build the worker prompt from its "Worker Prompt Template" — task ID/title/description, the context package, beads commands (`bd update [id] --claim`, `bd close [id]`), and the expected-output contract. Use the template verbatim with values filled in.
+6. **Collect worker output** when complete
+7. **Proceed to verification** (Step 6)
 
 **Loop**: Spawn → Wait → Verify → Next task
 
@@ -250,7 +251,7 @@ After each worker completes:
 
 7. **Spawn next worker** (repeat Step 5)
 
-**Handle worker failures** (rare — worker left the task `in_progress` without closing it): this is a crash/incomplete, NOT a verification failure, and verification is not run. Follow the "Worker Failure Playbook" in [reference.md](reference.md) and present its options to the user.
+**Handle unfinished workers** (worker left the task `in_progress` without closing it): this is NOT a verification failure, and verification is not run. It is one of two distinct events — **truncation** (worker exhausted its tool-call budget; partial work landed, finish the remainder — never retry whole) or **genuine failure** (crash or reported blocker; little landed). Run `git status` to tell them apart, then follow the "Worker Failure Playbook" in [reference.md](reference.md) for the matching remedy.
 
 ### Step 7: Aggregate Results
 
