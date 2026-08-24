@@ -39,8 +39,8 @@ tags: [tasks, tracking, compaction-drift-hardening]
 
 - [x] Create project structure (completed 2026-08-22 00:47)
 - [x] Complete research using `/wb:create_research [directory]` (completed 2026-08-24)
-- [ ] Explore design options using `/wb:explore_design [directory]` (optional)
-- [ ] Create design document using `/wb:create_design [directory]`
+- [x] Explore design options using `/wb:explore_design [directory]` (optional — skipped: single clear approach, mechanism choices settled by verified platform constraints)
+- [x] Create design document using `/wb:create_design [directory]` (completed 2026-08-24)
 - [ ] Generate execution plan using `/wb:create_tasks [directory]`
 
 ---
