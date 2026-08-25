@@ -233,6 +233,7 @@ Create a handoff when:
 - Blocked and need different expertise
 - Completed significant milestone
 - Made important discoveries
+- The session has already needed `/compact` once this phase and is heading for another — hand off instead; a second compaction compounds summary drift
 
 ## Relationship to Other Commands
 
