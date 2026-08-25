@@ -172,7 +172,7 @@ Before proceeding to Phase 2:
 2. ✅ Phase 1 milestone beads issue closed
 3. ✅ All automated verification passing
 4. ✅ Manual verification confirmed by human
-5. ✅ Update frontmatter: `current_phase: 2`
+5. ✅ Reconcile plan-doc status via `/wb:update_status` (sole writer of the progress fields)
 
 **Verification**: Run `bd show [phase1-milestone-id]` to confirm all blocking tasks are closed.
 
