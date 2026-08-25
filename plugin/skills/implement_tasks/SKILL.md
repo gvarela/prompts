@@ -48,7 +48,7 @@ When invoked, check for arguments:
 5. **Verification Gates**: Respect ⛔ CHECKPOINT markers between phases
 6. **Documentation First**: Read research.md and design.md for context before starting
 
-### CRITICAL: NO SCOPE ADDITIONS - NONE!
+### CRITICAL: NO SCOPE ADDITIONS - NONE
 
 - **NEVER** add features not in tasks.md
 - **NEVER** refactor code beyond what's specified
@@ -157,6 +157,7 @@ bd ready    # Show all tasks with no blockers (ready to start)
 ```
 
 This shows:
+
 - Tasks with no dependencies (can start immediately)
 - Tasks whose dependencies are all closed (newly unblocked)
 - Both granular tasks and phase milestones
@@ -180,6 +181,7 @@ bd ready
 ```
 
 **Workflow**:
+
 1. `bd ready` - Find available work
 2. `bd show [id]` - Review task details
 3. `bd update [id] --claim` - Claim it
@@ -188,6 +190,7 @@ bd ready
 6. `bd ready` - Find next task
 
 **Phase Milestone Tracking**:
+
 - Phase milestones are automatically unblocked when all their task dependencies close
 - Close the phase milestone only after ALL phase tasks are done AND manual verification passes
 - Use `bd show [phase-milestone-id]` to see which tasks still block the milestone
@@ -266,9 +269,10 @@ After completing each task:
    ```
 
 **Do NOT**:
+
 - ❌ Update checkboxes in tasks.md (documentation only)
 - ❌ Use TaskCreate/TaskUpdate (not persisted)
-- ❌ Update frontmatter counts manually (beads is source of truth)
+- ❌ Update frontmatter counts manually (beads is source of truth; /wb:update_status is the sole writer of those fields)
 
 ### Step 4: Handle Testing Tasks
 
@@ -363,28 +367,24 @@ Report using the "Phase Completion Report" template in [templates.md](templates.
 After phase completion and verification:
 
 1. **Verify beads state**:
+
    ```bash
    bd stats    # Check overall progress
    bd list --status=closed    # See what's complete
    bd ready    # See what's available next
    ```
 
-2. **Optionally update tasks.md frontmatter** (for human reference):
-   ```yaml
-   current_phase: [N+1 if moving forward]
-   last_updated: YYYY-MM-DD
-   status: in-progress  # or complete if all phases done
-   ```
-
-   Note: Frontmatter is for documentation. Beads is the source of truth.
+2. **Reconcile tasks.md frontmatter via `/wb:update_status`**: run `/wb:update_status [project-directory]` to update `status`, `current_phase`, and `completed_tasks` from beads state — `update_status` is the sole writer of those fields, so do not hand-edit them here.
 
 3. **Add implementation notes** if there were discoveries:
+
    ```markdown
    ## Implementation Notes
    - [YYYY-MM-DD] Phase [N] complete: [key learnings, deviations from plan]
    ```
 
 4. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
+
    ```bash
    # In git mode, commit the beads state
    if [ "$BEADS_MODE" != "stealth" ]; then
