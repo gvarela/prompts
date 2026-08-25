@@ -26,12 +26,19 @@ bd list --status=in_progress    # What's claimed
 ## Drift Indicators
 
 **Work done but not persisted**:
+
 - Issues closed this session but `.beads/` changes not committed (git mode)
 - End of session approaching
 
 **Phase complete but not closed**:
+
 - All tasks in a phase done, but beads issue still open
 - Reminder: `bd close [phase-id] --reason "..."`
+
+**Frontmatter drift**:
+
+- At phase end/session end, compare tasks.md frontmatter `completed_tasks`/`current_phase` against beads reality (`bd stats`, closed counts)
+- On mismatch, remind the user to run `/wb:update_status [project-dir]`
 
 ## When to Remind
 

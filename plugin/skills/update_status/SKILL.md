@@ -304,6 +304,8 @@ The command should intelligently detect status based on actual content.
 
 **NEVER check markdown checkboxes** - they are documentation only and do not reflect actual status.
 
+**`update_status` is the sole writer** of the plan-doc frontmatter progress fields (`status`, `current_phase`, `completed_tasks`, `total_tasks`). Other skills and generated checkpoints point here instead of hand-editing those fields. If another instruction appears to edit them directly, treat it as stale.
+
 For research and design status (not tracked in beads), use content analysis:
 
 ### Research Detection
