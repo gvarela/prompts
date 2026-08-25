@@ -12,7 +12,7 @@ allowed-tools: Read
 
 You coordinate task implementation from `tasks.md` by spawning worker agents sequentially, each with focused context and fresh context window. This prevents main session context bloat.
 
-**Recommended for**: Long phases with many tasks, sessions where context compaction would be disruptive, or when you want the main window available for monitoring/debugging.
+**Recommended for**: Long phases with many tasks, sessions where context compaction would be disruptive, or when you want the main window available for monitoring/debugging. If a phase has already needed one `/compact` and is heading for another, stop and run `/wb:create_handoff` instead — `resume_handoff` forces a fresh doc read, while a second compaction compounds summary drift.
 
 Supporting files in this directory (read each when its step directs you to — never paraphrase from memory):
 
@@ -356,14 +356,7 @@ After phase completion:
    bd ready    # See what's available next
    ```
 
-2. **Optionally update tasks.md frontmatter** (for human reference):
-
-   ```yaml
-   current_phase: ${phase + 1}
-   last_updated: YYYY-MM-DD
-   status: in-progress
-   execution_mode: coordinated  # Note the new pattern
-   ```
+2. **Reconcile tasks.md frontmatter via `/wb:update_status`**: run `/wb:update_status [project-directory]` to update `status`, `current_phase`, and `completed_tasks` from beads state — `update_status` is the sole writer of those fields, so do not hand-edit them here. It's fine to note `execution_mode: coordinated` in the frontmatter while running the reconciliation, since `update_status` doesn't own that field.
 
 3. **Add implementation notes** with worker insights, using the "Implementation Notes Entry" template in [templates.md](templates.md).
 
@@ -379,6 +372,8 @@ After phase completion:
 
 ## Resume Logic
 
+If you are resuming after a context compaction: everything you recall about research.md/design.md/tasks.md is paraphrase until re-read — the re-reads below are mandatory, not optional. If this phase has already been compacted once, prefer `/wb:create_handoff` + a fresh session over compacting again.
+
 When resuming work (phase = "continue"):
 
 1. **Check beads state** (source of truth):
@@ -393,7 +388,7 @@ When resuming work (phase = "continue"):
 2. **Review context**:
    - Read tasks.md "Implementation Notes" for worker insights
    - Read research.md and design.md for context
-   - Check current_phase in frontmatter
+   - Check current_phase in frontmatter (reference only — beads is authoritative; reconcile via /wb:update_status if it looks stale)
 
 3. **Handle incomplete workers**:
    - If tasks are stuck in `in_progress`, investigate why
