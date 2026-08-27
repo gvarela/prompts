@@ -2,8 +2,8 @@
 project: compaction-drift-hardening
 ticket: prompts-8bj
 created: 2026-08-21
-status: ready
-last_updated: 2026-08-24
+status: complete
+last_updated: 2026-08-26
 depends_on: research.md
 design_approach: recover-and-reinforce
 ---

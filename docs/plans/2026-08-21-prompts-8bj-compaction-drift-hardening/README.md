@@ -2,7 +2,7 @@
 
 **Created**: 2026-08-21
 **Ticket**: prompts-8bj
-**Status**: Planning
+**Status**: Complete (released as wb v2.3.0)
 
 ## Overview
 
