@@ -456,7 +456,7 @@ Creates comprehensive handoff document for session transfer.
 - Next steps with specific recommendations
 - Git state and uncommitted changes
 
-**When to use**: at session end, or when a phase has already needed `/compact` once and is heading for another — hand off instead; a second compaction compounds summary drift
+**When to use**: session ending with work incomplete, switching models, blocked and needing different expertise, after a significant milestone or discovery — and when a phase has already needed `/compact` once and is heading for another: hand off instead; a second compaction compounds summary drift
 
 ---
 

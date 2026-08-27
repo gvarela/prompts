@@ -235,6 +235,14 @@ Create a handoff when:
 - Made important discoveries
 - The session has already needed `/compact` once this phase and is heading for another — hand off instead; a second compaction compounds summary drift
 
+### Why a Handoff Instead of a Second `/compact`
+
+Compaction replaces the transcript with a model-written summary. What's on disk (docs, beads, commits) survives untouched; everything in-context — full doc reads, tool results, the ⛔ barrier instructions loaded by skills — is replaced by paraphrase, and nothing labels the paraphrase as degraded. A second compaction summarizes a context that is already partly summary, so loss compounds while confidence stays flat.
+
+Timing matters as much as count. A `/compact` at a phase boundary (checkpoint passed, status reconciled via `/wb:update_status`, beads closed, work committed) is nearly free — everything load-bearing already lives in durable artifacts, and the SessionStart(compact) recovery hook re-anchors on the plan docs. A mid-phase compact is expensive: the summary becomes the only carrier of in-flight reasoning and active instructions.
+
+A handoff moves that at-risk content into a durable file that is deliberate (written knowing what matters), inspectable (reviewable and correctable before resuming — a compaction summary never is), and self-repairing (`/wb:resume_handoff` forces fresh full doc reads and beads reconciliation). Its cost is one session restart — which is why this rule reserves it for the second mid-phase compact, the point of worst marginal loss, rather than every compact.
+
 ## Relationship to Other Commands
 
 Typical workflows:
