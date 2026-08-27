@@ -10,9 +10,9 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 
 - `.claude-plugin/` - Marketplace manifest (plugin manifest lives in `plugin/.claude-plugin/`)
 - `plugin/` - The shipped runtime: everything below is what installers receive
-- `plugin/skills/` - All skills (`skills/<name>/SKILL.md`): user-invoked workflow commands (`/wb:*`, with `disable-model-invocation: true`) and auto-activated background capabilities (`user-invocable: false`)
+- `plugin/skills/` - All skills (`skills/<name>/SKILL.md`): user-invoked workflow commands (`/wb:*`, with `disable-model-invocation: true`) and auto-activated background capabilities (`user-invocable: false`, e.g. `doc-adherence`)
 - `plugin/agents/` - Specialized subagent definitions
-- `plugin/hooks/` - Event handlers (SessionStart, SessionEnd, PostToolUse)
+- `plugin/hooks/` - Event handlers (SessionStart, SessionEnd, PostToolUse); `compact-recovery.sh` (SessionStart on compact) re-anchors a compacted session on the active plan directory
 - `plugin/scripts/` - Utility scripts (lint, lint-hook)
 - `plugin/docs/reference/` - Runtime-referenced shared docs (skills link to these)
 - `docs/` - Maintainer documentation, guides, and project plans (never shipped to installs)
@@ -154,6 +154,7 @@ All generated documentation files use consistent YAML frontmatter:
 - Git metadata: `git_commit`, `git_branch`, `repository`
 - User tracking: `researcher`, `planner`, `assignee`
 - Progress: `current_phase`, `total_tasks`, `completed_tasks`
+- Progress fields are written only by `/wb:update_status` (sole writer); other skills and checkpoints defer to it.
 
 ## Agent Spawning with Model Selection
 

@@ -234,6 +234,7 @@ created_timestamp: [ISO-8601 timestamp]
 status: not-started
 last_updated: [YYYY-MM-DD]
 assignee: [username]
+# progress fields below are maintained by /wb:update_status — do not hand-edit
 current_phase: 0
 total_tasks: 4
 completed_tasks: 1

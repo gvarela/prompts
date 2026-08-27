@@ -456,6 +456,8 @@ Creates comprehensive handoff document for session transfer.
 - Next steps with specific recommendations
 - Git state and uncommitted changes
 
+**When to use**: session ending with work incomplete, switching models, blocked and needing different expertise, after a significant milestone or discovery — and when a phase has already needed `/compact` once and is heading for another: hand off instead; a second compaction compounds summary drift
+
 ---
 
 ### `/resume_handoff` - Resume from Handoff
@@ -643,7 +645,7 @@ Work through tasks.md using TDD cycle:
 - [ ] Add session validation
 ```
 
-Update frontmatter as you progress:
+Progress fields are reconciled by `/wb:update_status` (the sole writer) rather than hand-edited during implementation — running it after each phase keeps frontmatter like this in sync:
 
 ```yaml
 current_phase: 1
@@ -684,6 +686,8 @@ total_tasks: 24
 completed_tasks: 15
 ---
 ```
+
+The progress metrics block is reconciled by `/wb:update_status` alone (sole writer); other skills and checkpoints defer to it rather than hand-editing those fields directly.
 
 ### Status Progression
 
