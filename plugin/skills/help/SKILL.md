@@ -202,11 +202,11 @@ Researches existing UI patterns, asks clarifying questions, creates versioned mo
 
 ### `/wb:create_handoff [directory] [reason]`
 
-Captures context for session transfer. Includes beads state.
+Captures context for session transfer. Includes beads state. A phase that has already needed one `/compact` should hand off rather than compact again.
 
 ### `/wb:resume_handoff [handoff-file]`
 
-Restores context from handoff. Syncs beads and continues work.
+Restores context from handoff. Syncs beads and continues work. A phase that has already needed one `/compact` should hand off rather than compact again.
 
 ## Core Principles
 
@@ -215,6 +215,7 @@ Restores context from handoff. Syncs beads and continues work.
 3. **Zero Scope Creep** - Only implement what's in tasks.md
 4. **TDD Discipline** - Red → Green → Refactor for each task
 5. **Beads Required** - Phase tracking persists across sessions
+6. **Compaction Recovery** - After `/compact`, the SessionStart(compact) hook re-anchors on the active plan docs; doc-content claims require a read in the current context window (doc-adherence skill)
 
 ## Quick Troubleshooting
 

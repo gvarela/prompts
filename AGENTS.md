@@ -12,6 +12,11 @@ bd close <id>         # Complete work
 # beads auto-flushes .beads/issues.jsonl; commit .beads/ at session end (git mode)
 ```
 
+## Documentation Conventions
+
+- `plugin/hooks/compact-recovery.sh` (SessionStart on compact) re-anchors a compacted session on the active plan directory; the `doc-adherence` background skill then requires a fresh read before citing plan-doc contents.
+- Progress frontmatter fields (`current_phase`, `total_tasks`, `completed_tasks`) are written only by `/wb:update_status` (sole writer); other skills and checkpoints defer to it.
+
 ## Landing the Plane (Session Completion)
 
 **When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
