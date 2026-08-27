@@ -2,6 +2,20 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [2.3.0] — 2026-08-26
+
+Compaction and drift hardening: a recovery hook for compacted sessions, a background skill that keeps plan-doc claims grounded in the current context, and a single authoritative writer for plan-doc progress frontmatter.
+
+### Added
+
+- `hooks/compact-recovery.sh` (SessionStart, `compact` trigger): re-anchors a compacted session on the active plan directory. Empirically validated with a live `/compact` marker test — the model quoted the recovery block verbatim (evidence on `prompts-6du`).
+- `doc-adherence` background skill: plan-doc claims require a read in the current context window before they can be asserted. Blind-trial validated 9/9 on first run (evidence on `prompts-2x7`).
+
+### Changed
+
+- Plan-doc progress frontmatter consolidated to a single writer, `/wb:update_status`; `implement_tasks`, `implement_coordinated`, and their templates now defer to it instead of writing frontmatter themselves. `status-sync` gains a frontmatter-drift indicator.
+- Handoff-over-compact guidance: a phase that would need a second `/compact` now hands off instead (`implement_coordinated`, `create_handoff`, `help`).
+
 ## [2.2.0] — 2026-07-31
 
 The create_tasks rename, plus the model-strategy recalibration.

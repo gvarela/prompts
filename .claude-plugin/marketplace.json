@@ -9,7 +9,7 @@
       "name": "wb",
       "source": "./plugin",
       "description": "Workbench for structured software development with TDD, project planning, and beads integration.",
-      "version": "2.2.1"
+      "version": "2.3.0"
     }
   ]
 }
