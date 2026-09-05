@@ -2,6 +2,16 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [2.6.0] — 2026-09-05
+
+`update_status` and `create_handoff` become model-invocable. Asking in prose to reconcile a plan's status or to write a handoff now works; the stage commands stay user-only.
+
+### Changed
+
+- `update_status`: `disable-model-invocation` removed; description rewritten as trigger text. Since v2.3.0 it is the sole writer of tasks.md progress frontmatter, so a user-only flag meant no phase could reconcile its own status.
+- `create_handoff`: `disable-model-invocation` removed; description rewritten as trigger text. Side-effect-light (writes one handoff document) with no ordering constraint.
+- `CLAUDE.md` and `docs/claude-code-skills-guide.md` state the split: stage commands that spawn agents, create beads issues, and stop at checkpoints remain user-only.
+
 ## [2.5.0] — 2026-09-05
 
 Fable 5.1 re-baseline, phase 2: the CLAUDE.md command root rewritten, the budget-keyword directives converted, and the two deferred prompt-modernization trims decided on blind-trial evidence. Plan: `docs/plans/2026-09-01-fable-5-1-rebaseline/` (trials in `trials/2026-09-05-blind-trials.md`).
