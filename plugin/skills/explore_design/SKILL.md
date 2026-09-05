@@ -135,7 +135,7 @@ bd list -n 0 --status=open | grep "Decide:"  # decisions already pending
 
 Both greps are substring matches — count only issues whose **title begins with** the prefix; ignore mid-title mentions. Open `Q:` issues that bear on the decision should be surfaced during framing. An open `Decide:` issue for this same decision means a prior session framed it — adopt it rather than creating a duplicate (close it at Step 6 instead of creating a new one).
 
-**think deeply about what is actually being decided** — the stated question is often one layer above or below the real fork.
+**Identify what is actually being decided** — the stated question is often one layer above or below the real fork.
 
 ### Step 2: Frame the Decision Space
 

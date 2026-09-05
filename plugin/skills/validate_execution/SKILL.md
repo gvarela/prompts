@@ -77,7 +77,7 @@ const tasksFile = `${projectDir}/tasks.md`;
    - Original state of the codebase
    - Patterns that should be followed
 
-**think deeply about what was supposed to be built vs what exists**
+**Compare what was supposed to be built with what exists**
 
 ### Step 2: Spawn Validation Agents
 
@@ -112,7 +112,7 @@ Document the results:
 
 ### Step 4: Analyze Implementation Completeness
 
-**think deeply about gaps between plan and reality**
+**Identify the gaps between plan and reality**
 
 For each phase in tasks.md:
 

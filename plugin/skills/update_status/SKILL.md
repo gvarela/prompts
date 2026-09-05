@@ -93,8 +93,6 @@ Record current state:
 
 ### Step 2: Analyze Actual Progress
 
-**think deeply**
-
 Examine the files to determine actual state:
 
 1. **Research Analysis**:

@@ -69,11 +69,11 @@ When invoked, check for arguments:
 
 ### Step 3: Analyze and Decompose the Research Question
 
-**think deeply about what EXISTS in the codebase**
+**Document what EXISTS in the codebase**
 
 1. **Break down the user's query into composable research areas**
 2. **REMEMBER: Document what IS, not what SHOULD BE**
-3. **Take time to ultrathink about:**
+3. **Work out:**
    - Underlying patterns and connections that EXIST
    - Architectural implementations CURRENTLY IN PLACE
    - Which directories, files, or patterns are ACTUALLY PRESENT
@@ -135,7 +135,7 @@ const agents = [
 
 ### Step 5: Synthesize Findings
 
-**think deeply about documenting ONLY what EXISTS**
+**Document ONLY what EXISTS**
 
 **IMPORTANT**: Wait for ALL sub-agent tasks to complete before proceeding
 

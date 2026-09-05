@@ -168,6 +168,9 @@ Project closes at Phase 3 + release; Phase 4 trims deferred to a successor proje
 | R9 (model-hint review) | APPLIED Phase 1 per maintainer decisions (mockup haiku kept; validate_execution:97 deferred to frontmatter; :149 sonnet kept) |
 | R6, R7, R10, R11 (relocations/splits/dedup) | APPLIED Phase 2 — 8,439 → 5,275 core lines, parity-gated, adversarially audited |
 | R12 (verification pins), R13 (task-worker), R14 (SessionEnd drift hook) | APPLIED Phase 3, assumption-validated and piloted |
-| R1 (budget keywords), R4 (strategic placement) | DEFERRED to successor — pending harness Tier 3 behavioral evidence (prompts-41c/7jx/9wg/pnr deferred in beads) |
-| R3 (barrier formatting) | DEFERRED, still downgraded — decide on parity evidence or skip |
+| R1 (budget keywords) | APPLIED 2026-09-05 (fable-5-1-rebaseline Phase 2, prompts-avl) — verbs dropped, directive objects kept, 2 bare lines deleted |
+| R4 (strategic placement) | Documentarian placements ALREADY SATISFIED by the Phase 2 relocations; CAPS scope-block softening SKIPPED 2026-09-05 — blind trial: trimmed surfaced the trap bug 2/3 vs baseline 3/3 (prompts-y7t) |
+| R3 (barrier formatting) | SKIPPED 2026-09-05 — blind trial: trap held 0/3 at triple-⛔ and 1/3 at single-⛔ with reason; volume is not the discriminator (prompts-431) |
 | R15, R16 (preprocessing, named args) | PARKED — open decision prompts-s6c, nothing blocked |
+
+Successor (2026-09-05): the deferred R1/R3/R4 trims run as Phase 2 of [../2026-09-01-fable-5-1-rebaseline/](../2026-09-01-fable-5-1-rebaseline/) — milestone prompts-3cc; tasks prompts-6di (CLAUDE.md root), prompts-3d4 (blind trials), prompts-avl (R1), prompts-431 (R3), prompts-y7t (R4), prompts-4yx (disposition). The original prompts-41c/7jx/9wg/pnr/m7o/ogp IDs no longer resolve after the dolt migration.

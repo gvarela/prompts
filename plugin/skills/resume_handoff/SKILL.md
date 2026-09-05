@@ -97,7 +97,7 @@ const handoffPath = $1 || /* prompt for it */;
    - **Git mode**: Should match if no work done since handoff
    - **Stealth mode**: May differ (beads is local, handoff is document-based)
 
-**think deeply about the context and discoveries documented**
+**Absorb the context and discoveries documented**
 
 ### Step 2: Read Project Documentation
 

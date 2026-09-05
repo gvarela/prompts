@@ -67,7 +67,7 @@ Create a UI research summary using the "UI Research Summary" template in [templa
 
 ### Step 3: Clarifying Questions
 
-**think deeply about what information is needed**
+**Determine what information is needed**
 
 Before creating mockup, ask clarifying questions:
 

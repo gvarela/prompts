@@ -96,7 +96,7 @@ const tasksFile = `${projectDir}/tasks.md`;
    - Check current status
    - Note any existing progress
 
-**think deeply about HOW to bridge from current state to target state**
+**Decide HOW to bridge from current state to target state**
 
 Synthesize research (current state) and design (target state) to determine the implementation path.
 Remember: Now you're planning HOW to build what was designed.
@@ -115,7 +115,7 @@ Read the "Analysis Agent Prompts (Step 2)" section of [sub-agent-prompts.md](sub
 
 ### Step 3: Determine Implementation Strategy
 
-**think deeply about the safest, most logical implementation sequence**
+**Decide the safest, most logical implementation sequence**
 
 Based on the gap between current and target state, and agent findings:
 

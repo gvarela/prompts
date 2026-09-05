@@ -108,7 +108,7 @@ const tasksFile = `${projectDir}/tasks.md`;
    - Read beads tracking configuration
    - Understand task structure and dependencies
 
-**think deeply about:**
+**Work out:**
 
 - What patterns should workers follow from research?
 - What's the goal from the design?
