@@ -2,6 +2,27 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [2.4.0] — 2026-09-05
+
+Fable 5.1 re-baseline, phase 1: guardrails and uplifts the new model needs in implementation contexts, plus Fable routed into the two places it pays for itself — escalation after a verified failure and the create_tasks decomposition stage. Nothing removed. Plan: `docs/plans/2026-09-01-fable-5-1-rebaseline/`.
+
+### Added
+
+- `task-worker` agent: FOLLOW-UPS, NOT FIXES and SURGICAL EDITS constraints (pre-existing bugs are reported, not fixed; targeted edits over whole-file rewrites), and an Operating Mode section for autonomous runs that explicitly excludes phase checkpoints and plan-defect halts.
+- `implement_tasks`: "Extras and edits" rules after the scope block; "Record durable learnings" step (`bd remember` with a qualification rule) at phase completion.
+- `implement_coordinated`: autonomy paragraph at the top of the task loop; "Record durable learnings" step at phase completion; `why:` field leading the worker context package, rendered first in the Worker Prompt Template.
+- `create_tasks`: Model Self-Check (Fable recommended at high effort, Opus the comfortable minimum; warns below Opus, never blocks) — same shape as explore_design's.
+- `create_handoff`: Critical Discoveries reviews the session's `bd remember` entries.
+
+### Changed
+
+- `implement_coordinated`: verified failures escalate once to a `fable` fix worker at `effort: high` (opus fallback when fable is unavailable); no second retry — the task goes to the checkpoint's blocking list. Opus tier is architectural/cross-cutting work; Fable is never a first spawn.
+- Model map: `docs/workbench-workflow-guide.md` rows for create_tasks (Fable, Opus fallback), implement_tasks (Fable for cross-cutting phases), implement_coordinated (escalation workers Fable at high); `CLAUDE.md` tier list gives `fable` decomposition and escalation, and the rule that Fable spawns use `effort: high`, never `xhigh`.
+
+### Removed
+
+- `AGENTS.md`: duplicated CLAUDE.md's session protocol with a stale pre-1.0.2 step; references repointed.
+
 ## [2.3.0] — 2026-08-26
 
 Compaction and drift hardening: a recovery hook for compacted sessions, a background skill that keeps plan-doc claims grounded in the current context, and a single authoritative writer for plan-doc progress frontmatter.
