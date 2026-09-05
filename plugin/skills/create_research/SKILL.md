@@ -1,8 +1,7 @@
 ---
 name: create_research
-description: Research codebase using parallel agents to document how things work
+description: Research how something currently works in this codebase and write docs/plans/<project>/research.md: facts only, file:line references, no recommendations. Spawns parallel locator, analyzer, and pattern-finder agents. Use when a project directory exists and the user asks to research, investigate, document, or understand current behavior, or before design when research.md is missing or stale. Takes the project directory and the research question.
 argument-hint: [project-directory] [research-question]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

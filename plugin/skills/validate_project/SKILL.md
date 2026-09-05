@@ -1,8 +1,7 @@
 ---
 name: validate_project
-description: Validate project documentation follows wb workflow correctly
+description: Check that a docs/plans/<project>/ directory follows the wb workflow: required files, frontmatter, status transitions, beads tracking, and stage ordering. Use when plan documents look inconsistent, when asked to validate or audit a project's docs, or before resuming an old project. Takes the project directory.
 argument-hint: [project-directory]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

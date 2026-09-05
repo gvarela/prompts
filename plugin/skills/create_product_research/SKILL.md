@@ -1,8 +1,7 @@
 ---
 name: create_product_research
-description: Research codebase from a product perspective - features, user flows, behaviors, and patterns
+description: Research a codebase from the product perspective — features, user flows, user-visible behaviors — into research.md written in product language. Use when the research question is about what the software does for users rather than how the code works, or when a PM-facing write-up is requested. Takes the project directory and the question.
 argument-hint: [project-directory] [research-question]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

@@ -1,8 +1,7 @@
 ---
 name: explore_design
-description: Facilitated architecture discussion between research and design. Explores directions as possibilities, converges on explicit user approval, and records the decision durably (thoughts/ doc + closed Decide: issue)
+description: Facilitated architecture discussion between research and design: explores directions as possibilities, converges only on explicit user approval, and records the decision durably (thoughts/ doc plus a closed Decide: issue). Use when a design has open trade-offs or competing directions, or the user wants to think through options before committing; skip when the decision is already made. Recommended on Fable. Takes the project directory.
 argument-hint: [project-directory]
-disable-model-invocation: true
 allowed-tools: Read
 effort: high
 ---

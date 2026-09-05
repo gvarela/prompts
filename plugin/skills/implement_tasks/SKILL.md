@@ -1,8 +1,7 @@
 ---
 name: implement_tasks
-description: Implement tasks following TDD practices with phase boundaries
+description: Implement a project's tasks.md in this session with TDD (red, green, refactor), beads claim and close per task, and a human checkpoint at each phase boundary. Use when the user asks to implement, build, execute, or continue a planned phase and wants the work done inline by the current session model. Takes the project directory and a phase number or continue.
 argument-hint: [project-directory] [phase-number|continue]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

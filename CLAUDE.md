@@ -10,7 +10,7 @@ This is a Claude Code plugin (`wb`) providing structured software development wo
 
 - `.claude-plugin/` - Marketplace manifest (plugin manifest lives in `plugin/.claude-plugin/`)
 - `plugin/` - The shipped runtime: everything below is what installers receive
-- `plugin/skills/` - All skills (`skills/<name>/SKILL.md`): user-invoked workflow commands (`/wb:*`, with `disable-model-invocation: true`) and auto-activated background capabilities (`user-invocable: false`, e.g. `doc-adherence`)
+- `plugin/skills/` - All skills (`skills/<name>/SKILL.md`): workflow commands (`/wb:*`, invocable by the user or by the model from a prose request — descriptions are written as trigger text; only the deprecated `create_execution` alias is user-only) and auto-activated background capabilities (`user-invocable: false`, e.g. `doc-adherence`)
 - `plugin/agents/` - Specialized subagent definitions
 - `plugin/hooks/` - Event handlers (SessionStart, SessionEnd, PostToolUse); `compact-recovery.sh` (SessionStart on compact) re-anchors a compacted session on the active plan directory
 - `plugin/scripts/` - Utility scripts (lint, lint-hook)

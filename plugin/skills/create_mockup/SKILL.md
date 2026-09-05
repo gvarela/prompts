@@ -1,8 +1,7 @@
 ---
 name: create_mockup
-description: Research UI patterns and create initial mockup with clarifying questions
+description: Research existing UI patterns and produce an initial mockup for a feature, with clarifying questions for the user. Use when the user asks for a mockup, wireframe, or UI draft for a planned feature; iterate afterwards with mockup-iteration. Takes the project directory and a feature description.
 argument-hint: [project-directory] [feature-description]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

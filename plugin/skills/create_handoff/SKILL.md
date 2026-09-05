@@ -1,8 +1,7 @@
 ---
 name: create_handoff
-description: Create a handoff document to transfer work context to another session or agent
+description: Write a handoff document that carries this session's working context — decisions, discoveries, deviations from plan, beads state, next steps — into a new session, model, or agent. Use when ending or pausing a session, switching models or machines, when asked to hand off, checkpoint, or save context, or before compaction on long-running work. Takes the project directory under docs/plans/ and an optional reason.
 argument-hint: [project-directory] [handoff-reason]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

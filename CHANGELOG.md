@@ -2,6 +2,16 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [2.6.0] — 2026-09-05
+
+Every wb workflow skill is now model-invocable. A prose request to plan, research, design, break down, implement, validate, sync status, or hand off is honored without a typed `/wb:` command; the slash commands still work as before.
+
+### Changed
+
+- `disable-model-invocation` removed from all workflow skills except the deprecated `create_execution` alias. Descriptions rewritten as trigger text (what the skill does, when to use it, what it takes) since the model now loads them. Each skill's Initial Response still gates on its arguments, and checkpoints still stop for a human.
+- `update_status` had been the sole writer of tasks.md progress frontmatter since v2.3.0 while user-only, so no phase could reconcile its own status; that is now possible.
+- `CLAUDE.md` and `docs/claude-code-skills-guide.md` record the decision.
+
 ## [2.5.0] — 2026-09-05
 
 Fable 5.1 re-baseline, phase 2: the CLAUDE.md command root rewritten, the budget-keyword directives converted, and the two deferred prompt-modernization trims decided on blind-trial evidence. Plan: `docs/plans/2026-09-01-fable-5-1-rebaseline/` (trials in `trials/2026-09-05-blind-trials.md`).
