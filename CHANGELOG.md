@@ -2,6 +2,20 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [2.5.0] — 2026-09-05
+
+Fable 5.1 re-baseline, phase 2: the CLAUDE.md command root rewritten, the budget-keyword directives converted, and the two deferred prompt-modernization trims decided on blind-trial evidence. Plan: `docs/plans/2026-09-01-fable-5-1-rebaseline/` (trials in `trials/2026-09-05-blind-trials.md`).
+
+### Changed
+
+- `CLAUDE.md` "Working with Commands": one marker per real synchronization point with its reason stated; name what a decision is about instead of instructing thinking depth; spawn in parallel and synthesize only after every agent returns. The Command Structure Patterns example carries a reason per marker.
+- R1 (prompt-modernization): the 21 `think deeply` / `ultrathink` directives across the stage skills become the directive they introduced (Decide…, Document…, Identify…, Work out…); the two bare ones (create_project, update_status) are deleted. Thinking depth is the session's effort setting, not prompt text.
+
+### Skipped on evidence
+
+- R3 barrier normalization (triple ⛔ → single ⛔ with reason): on a trap fixture with two of three agent reports back and the third streaming a near-complete partial, Sonnet synthesized anyway under both wordings (WAIT 0/3 baseline, 1/3 trimmed). Volume is not what holds the barrier; no barrier text changed.
+- R4 scope-block softening (CRITICAL/NEVER → Scope/Do not): both wordings left a trap bug in the edited function untouched 3/3; the trimmed wording surfaced it 2/3 against 3/3 baseline. No scope block changed. The documentarian-placement half of R4 was already at target since the v2.0.0 relocations.
+
 ## [2.4.0] — 2026-09-05
 
 Fable 5.1 re-baseline, phase 1: guardrails and uplifts the new model needs in implementation contexts, plus Fable routed into the two places it pays for itself — escalation after a verified failure and the create_tasks decomposition stage. Nothing removed. Plan: `docs/plans/2026-09-01-fable-5-1-rebaseline/`.
