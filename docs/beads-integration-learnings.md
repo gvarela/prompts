@@ -153,7 +153,7 @@ This keeps the workflow portable and non-breaking for users who haven't adopted 
 2. `bd sync` to persist to JSONL/git
 3. `git add .beads/ && git commit && git push`
 
-The AGENTS.md in this repo already captures this pattern.
+CLAUDE.md's Session Completion section captures this pattern (AGENTS.md, which duplicated it, was removed 2026-09-05).
 
 ### Learning 9: Beads as Source of Truth for Phase Status
 
@@ -190,7 +190,6 @@ This maintains human-readable markdown while using beads for reliable cross-sess
 |------|---------|----------|
 | README.md | Overview, quick start | New users |
 | CLAUDE.md | Agent instructions | Claude Code |
-| AGENTS.md | Session protocol | AI agents |
 | wb/README.md | Command reference | Users of wb commands |
 | docs/beads-integration-learnings.md | This file | Future sessions |
 

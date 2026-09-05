@@ -174,6 +174,8 @@ bd ready
 
 ### Step 5: Spawn Worker Agents Sequentially
 
+The coordinator is operating autonomously within this task loop. Nobody is watching in real time, so asking "Want me to…?" blocks the work. For reversible actions that follow from the plan, proceed without asking. Before ending a turn, check the last paragraph: if it is a plan, a question, or a promise about work not yet done ("I'll now run…"), do that work now with tool calls. End the turn only when the phase is complete or blocked on something only a human can decide. This does not apply to phase checkpoints or plan-defect halts — those stop for a human by design.
+
 **For each ready task in the phase**, spawn a focused worker agent:
 
 1. **Get next task**: Run `bd ready` to find available work
@@ -182,9 +184,10 @@ bd ready
 4. **Determine model** (coordinator judgment — read the task content and pick the tier):
    - Haiku: Mechanical only (config, docs, renames)
    - Sonnet: Standard implementation including bugs and refactors - DEFAULT when unsure
-   - Opus: Architectural, cross-cutting, or previously-failed tasks
+   - Opus: Architectural or cross-cutting tasks
+   - Fable: never as a first spawn — the escalation target after a verified failure (Step 6)
 
-   When spawning with sonnet or opus, set `effort: xhigh` for the coding work. Never set effort on haiku spawns (errors on Haiku 4.5). The verify-then-retry loop below is what makes the cheap default safe — fix workers stay opus, a true escalation.
+   When spawning with sonnet or opus, set `effort: xhigh` for the coding work; fable spawns use `effort: high`. Never set effort on haiku spawns (errors on Haiku 4.5). The verify-then-retry loop below is what makes the cheap default safe — fix workers escalate to fable, one attempt.
 5. **Spawn the `task-worker` agent** with the chosen model as a per-spawn override (the agent has the tdd-discipline skill preloaded and carries the TDD contract in its own definition). **Read [sub-agent-prompts.md](sub-agent-prompts.md) NOW** and build the worker prompt from its "Worker Prompt Template" — task ID/title/description, the context package, beads commands (`bd update [id] --claim`, `bd close [id]`), and the expected-output contract. Use the template verbatim with values filled in.
 6. **Collect worker output** when complete
 7. **Proceed to verification** (Step 6)
@@ -235,7 +238,7 @@ After each worker completes:
 
    - **Implementation defect** (task is achievable as specified; the worker got it wrong):
      - Attempt automatic fix (up to 2 retries) using the "Fix Worker Prompt" in [sub-agent-prompts.md](sub-agent-prompts.md), re-verifying after each retry.
-     - **After 2 failed retries**: add to blocking issues list for phase checkpoint review and continue to the next task (surface issues at the phase boundary — don't block autonomous flow on individual task failures).
+     - **After the fable retry fails**: add to blocking issues list for phase checkpoint review and continue to the next task (surface issues at the phase boundary — don't block autonomous flow on individual task failures).
    - **Plan defect** (task cannot succeed AS SPECIFIED — a design assumption doesn't survive contact with the code): do NOT spawn fix workers; retries cannot fix a task that is wrong as specified. Follow the "Plan-Defect Deviation Protocol" in [reference.md](reference.md) — file a design-revision issue, block dependent tasks, halt the phase for a human checkpoint.
 
 5. **Add to aggregated lists** (after pass):
@@ -360,7 +363,15 @@ After phase completion:
 
 3. **Add implementation notes** with worker insights, using the "Implementation Notes Entry" template in [templates.md](templates.md).
 
-4. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
+4. **Record durable learnings.** If this phase established something the next session would otherwise rediscover — a repository convention, a tool quirk, a constraint the plan did not state — record it:
+
+   ```bash
+   bd remember --key <project>-<slug> "<one sentence: the fact, then why it matters>"
+   ```
+
+   Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating.
+
+5. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
 
    ```bash
    # In git mode, commit the beads state

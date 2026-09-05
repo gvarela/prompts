@@ -107,6 +107,7 @@ Determine the current implementation state:
    - Gotchas encountered
    - Solutions to tricky problems
    - Performance considerations discovered
+   - Run `bd memories <project>` and list the entries this session added with `bd remember`; keep the ones that still qualify, `bd forget` the ones that were task-specific
 
 3. **Deviations and Decisions**:
    - Where we deviated from plan and why

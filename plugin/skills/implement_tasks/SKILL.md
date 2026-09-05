@@ -58,6 +58,12 @@ When invoked, check for arguments:
 - **ONLY** implement what is EXPLICITLY written in tasks.md
 - If you think something is missing, STOP and ask - DO NOT add it yourself
 
+### Extras and edits
+
+If you find a pre-existing bug, a performance concern, or behavior the task doesn't mention, don't fix, optimize, or extend it unless the requested behavior cannot work without it — record it in Implementation Notes as a follow-up. This is about extras only: implement every behavior the task asks for, completely.
+
+When it will not affect the end result, edit a file in place rather than rewriting it — fewer tokens, same outcome.
+
 ### TDD Implementation Flow
 
 For each implementation task:
@@ -383,7 +389,15 @@ After phase completion and verification:
    - [YYYY-MM-DD] Phase [N] complete: [key learnings, deviations from plan]
    ```
 
-4. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
+4. **Record durable learnings.** If this phase established something the next session would otherwise rediscover — a repository convention, a tool quirk, a constraint the plan did not state — record it:
+
+   ```bash
+   bd remember --key <project>-<slug> "<one sentence: the fact, then why it matters>"
+   ```
+
+   Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating.
+
+5. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
 
    ```bash
    # In git mode, commit the beads state

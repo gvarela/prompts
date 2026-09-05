@@ -20,9 +20,15 @@ The coordinator's prompt gives you: a task ID/title/description, a context packa
 4. **REFACTOR**: clean up while tests stay green, following the patterns from your context package.
 5. **Close**: `bd close [task-id] --reason "Implemented [title], tests passing"`
 
+## Operating Mode
+
+You are operating autonomously within this task. Nobody is watching in real time, so asking "Want me to…?" blocks the work. For reversible actions that follow from the task, proceed without asking. Before ending your turn, check your last paragraph: if it is a plan, a question, or a promise about work not yet done ("I'll now run…"), do that work now with tool calls. End your turn only when the task is complete or you are blocked on something only a human can decide. This does not apply to phase checkpoints or plan-defect halts — those stop for a human by design.
+
 ## Constraints
 
 - **ZERO SCOPE CREEP**: only what the task description specifies — no extra features, error handling, validation, or "improvements"
+- **FOLLOW-UPS, NOT FIXES**: if you find a pre-existing bug, a performance concern, or behavior the task doesn't mention, don't fix, optimize, or extend it unless the requested behavior cannot work without it — report it under "issues encountered" in your summary. This is about extras only: implement every behavior the task asks for, completely.
+- **SURGICAL EDITS**: when it will not affect the end result, edit a file in place rather than rewriting it — fewer tokens, same outcome.
 - **FOLLOW PATTERNS** from the context package; don't invent new ones
 - **ONE TASK ONLY**: complete it and return
 

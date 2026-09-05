@@ -15,6 +15,8 @@ function buildWorkerPrompt(task, taskDetails, contextPackage) {
 
 ## Context You Need
 
+**Why this phase exists**: ${contextPackage.why}
+
 ### Patterns to Follow
 ${formatPatterns(contextPackage.patterns)}
 
@@ -111,7 +113,7 @@ markdown report with Status: PASS or FAIL.
 **Retry 1:**
 
 ```
-Verification failed. Spawn a fix worker using the task-worker agent with an opus model override.
+Verification failed. Spawn a fix worker using the task-worker agent with a fable model override at effort: high (use opus if fable is unavailable in this session).
 
 Provide:
 - Task ID: ${taskId}
@@ -122,4 +124,4 @@ Provide:
 
 **Re-verify** using the task-verifier agent with the same context.
 
-**Retry 2** (if still failing): repeat the process with additional context from the second verification report.
+**If re-verification fails**: add the task to the phase checkpoint's blocking list and continue to the next task. Do not spawn a second fix worker.

@@ -8,6 +8,9 @@ Build exactly this structure from the documentation you've read — only what wo
 
 ```javascript
 const contextPackage = {
+  // From design.md - the reason behind the phase: what it delivers and who it serves
+  why: "<one or two sentences from design.md: what this phase delivers and who it serves>",
+
   // From research.md - patterns workers must follow
   patterns: {
     testingFramework: "jest | pytest | go test | ...",
