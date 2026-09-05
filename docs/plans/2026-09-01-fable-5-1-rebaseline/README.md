@@ -2,7 +2,7 @@
 
 **Created**: 2026-09-01
 **Ticket**: prompts-678
-**Status**: Planned — beads epic, 3 milestones, 20 tasks created 2026-09-01; Phase 1 ready
+**Status**: Complete 2026-09-05 — shipped as v2.4.0 (Phase 1, PR #20) and v2.5.0 (Phase 2 + cut, PRs #21, #22)
 
 ## Overview
 

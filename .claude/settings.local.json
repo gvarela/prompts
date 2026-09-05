@@ -4,7 +4,6 @@
       "Bash(chmod:*)",
       "Bash(./scripts/lint:*)",
       "Bash(./scripts/lint-hook:*)",
-
       "Bash(grep:*)",
       "Bash(awk:*)",
       "Bash(git:*)",
@@ -20,7 +19,8 @@
       "Bash(export CLAUDE_ENV_FILE=/tmp/test-env-git.sh:*)",
       "Bash(npx markdownlint-cli2:*)",
       "WebFetch(domain:dev.to)",
-      "WebFetch(domain:gist.github.com)"
+      "WebFetch(domain:gist.github.com)",
+      "Artifact"
     ],
     "deny": [],
     "ask": []
