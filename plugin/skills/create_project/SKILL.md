@@ -1,8 +1,7 @@
 ---
 name: create_project
-description: Initialize comprehensive project documentation with research, design, and task files
+description: Start a new wb project: create docs/plans/<date>-<name>/ with README, research.md, design.md, and tasks.md skeletons and record git metadata. Use when the user wants to plan, scope, or kick off a feature, refactor, or investigation as a tracked project, or asks to set up plan docs. First stage of the workflow; research follows. Takes a project name and optional base directory and ticket.
 argument-hint: [project-name] [base-dir] [ticket-ref]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

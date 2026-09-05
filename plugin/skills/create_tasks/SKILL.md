@@ -1,8 +1,7 @@
 ---
 name: create_tasks
-description: Transform design into detailed phased execution plan with embedded tasks
+description: Turn an approved design.md into docs/plans/<project>/tasks.md: phased, executable tasks with file:line targets and verification, plus the beads epic, milestones, task issues, and dependencies. Use when design is approved and the user asks to plan the implementation, break the work down, create tasks, or set up beads for a project. Recommended on Fable. Takes the project directory.
 argument-hint: [project-directory]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

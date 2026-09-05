@@ -1,8 +1,7 @@
 ---
 name: resume_handoff
-description: Resume work from a handoff document created in a previous session
+description: Resume work from a handoff document written by create_handoff: reload the context, decisions, discoveries, and next steps, then continue from the ready work in beads. Use at the start of a session when the user points at a handoff file or asks to pick up, resume, or continue prior work. Takes the handoff file path.
 argument-hint: [handoff-file-path]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

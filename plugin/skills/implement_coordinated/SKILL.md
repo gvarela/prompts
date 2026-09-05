@@ -1,8 +1,7 @@
 ---
 name: implement_coordinated
-description: Coordinate task implementation using sequential worker agents with fresh context
+description: Implement a project's tasks.md by coordinating fresh-context worker agents (one per task, model chosen per task), verifying each with a task-verifier, and escalating verified failures. Use when the user asks to implement or execute a phase with workers or coordination, wants the main context kept clean, or the phase has many independent tasks. Takes the project directory and a phase number or continue.
 argument-hint: [project-directory] [phase-number|continue]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

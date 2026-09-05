@@ -1,8 +1,7 @@
 ---
 name: create_design
-description: Create architectural design decisions based on validated research
+description: Write docs/plans/<project>/design.md: WHAT to build and WHY — decisions, rationale, scope, success criteria, risks — from validated research. Use when research.md is complete and the user asks to design, decide the approach, or write the design doc, or to formalize a decision explore_design recorded. Does not plan implementation steps. Takes the project directory.
 argument-hint: [project-directory]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 
