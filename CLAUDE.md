@@ -212,7 +212,7 @@ bd close <id>         # Complete work
 
 ### Session Protocol
 
-See [AGENTS.md](AGENTS.md) for the full session close protocol. Key points:
+See the Session Completion section at the end of this file for the full session close protocol. Key points:
 
 1. **Before ending**: Close completed issues with `bd close`
 2. **Persist**: beads auto-flushes `.beads/issues.jsonl` — commit `.beads/` (git mode)
