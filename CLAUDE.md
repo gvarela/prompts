@@ -207,7 +207,7 @@ bd ready              # Find available work (no blockers)
 bd show <id>          # View issue details
 bd update <id> --claim  # Claim work
 bd close <id>         # Complete work
-# beads auto-flushes .beads/issues.jsonl; commit .beads/ at session end (git mode)
+# beads state is local-only: .beads/ is gitignored (stealth mode); nothing to commit
 ```
 
 ### Session Protocol
@@ -215,8 +215,8 @@ bd close <id>         # Complete work
 See the Session Completion section at the end of this file for the full session close protocol. Key points:
 
 1. **Before ending**: Close completed issues with `bd close`
-2. **Persist**: beads auto-flushes `.beads/issues.jsonl` — commit `.beads/` (git mode)
-3. **Push**: Commit and push to remote
+2. **Persist**: nothing — the embedded Dolt database under `.beads/` is local-only and gitignored; there is no Dolt remote and no JSONL export to commit
+3. **Push**: Commit and push the code and docs
 
 ### Integration with wb Commands
 
@@ -255,7 +255,6 @@ bd close <id>         # Complete work
 
    ```bash
    git pull --rebase
-   bd dolt push
    git push
    git status  # MUST show "up to date with origin"
    ```
