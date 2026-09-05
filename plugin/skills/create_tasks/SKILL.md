@@ -24,6 +24,23 @@ Supporting files in this directory (read each when its step directs you to — n
 - [templates.md](templates.md) — output document skeletons (tasks.md template, beads tracking blocks)
 - [examples.md](examples.md) — illustrative bd command examples for Step 5
 
+## Model Self-Check (do this FIRST)
+
+The task bodies, phase boundaries, and dependency graph this skill writes are consumed by every worker, verifier, and checkpoint downstream — decomposition quality sets the ceiling for cheaper models. **Recommended: Fable at high effort. Minimum comfortable: Opus.**
+
+Check which model this session is running. If it is below Opus, surface this:
+
+```
+⚠️ Model check: this session is running [model]. create_tasks writes the
+specs that cheap workers execute — Fable is recommended (Opus as fallback
+under usage limits). On lighter models, task bodies tend to be less
+specific and dependency graphs tend to chain instead of branch.
+
+Continue on [model], or restart this stage in a stronger session?
+```
+
+Do NOT block — if the user chooses to continue, proceed.
+
 ## Initial Response
 
 When invoked, check for arguments:

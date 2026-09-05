@@ -69,9 +69,9 @@ The stage skills run in whatever session model you start; agents they spawn pick
 | create_research / create_product_research | Sonnet (high effort) | Synthesis of subagent reports |
 | explore_design | **Fable** (Opus fallback) | Divergent, judgment-dense discussion — the skill self-checks and warns on lighter models |
 | create_design | Opus; Sonnet is fine when formalizing a recorded decision | Decision-making vs. documentation |
-| create_tasks | Opus | Decomposition quality determines how well cheap workers perform |
-| implement_tasks | Sonnet (xhigh effort) | The session does the coding itself |
-| implement_coordinated | Opus | Coordinator judges tiers and parses reports; workers do the coding |
+| create_tasks | **Fable** (high effort; Opus fallback) | Decomposition quality sets the ceiling for cheap workers; the skill self-checks |
+| implement_tasks | Sonnet (xhigh effort); Fable for cross-cutting phases (multi-file refactors, migrations) | The session does the coding itself |
+| implement_coordinated | Opus | Coordinator judges tiers and parses reports; workers do the coding; escalation workers: Fable at high |
 | validate_execution | Any (skill pins sonnet + high effort) | Pinned in skill frontmatter |
 
 These are defaults, not gates — usage limits and task size legitimately move you down a tier.

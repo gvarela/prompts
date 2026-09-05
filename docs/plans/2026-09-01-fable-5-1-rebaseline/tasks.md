@@ -530,6 +530,12 @@ bd blocked
 
 ### Implementation Notes
 
+- 2026-09-05: Feature branch `feat/fable-5-1-rebaseline` cut from origin/main (4995af9, v2.3.0) with the plan commit rebased onto it; AGENTS.md deletion kept through the rebase (upstream's Documentation Conventions bullets were already in CLAUDE.md, nothing to fold).
+- 2026-09-05: Task 1.3 dry run — `task-worker` spawned with `model: fable` on a no-op prompt reported "Claude Fable 5.1 (model ID: claude-fable-5-1)"; effort not visible to the agent. Design assumption 1 validated.
+- 2026-09-05: Task 1.5 — the create_handoff sentence was reworded to name `bd remember` so the task's own three-file grep holds; substance unchanged.
+- 2026-09-05: Lint baseline — `./plugin/scripts/lint --all` reports pre-existing findings in 58 files (MD024 duplicate headings, MD060 table style), none in files this phase touched beyond what HEAD already had. "Lint clean" for this project means no new findings per changed file, checked against HEAD.
+- 2026-09-05: Task 1.9 dry runs (headless `claude --plugin-dir plugin --model sonnet -p`, macOS has no `timeout`): `/wb:create_tasks` rendered "⚠️ Model check: this session is running Sonnet 5 …" before the argument prompt; `/wb:implement_coordinated` prompted for directory and phase as before. Headless invocation of a /wb: skill worked for both (relevant to open question prompts-3us).
+- 2026-09-05: Follow-up, not fixed (out of scope): `plugin/skills/implement_coordinated/reference.md` "Worker Model Selection" paragraph still describes opus as the default when unsure, contradicting the Sonnet-default tier rule in SKILL.md.
 - 2026-09-01: Plan drafted from session analysis (thoughts/), then re-run through create_tasks with three analysis agents. Corrections folded in: CHANGELOG.md and RELEASING.md exist at cf86f75; AGENTS.md had no model or command sections and was removed on 2026-09-05 (tasks 1.8 and 2.2 edit CLAUDE.md only); the documentarian half of R4 is already at target in create_research; the lint script exits 0 in every mode.
 
 ---
