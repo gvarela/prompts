@@ -4,13 +4,13 @@ All notable changes to the wb plugin. Versions are release cuts — installers r
 
 ## [2.6.0] — 2026-09-05
 
-`update_status` and `create_handoff` become model-invocable. Asking in prose to reconcile a plan's status or to write a handoff now works; the stage commands stay user-only.
+Every wb workflow skill is now model-invocable. A prose request to plan, research, design, break down, implement, validate, sync status, or hand off is honored without a typed `/wb:` command; the slash commands still work as before.
 
 ### Changed
 
-- `update_status`: `disable-model-invocation` removed; description rewritten as trigger text. Since v2.3.0 it is the sole writer of tasks.md progress frontmatter, so a user-only flag meant no phase could reconcile its own status.
-- `create_handoff`: `disable-model-invocation` removed; description rewritten as trigger text. Side-effect-light (writes one handoff document) with no ordering constraint.
-- `CLAUDE.md` and `docs/claude-code-skills-guide.md` state the split: stage commands that spawn agents, create beads issues, and stop at checkpoints remain user-only.
+- `disable-model-invocation` removed from all workflow skills except the deprecated `create_execution` alias. Descriptions rewritten as trigger text (what the skill does, when to use it, what it takes) since the model now loads them. Each skill's Initial Response still gates on its arguments, and checkpoints still stop for a human.
+- `update_status` had been the sole writer of tasks.md progress frontmatter since v2.3.0 while user-only, so no phase could reconcile its own status; that is now possible.
+- `CLAUDE.md` and `docs/claude-code-skills-guide.md` record the decision.
 
 ## [2.5.0] — 2026-09-05
 
