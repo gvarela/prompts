@@ -140,10 +140,10 @@ If any `bd` command fails:
 When modifying commands, maintain these patterns:
 
 ```markdown
-⛔ BARRIER 1: After file reading - full context required
-⛔ BARRIER 2: After agent spawning - wait for ALL
-⛔ BARRIER 3: Before writing - no placeholders allowed
-⛔ CHECKPOINT: Between phases - human verification required
+⛔ BARRIER 1: full context read — analysis on partial context produces placeholders
+⛔ BARRIER 2: every spawned agent has returned — synthesis on a partial set misses what the missing report would have changed
+⛔ BARRIER 3: no placeholder values — a placeholder that ships becomes a task nobody can execute
+⛔ CHECKPOINT: human verification between phases — the next phase builds on what a human has accepted
 ```
 
 ### Frontmatter Standards
@@ -172,12 +172,12 @@ Commands support model hints when spawning agents. Pay for judgment, not through
 When creating or modifying commands:
 
 1. Follow existing command patterns
-2. Include all three barriers and checkpoints
-3. Use "think deeply" directives at critical decision points
+2. Mark each real synchronization point once (⛔ BARRIER for "do not proceed until X", ⛔ CHECKPOINT for human confirmation) and state the reason in a plain sentence
+3. At decision points, say what the decision is about; do not instruct the model how hard to think
 4. Maintain the documentarian philosophy for research
 5. Separate automated from manual verification
-6. Always read files FULLY before processing
-7. Use parallel agents for efficiency but wait for ALL to complete
+6. Read files fully before processing
+7. Spawn independent agents in parallel; synthesize only after all have returned
 
 ## Best Practices
 

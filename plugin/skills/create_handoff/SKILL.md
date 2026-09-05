@@ -91,7 +91,7 @@ const tasksFile = `${projectDir}/tasks.md`;
    # If exists, read mockups/mockup-log.md for current version and pending feedback
    ```
 
-**think deeply about what context would be lost if starting fresh**
+**Identify what context would be lost if starting fresh**
 
 ### Step 2: Analyze Work State
 

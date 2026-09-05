@@ -104,7 +104,7 @@ const designFile = `${projectDir}/design.md`;
    - What constraints limit our options
    - What gaps might affect our design
 
-**think deeply about WHAT to build, not HOW to build it**
+**Decide WHAT to build, not HOW to build it**
 
 Synthesize the research into design constraints and opportunities.
 Remember: You are deciding WHAT and WHY, not HOW.
@@ -123,7 +123,7 @@ Spawn the three agents concurrently using the prompts in [sub-agent-prompts.md](
 
 ### Step 3: Problem Definition
 
-**think deeply about the actual problem, not the implementation**
+**Define the actual problem, not the implementation**
 
 Based on research and agent findings, clearly articulate:
 

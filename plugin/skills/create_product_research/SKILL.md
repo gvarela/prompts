@@ -86,7 +86,7 @@ This command can be used in two ways:
 
 ### Step 3: Decompose Research Question in Product Terms
 
-**ultrathink about what the SOFTWARE DOES from the user's perspective**
+**Describe what the SOFTWARE DOES from the user's perspective**
 
 1. **Break down the user's query into product areas**, not code modules:
    - What features are involved? What does the user see and do?
@@ -97,7 +97,7 @@ This command can be used in two ways:
 
 2. **REMEMBER: Document what IS, not what SHOULD BE**
 
-3. **ultrathink about:**
+3. **Work out:**
    - The user-visible surface of this feature — screens, APIs, messages, states
    - How this feature connects to adjacent features the user also touches
    - What a PM needs to know to make decisions about this area
@@ -167,7 +167,7 @@ Spawn all agents concurrently for efficiency. Each returns a report; none write 
 
 ### Step 5: Synthesize Findings into Three Layers
 
-**ultrathink about documenting ONLY what EXISTS, in product language**
+**Document ONLY what EXISTS, in product language**
 
 **IMPORTANT**: Wait for ALL sub-agent tasks to complete before proceeding
 

@@ -349,6 +349,8 @@ Stub hook printing a marker; verify it displays at session end. **Fallback**: St
 
 ## Phase 4: Evidence-Gated Trims
 
+> Superseded 2026-09-05: this phase runs as Phase 2 of [../2026-09-01-fable-5-1-rebaseline/tasks.md](../2026-09-01-fable-5-1-rebaseline/tasks.md) (milestone prompts-3cc). The beads IDs below no longer resolve.
+
 ### Objective
 
 Apply the Rev 2-revised R1-R4 trims only where behavioral parity is demonstrated; skipping any trim is an acceptable outcome and gets recorded, not retried.

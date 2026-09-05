@@ -50,8 +50,6 @@ const ticketRef = $3 || null;  // Third argument (optional)
 
 ### Step 2: Gather Metadata
 
-**think deeply**
-
 Collect system metadata for proper tracking:
 
 ```bash

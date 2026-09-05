@@ -121,7 +121,7 @@ const tasksFile = `${projectDir}/tasks.md`;
    - Count completed vs remaining tasks
    - Locate the next unchecked task
 
-**think deeply about implementing ONLY what's specified**
+**Implement ONLY what's specified**
 
 After reading all documentation, synthesize:
 

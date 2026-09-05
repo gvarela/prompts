@@ -140,7 +140,7 @@ const files = {
 
 3. **Parse frontmatter** from each file
 
-**think deeply about what you're seeing**
+**Assess what you're seeing**
 
 ### Step 2: Validate Beads State
 

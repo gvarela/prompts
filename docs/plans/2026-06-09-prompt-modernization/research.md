@@ -171,3 +171,5 @@ Project closes at Phase 3 + release; Phase 4 trims deferred to a successor proje
 | R1 (budget keywords), R4 (strategic placement) | DEFERRED to successor — pending harness Tier 3 behavioral evidence (prompts-41c/7jx/9wg/pnr deferred in beads) |
 | R3 (barrier formatting) | DEFERRED, still downgraded — decide on parity evidence or skip |
 | R15, R16 (preprocessing, named args) | PARKED — open decision prompts-s6c, nothing blocked |
+
+Successor (2026-09-05): the deferred R1/R3/R4 trims run as Phase 2 of [../2026-09-01-fable-5-1-rebaseline/](../2026-09-01-fable-5-1-rebaseline/) — milestone prompts-3cc; tasks prompts-6di (CLAUDE.md root), prompts-3d4 (blind trials), prompts-avl (R1), prompts-431 (R3), prompts-y7t (R4), prompts-4yx (disposition). The original prompts-41c/7jx/9wg/pnr/m7o/ogp IDs no longer resolve after the dolt migration.
