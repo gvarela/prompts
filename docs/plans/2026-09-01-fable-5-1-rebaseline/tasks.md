@@ -2,8 +2,8 @@
 project: fable-5-1-rebaseline
 ticket: prompts-678
 created: 2026-09-01
-status: not-started
-last_updated: 2026-09-01
+status: complete
+last_updated: 2026-09-05
 git_commit: cf86f75
 git_branch: dev
 repository: workbench
@@ -538,6 +538,7 @@ bd blocked
 - 2026-09-05: Task 1.10 — CHANGELOG 2.4.0 entry written, both manifests bumped to 2.4.0, branch pushed, draft PR #20 opened (https://github.com/gvarela/workbench/pull/20). Merge is the Phase 1 checkpoint confirmation; the task and milestone close on merge. CHANGELOG's MD024 findings rise by the two subheadings every entry repeats — same pattern as prior releases.
 - 2026-09-05: Phase 2 dispositions (trials in trials/2026-09-05-blind-trials.md, 36 runs, Sonnet): **R1 APPLIED** (21 sites, no trial needed). **R3 SKIPPED** — barrier trap: baseline WAIT 0/3, trimmed 1/3; both wordings synthesized on a plausible partial report, so the siren volume is not what holds the barrier. **R4 scope half SKIPPED** — trap: bug kept 3/3 under both wordings, surfaced 3/3 baseline vs 2/3 trimmed; surfacing was an aside after "None" in every run, never a listed issue. **R4 documentarian half ALREADY SATISFIED** by the June relocations. No skill file changed for R3 or R4.
 - 2026-09-05: CLAUDE.md root rewritten (2.2) before R1 landed; deferred Phase 4 record in prompt-modernization now points here (2.1).
+- 2026-09-05: Phase 3 — v2.5.0 cut merged (PR #22). Epic prompts-678 closed. Pending decisions filed as prompts-4cn (judgment-level de-prescription successor) and prompts-yfh (Sonnet worker effort default); related follow-ups filed this session: prompts-w9b (disable-model-invocation), prompts-h7c (implement rename), prompts-9l1 (goal-to-design cascade). `current_phase`/`completed_tasks` left for `/wb:update_status` (sole writer).
 - 2026-09-05: Follow-up, not fixed (out of scope): `plugin/skills/implement_coordinated/reference.md` "Worker Model Selection" paragraph still describes opus as the default when unsure, contradicting the Sonnet-default tier rule in SKILL.md.
 - 2026-09-01: Plan drafted from session analysis (thoughts/), then re-run through create_tasks with three analysis agents. Corrections folded in: CHANGELOG.md and RELEASING.md exist at cf86f75; AGENTS.md had no model or command sections and was removed on 2026-09-05 (tasks 1.8 and 2.2 edit CLAUDE.md only); the documentarian half of R4 is already at target in create_research; the lint script exits 0 in every mode.
 
