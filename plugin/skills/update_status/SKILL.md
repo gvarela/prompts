@@ -1,8 +1,7 @@
 ---
 name: update_status
-description: Update status across all project documentation files based on progress
+description: Reconcile a wb plan's documentation status from beads — the sole writer of tasks.md frontmatter progress fields (status, current_phase, completed_tasks) and the status lines in research.md and design.md. Use when a phase or task set completes, when asked to update, sync, or reconcile plan status or progress, before a handoff, or when a plan's frontmatter looks stale against bd state. Takes the project directory under docs/plans/.
 argument-hint: [project-directory]
-disable-model-invocation: true
 allowed-tools: Read
 ---
 

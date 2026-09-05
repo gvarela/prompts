@@ -307,7 +307,7 @@ Deterministic automation on events?  → hook
 
 The wb plugin migrated to the canonical layout in v2.0.0: all former `commands/*.md` files now live at `skills/<name>/SKILL.md`, with `disable-model-invocation: true` on workflow steps and `user-invocable: false` on background-discipline skills. Remaining candidates:
 
-1. **Keep the explicit `/wb:*` workflow**, but the old rationale ("commands are user-invoked, skills are not") is obsolete. The modern equivalent of that intent is `disable-model-invocation: true`, which also keeps all 14 command descriptions out of baseline context.
+1. **Keep the explicit `/wb:*` workflow**, but the old rationale ("commands are user-invoked, skills are not") is obsolete. The modern equivalent of that intent is `disable-model-invocation: true`, which also keeps the stage-command descriptions out of baseline context. Since v2.6.0 two skills drop the flag: `update_status` (the sole writer of plan-doc progress fields — a phase cannot close itself if only a human can run it) and `create_handoff` (side-effect-light, no ordering constraint). Their descriptions are written as trigger text (what + when) because the model now reads them; the stage commands that spawn agents, create beads issues, and stop at checkpoints stay user-only.
 2. **The wb skills (tdd-discipline, verification-before-completion, status-sync, etc.) are the "Claude-only" pattern** — they could declare `user-invocable: false` explicitly.
 3. **Candidate upgrades** (not yet applied):
    - `context: fork` for research-heavy commands (`create_research`, `create_product_research`)
