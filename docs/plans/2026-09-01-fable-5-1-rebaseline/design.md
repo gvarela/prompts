@@ -2,10 +2,10 @@
 project: fable-5-1-rebaseline
 ticket: prompts-678
 created: 2026-09-01
-status: approved
-last_updated: 2026-09-01
-git_commit: cf86f75
-git_branch: dev
+status: complete
+last_updated: 2026-09-05
+git_commit: 70c50bd
+git_branch: main
 repository: workbench
 designer: gabe@vare.la
 depends_on: research.md

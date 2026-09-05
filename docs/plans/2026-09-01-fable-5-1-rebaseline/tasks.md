@@ -4,13 +4,13 @@ ticket: prompts-678
 created: 2026-09-01
 status: complete
 last_updated: 2026-09-05
-git_commit: cf86f75
-git_branch: dev
+git_commit: 70c50bd
+git_branch: main
 repository: workbench
 assignee: gabe@vare.la
-current_phase: 1
+current_phase: 3
 total_tasks: 20
-completed_tasks: 0
+completed_tasks: 20
 depends_on: [research.md, design.md]
 beads_epic: prompts-678
 beads_phases:
@@ -539,6 +539,7 @@ bd blocked
 - 2026-09-05: Phase 2 dispositions (trials in trials/2026-09-05-blind-trials.md, 36 runs, Sonnet): **R1 APPLIED** (21 sites, no trial needed). **R3 SKIPPED** — barrier trap: baseline WAIT 0/3, trimmed 1/3; both wordings synthesized on a plausible partial report, so the siren volume is not what holds the barrier. **R4 scope half SKIPPED** — trap: bug kept 3/3 under both wordings, surfaced 3/3 baseline vs 2/3 trimmed; surfacing was an aside after "None" in every run, never a listed issue. **R4 documentarian half ALREADY SATISFIED** by the June relocations. No skill file changed for R3 or R4.
 - 2026-09-05: CLAUDE.md root rewritten (2.2) before R1 landed; deferred Phase 4 record in prompt-modernization now points here (2.1).
 - 2026-09-05: Phase 3 — v2.5.0 cut merged (PR #22). Epic prompts-678 closed. Pending decisions filed as prompts-4cn (judgment-level de-prescription successor) and prompts-yfh (Sonnet worker effort default); related follow-ups filed this session: prompts-w9b (disable-model-invocation), prompts-h7c (implement rename), prompts-9l1 (goal-to-design cascade). `current_phase`/`completed_tasks` left for `/wb:update_status` (sole writer).
+- 2026-09-05: Status reconciled by update_status (model-invoked): tasks.md phase 3, 20/20 tasks complete; design.md approved → complete; git metadata refreshed to 70c50bd.
 - 2026-09-05: Follow-up, not fixed (out of scope): `plugin/skills/implement_coordinated/reference.md` "Worker Model Selection" paragraph still describes opus as the default when unsure, contradicting the Sonnet-default tier rule in SKILL.md.
 - 2026-09-01: Plan drafted from session analysis (thoughts/), then re-run through create_tasks with three analysis agents. Corrections folded in: CHANGELOG.md and RELEASING.md exist at cf86f75; AGENTS.md had no model or command sections and was removed on 2026-09-05 (tasks 1.8 and 2.2 edit CLAUDE.md only); the documentarian half of R4 is already at target in create_research; the lint script exits 0 in every mode.
 
