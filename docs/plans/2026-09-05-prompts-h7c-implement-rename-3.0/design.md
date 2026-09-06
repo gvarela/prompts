@@ -120,9 +120,9 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 
 ### D12: Three persistence tiers replace the two-mode model
 
-- Decision: the reference doc describes persistence as tiers, not modes: the local database always; a Dolt remote (`bd dolt push` / `pull`) or `bd backup` for cross-machine continuity; JSONL export for viewers and interchange only. Every skill step that today branches on `$BEADS_MODE` to commit `.beads/` becomes one question, whether a remote or backup is configured, and one action, `bd dolt push` or `bd backup sync`, else nothing. The commit-`.beads/` instruction is removed from every skill, the help skill's "Beads + Git Workflow" block, and the SessionEnd drift hook, whose reminder becomes "remote configured, push before ending" or silence. The SessionStart hook keeps exporting `BEADS_MODE` (stealth or git) because validate_project uses it; its git value is redocumented as a misconfiguration to warn about (the Dolt directory is tracked), not a mode to support.
-- Rationale: this is beads' documented model verbatim (research.md §13). Keeping the env var avoids a second contract change in the same release; changing its meaning is enough.
-- Trade-off: installers who did commit `.beads/` need a migration note. The CHANGELOG's Migration section tells them to stop committing it, exclude it, and set up `bd backup` if they need continuity.
+- Decision: the reference doc describes persistence as tiers, not modes: the local database always; a Dolt remote (`bd dolt push` / `pull`) or `bd backup` for cross-machine continuity; JSONL export for viewers and interchange only. Every skill step that today branches on `$BEADS_MODE` to commit `.beads/` becomes one question, whether a remote or backup is configured, and one action, `bd dolt push` or `bd backup sync`, else nothing. The commit-`.beads/` instruction is removed from every skill, the help skill's "Beads + Git Workflow" block, and the SessionEnd drift hook, whose reminder becomes "remote configured, push before ending" or silence. The `BEADS_MODE` variable and the SessionStart hook that sets it are removed: every consumer is the commit branch this decision deletes, a pointer to it, the informational `mode:` field in the coordinated worker's context package, or validate_project's mismatch check, which already runs the `git check-ignore` predicate itself. validate_project keeps one check, run directly: warn when `.beads/` is neither excluded nor ignored, because the Dolt directory is never meant to be tracked. The manifest's SessionStart entry for the hook goes with it; the compaction-recovery entry stays.
+- Rationale: this is beads' documented model verbatim (research.md §13). A major is where contract changes batch; a variable kept only so that its `git` value can mean "misconfigured" would be the drift carried forward, not avoided.
+- Trade-off: installers who did commit `.beads/` need a migration note. The CHANGELOG's Migration section tells them to stop committing it, exclude it, and set up `bd backup` if they need continuity. Any installer's local settings that reference `BEADS_MODE` stop resolving; the plugin never documented it as user-facing, and the Breaking section names it.
 
 ### D13: Handoffs say what is portable
 
@@ -152,13 +152,12 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - D6 through D8: the three ride-along corrections
 - D9: the RELEASING.md amendment, including the one-PR-per-plan rule
 - D10: the 3.0.0 cut and tag
-- D11 through D16: the beads-model realignment across the reference docs, the mode-conditional steps in every skill, both hooks, validate_project, CLAUDE.md's protocol, and a CHANGELOG migration note for installers who committed `.beads/`
+- D11 through D16: the beads-model realignment across the reference docs, the mode-conditional steps in every skill, removal of the SessionStart mode hook and its manifest entry, the SessionEnd drift hook's new behavior, validate_project, CLAUDE.md's protocol, and a CHANGELOG migration note for installers who committed `.beads/` or referenced `BEADS_MODE`
 
 ### Out of Scope
 
 - Configuring a Dolt remote or backup for this repository (Gabe's 2026-09-05 decision: local is fine)
 - Supporting the contributor-role wizard or `~/.beads-planning` routing in any skill beyond naming it in the setup decision
-- Renaming or removing the `BEADS_MODE` environment variable
 
 - Backfilling tags for 2.2.1 through 2.6.0 (commits identified in research.md §10; can be done by hand at any time)
 - Fixing the pre-existing lint backlog or changing lint rules
@@ -180,7 +179,7 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - [ ] lint exits 1 on a file with a markdownlint error and 0 on a clean file, in each mode
 - [ ] reference.md points at the SKILL.md tier list instead of restating it
 - [ ] RELEASING.md carries the bundling rule and the one-PR-per-plan rule; CHANGELOG 3.0.0 has Breaking and Migration sections; manifests match; `v3.0.0` tag exists
-- [ ] `grep -rn "git add .beads" plugin CLAUDE.md docs --include=*.md --include=*.sh | grep -v docs/plans` → none
+- [ ] `grep -rn "git add .beads" plugin CLAUDE.md docs | grep -v docs/plans` → none; `grep -rn "BEADS_MODE" plugin CLAUDE.md docs | grep -v docs/plans` → none; `plugin/hooks/setup-beads-mode.sh` absent and unreferenced in `plugin.json`
 - [ ] beads-mode.md has sections for the setup decision, persistence tiers, worktrees, the sanity check, and hygiene; beads-not-initialized.md has the wrong-database case
 - [ ] Every stage that reads plan beads IDs runs the sanity check and stops on a missing epic (verified by pointing a headless run at a plan whose epic does not exist)
 
