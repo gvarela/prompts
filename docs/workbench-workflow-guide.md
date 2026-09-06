@@ -24,10 +24,10 @@ cd prompts
 # Install globally for Claude Code
 ./scripts/install-commands --claude
 
-# Initialize beads in your project (choose mode)
+# Initialize beads in your project
 cd ~/your-project
-bd init --stealth   # For work repos (beads not committed)
-bd init             # For personal projects (beads in git)
+bd init --stealth   # any repository with collaborators who do not use beads (writes the shared .git/info/exclude)
+bd init             # only a repository you own outright; .beads/ is still excluded, never committed
 ```
 
 ### Basic Workflow
@@ -298,7 +298,7 @@ bd show [task-id]
 → Full description, dependencies, context
 
 # 3. Claim task
-bd update [task-id] --status in_progress
+bd update [task-id] --claim
 
 # 4. TDD Cycle
 # Red: Write failing test
@@ -417,35 +417,19 @@ Restores:
 
 ### Overview
 
-Beads provides persistent, git-backed task tracking that survives context compaction and session changes.
+Beads provides persistent task tracking in a local Dolt database that survives context compaction and session changes.
 
-### Beads Modes
+### Beads persistence
 
-**Stealth Mode** (`.beads/` not committed):
+Three tiers, not modes (the full statement is [beads-mode.md](../plugin/docs/reference/beads-mode.md)):
 
-- `.beads/` added to `.git/info/exclude`
-- Beads state stays local
-- Good for work repos where you don't want to expose task tracking
-- beads auto-flushes `.beads/issues.jsonl` locally
-- State doesn't persist across machines
+1. **Local**: the embedded Dolt database under `.beads/` is the source of truth and is never committed
+2. **Cross-machine**: a Dolt remote (`bd dolt push` / `bd dolt pull`) or `bd backup` (`bd backup init <url>`, `bd backup sync`)
+3. **Interchange**: `bd export` writes `issues.jsonl` for viewers only (`export.auto` is off by default)
 
-**Git Mode** (`.beads/` tracked in git):
+**Setup rule**: `bd init --stealth` in any repository with collaborators who do not use beads; it writes the shared `.git/info/exclude`, so nothing appears in the team's tree on any branch or worktree. Plain `bd init` only for a repository you own outright, still with `.beads/` excluded.
 
-- `.beads/` committed like normal code
-- Beads state persists across machines
-- Good for personal projects
-- commit `.beads/` to push state (issues.jsonl is auto-flushed)
-- Full team collaboration on task state
-
-**Auto-detection**: SessionStart hook (`.claude/hooks/setup-beads-mode.sh`) checks:
-
-```bash
-if git check-ignore -q .beads/; then
-  export BEADS_MODE=stealth
-else
-  export BEADS_MODE=git
-fi
-```
+**Session start**: every stage that reads a plan's beads IDs runs `bd context`, `bd show <beads_epic>`, and `bd stats` first and stops if the epic does not resolve (a missing `.beads/metadata.json` opens an empty default database silently).
 
 ### Command-Specific Usage
 
@@ -487,16 +471,12 @@ bd create "Implement JWT middleware" \
 bd ready
 
 # Claim it
-bd update [task-id] --status in_progress
+bd update [task-id] --claim
 
 # Complete it
 bd close [task-id] --reason "Done"
 
-# beads auto-flushes .beads/issues.jsonl after mutations
-
-# Git mode: commit beads state
-git add .beads/
-git commit -m "Update task state"
+# end of session: bd dolt push only if a Dolt remote is configured
 ```
 
 **`mockup-iteration` skill**:
@@ -517,21 +497,20 @@ bd list --status=open | grep -E "UI Q:|UI Assumption:"
 # 1. Close completed tasks
 bd close [task-id] --reason "..."
 
-# 2. Beads state is auto-flushed to .beads/issues.jsonl
+# 2. Hygiene (bd doctor is server-mode only in 1.1.0; embedded mode: run these two)
+bd stale
+bd orphans
 
-# 3. Git mode: commit and push
-git add .beads/
-git commit -m "Update task state: [summary]"
-git push
-
-# 4. Stealth mode: just sync (stays local)
+# 3. Persist only if a Dolt remote is configured
+bd dolt push
 ```
 
 **At session start**:
 
 ```bash
-# 1. Git mode: pull latest
-git pull
+# 1. Sanity check: the right database is open
+bd context
+bd show <beads_epic>
 
 # 2. Check available work
 bd ready
@@ -841,12 +820,12 @@ Tasks come ONLY from plans.
 **At session end**:
 
 - Close completed beads issues
-- Git mode: commit .beads/ (issues.jsonl is auto-flushed)
+- Run `bd doctor`; push to the Dolt remote only if one is configured
 - Create handoff if needed
 
 **At session start**:
 
-- Git mode: `git pull`
+- Run the sanity check: `bd context`, `bd show <beads_epic>`, `bd stats`
 - Check `bd ready`
 - Review `bd show [id]`
 - Resume from handoff if exists
@@ -858,7 +837,7 @@ Tasks come ONLY from plans.
 **"beads not initialized"**:
 
 ```bash
-bd init --stealth   # or bd init
+bd init --stealth   # (bd init only for a repository you own outright)
 ```
 
 **"database locked"**:

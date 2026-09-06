@@ -32,8 +32,7 @@ const contextPackage = {
   // From tasks.md frontmatter
   beads: {
     epicId: "beads-xxx",
-    phaseMilestoneId: "beads-yyy",
-    mode: "$BEADS_MODE"
+    phaseMilestoneId: "beads-yyy"
   },
 
   // Test commands
@@ -57,7 +56,7 @@ const contextPackage = {
 
 ## Worker Model Selection (Step 5)
 
-Retired: the `determineModel()` keyword-regex spec was replaced by coordinator judgment (2026-06, prompts-0my) — the coordinator reads the task content and picks haiku (mechanical config/docs/renames), sonnet (standard implementation), or opus (bugs/refactors/architecture; default when unsure), passing the choice as a per-spawn model override on the `task-worker` agent.
+The `determineModel()` keyword-regex spec was retired in favor of coordinator judgment (2026-06, prompts-0my). The tier rule lives in one place, SKILL.md Step 5 item 4 ("Determine model"), and is not restated here; the choice is passed as a per-spawn model override on the `task-worker` agent.
 
 ## Worker Failure Playbook (Step 6)
 

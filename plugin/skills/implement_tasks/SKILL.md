@@ -143,9 +143,22 @@ bd info    # Check beads is initialized
 
 **If beads is not initialized or has errors**: follow [docs/reference/beads-not-initialized.md](../../docs/reference/beads-not-initialized.md) — present its standard message and stop until the user initializes beads.
 
-#### Detect Beads Mode
+#### Beads Persistence
 
-Mode is already detected: read `$BEADS_MODE` (set by the SessionStart hook). For stealth vs git semantics, see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md).
+Persistence: see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md); nothing to detect. The local database is the source of truth; a Dolt remote or `bd backup` carries it across machines.
+
+#### Session-Start Sanity Check
+
+Read `beads_epic` from tasks.md frontmatter. If it is present, confirm the right database is open before doing any work (see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
+
+```bash
+bd context            # resolved database name and beads dir
+bd show [epic-id]     # the plan's epic; must resolve
+bd stats              # total issue count
+bd version            # requires bd 1.1.0 or later
+```
+
+If `bd show [epic-id]` fails, present the Wrong database case from [docs/reference/beads-not-initialized.md](../../docs/reference/beads-not-initialized.md) and stop. If the frontmatter has no `beads_epic`, note "plan predates beads tracking, sanity check skipped" and continue.
 
 #### Verify Beads Tracking Configuration
 
@@ -394,19 +407,17 @@ After phase completion and verification:
    bd remember --key <project>-<slug> "<one sentence: the fact, then why it matters>"
    ```
 
-   Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating.
+   Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating. Memories are workspace-wide, shared across every plan in this repository. They are excluded from `bd export` by default, so only a Dolt remote or `bd backup` carries them to another machine.
 
-5. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
+5. **Persist beads state** (one question; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
 
    ```bash
-   # In git mode, commit the beads state
-   if [ "$BEADS_MODE" != "stealth" ]; then
-     git add .beads/
-     git commit -m "Update beads state after Phase [N]"
-   fi
+   # Persist beads state (see plugin/docs/reference/beads-mode.md)
+   if bd config get sync.remote 2>/dev/null | grep -qv "not set"; then bd dolt push; fi
+   if [ "$(bd config get backup.enabled 2>/dev/null)" = "true" ]; then bd backup sync; fi
    ```
 
-   Mode semantics: [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md).
+   Nothing else: the Dolt directory under `.beads/` is never committed.
 
 ## Handling Mismatches
 
@@ -527,7 +538,7 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 9. Run verification at phase boundaries
 10. If phase milestone complete: close it with `bd close [milestone-id]`
 11. Add implementation notes to tasks.md if needed
-12. Commit .beads/ (git mode) to persist state — issues.jsonl is auto-flushed
+12. Push to the Dolt remote if one is configured (see docs/reference/beads-mode.md)
 ```
 
 ## Error Handling
@@ -563,7 +574,7 @@ If automated verification fails after implementation:
 - ✅ Track modified files for easier testing
 - ✅ Generate phase-specific test commands
 - ✅ Document any deviations in Implementation Notes
-- ✅ Commit .beads/ at session end (git mode) — beads auto-flushes issues.jsonl
+- ✅ Push to the Dolt remote if one is configured, at session end
 
 ### DON'T (ABSOLUTELY FORBIDDEN)
 

@@ -107,8 +107,9 @@ Background capabilities that Claude automatically invokes:
 
 ### Hooks
 
-- **SessionStart** - Auto-detects beads mode (stealth/git)
-- **SessionEnd** - Reminds about uncommitted beads state (silent when clean)
+- **SessionStart** - `wb-prime.sh`: orientation on startup, resume, clear, and fork (stage chain, plan layout, the beads sanity check, active plans); recovery text on compact. Override with `.claude/wb/PRIME.md`; print the default with `hooks/wb-prime.sh --export`
+- **PreCompact** - `wb-prime.sh` again, so the recovery text is present when the summary is written
+- **SessionEnd** - Reminds to `bd dolt push` only when a Dolt remote is configured (silent otherwise)
 - **PostToolUse** - Lints markdown files after Write/Edit operations
 
 ## Plugin Structure
@@ -129,14 +130,14 @@ workbench/
 
 ## Beads Integration
 
-Requires [beads](https://github.com/steveyegge/beads) for persistent task tracking:
+Requires [beads](https://github.com/steveyegge/beads) 1.1.0 or later for persistent task tracking:
 
 ```bash
-bd init --stealth   # Stealth: .beads/ not committed (work repos)
-bd init             # Git: .beads/ in git (personal projects)
+bd init --stealth   # any repository with collaborators who do not use beads (writes the shared .git/info/exclude)
+bd init             # only a repository you own outright; .beads/ is still excluded, never committed
 ```
 
-Commands create/track beads issues for phases, tasks, and UI questions. SessionStart hook detects mode automatically.
+Commands create and track beads issues for phases, tasks, and UI questions. The local Dolt database is the source of truth; a Dolt remote or `bd backup` carries it across machines. Setup rule, persistence tiers, worktrees, the session-start sanity check, and hygiene: `plugin/docs/reference/beads-mode.md`.
 
 ## Core Philosophy
 
