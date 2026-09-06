@@ -1,6 +1,6 @@
 ---
 name: help
-description: Quick reference for wb workflow commands and beads integration
+description: Reference for the wb workflow and, in a repository with an active plan, where you are and what's next: which documents exist and their status, epic and milestone state, open Q: and Decide: issues, what the next stage needs from you, and what the previous stage left undone. Use when the user asks where they are, what's next, what a stage needs, or how wb works. Takes an optional topic.
 argument-hint: [topic]
 ---
 
@@ -8,12 +8,42 @@ argument-hint: [topic]
 
 This document is a reference for both the user AND Claude. When invoked:
 
-1. **Read the topic** (if provided) - e.g., `/wb:help beads` means focus on beads section
-2. **Explain** the relevant commands, workflow, or concepts conversationally
-3. **Answer questions** - help the user understand how to use these tools effectively
-4. **Guide Claude too** - this reference helps Claude understand the workflow it should follow
+1. **Establish state** (the State section) - which case you are in, and the position report if there is an active plan
+2. **Read the topic** (if provided) - e.g., `/wb:help beads` means focus on beads section
+3. **Explain** the relevant commands, workflow, or concepts conversationally
+4. **Answer questions** - help the user understand how to use these tools effectively
+5. **Guide Claude too** - this reference helps Claude understand the workflow it should follow
 
 You are a helpful guide to this workflow system, not just dumping text.
+
+## State
+
+Run this first, before any topic. It decides which of three cases you are in.
+
+1. **Find active plans**: `ls -t docs/plans/*/tasks.md`; a plan is active when its tasks.md frontmatter `status:` is not `complete` (the same scan `hooks/wb-prime.sh` runs at session start). No `docs/plans` directory or no active plan: **case A**.
+2. **Pick the plan**: the one named in the request or the topic, else the newest active one; name the others in one line.
+3. **Read the evidence** for that plan (read each file fully; do not answer from memory):
+   - `README.md`: the `## Intent` section (Goal, "Success looks like" statements with any `→ PASS/FAIL/DEFERRED` suffix, Non-goals, Amendments). No `## Intent` section: **case B**. One present: **case C**.
+   - `research.md`, `design.md`, `tasks.md`: the frontmatter `status:` of each; research's `## Intent Coverage` lists; design's Success Metrics with their `(refines: ...)` markers and `Deferred:` line; tasks.md's `current_phase`, `completed_tasks`, `total_tasks`, and `beads_epic`.
+   - Beads, after the session-start sanity check from [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md) (`bd context`, `bd show <beads_epic>`, `bd stats`; stop with the Wrong database case if the epic does not resolve): `bd show <beads_epic>` for milestone state, and `bd list -n 0 --status=open | grep -E "Q:|Decide:|Validate:|UI Q:"` for open planning issues (count only titles that begin with the prefix).
+   - Structural checks (files present, frontmatter fields, beads IDs resolve): reuse the "Validation Checklist" section of [../validate_project/SKILL.md](../validate_project/SKILL.md); do not restate it here, and do not run the full validation unless asked.
+4. **Report**, in this order, before any requested topic:
+
+   ```
+   📍 Plan: docs/plans/<dir> (others active: <list or none>)
+   Documents: research.md <status>; design.md <status>; tasks.md <status>, phase <n>, <closed>/<total> tasks
+   Beads: epic <id> <open/closed>; milestones: <phase: state, ...>; open planning issues: <Q:/Decide:/Validate: titles, or none>
+   Next stage: /wb:<stage> — needs from you: <that stage's "You provide / You decide / You confirm" cells from the table below>
+   Left undone by the previous stage: <gaps, or none>
+   ```
+
+   The next stage is the first in the chain whose document is missing or whose status is not `complete` (research), `approved`/`implementing` (design), or whose phase milestone is open (implementation), then validation. Gaps come from the evidence: success statements research's Intent Coverage lists as not touched; statements with no `(refines:)` metric and no `Deferred:` entry; metrics that refine nothing; statements without a verdict suffix after validation ran; open `Q:` or `Decide:` issues; a milestone whose tasks are all closed but that is still open.
+5. **The three cases**:
+   - **Case A, no active plan**: print `No active plan here (no docs/plans, or every plan is complete).` and render the reference card (Topics and Command Workflow below, plus the requested topic).
+   - **Case B, active plan without an Intent section**: print the position block with `Left undone by the previous stage: not measurable without an Intent section (plan predates 3.0.0)`, then the requested topic.
+   - **Case C, active plan with an Intent section**: the full report, then the requested topic.
+
+**Routing rule**: a question about what the plugin or a command does (for example "what does wb do", "what does create_design do") renders the topic; in a repository with an active plan, prefix it with the one-line `📍 Plan:` position only, not the whole report. "Where am I", "what's next", "what does the next stage need", or a bare `/wb:help` in a repository with an active plan produce the full report.
 
 ## Topics
 
