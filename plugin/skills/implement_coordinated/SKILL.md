@@ -22,6 +22,8 @@ Supporting files in this directory (read each when its step directs you to — n
 
 ## Initial Response
 
+This stage needs from you: the phase to run, a go-ahead at each phase checkpoint, and a decision when a verified failure or a plan defect halts the phase.
+
 When invoked, check for arguments:
 
 1. **If directory and phase provided** (e.g., `/implement_coordinated docs/plans/2025-01-08-my-project/ 1`):

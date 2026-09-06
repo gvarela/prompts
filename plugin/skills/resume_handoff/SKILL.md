@@ -26,6 +26,8 @@ This command:
 
 ## Initial Response
 
+This stage needs from you: the handoff path, and confirmation before any backward step such as reopening closed work.
+
 When invoked, check for arguments:
 
 1. **If handoff path provided** (e.g., `/resume_handoff docs/plans/2025-01-08-auth/handoff-2025-01-08-14-30.md`):

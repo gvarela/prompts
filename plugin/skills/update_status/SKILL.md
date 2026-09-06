@@ -25,6 +25,8 @@ Supporting files in this directory (read each when its step directs you to — n
 
 ## Initial Response
 
+This stage needs from you: confirmation of the proposed transitions; a backward transition needs a reason.
+
 When invoked, check for arguments:
 
 1. **If directory provided** (e.g., `/wb:update_status docs/plans/2025-01-08-auth/`):

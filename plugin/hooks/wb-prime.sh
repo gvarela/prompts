@@ -28,8 +28,13 @@ Conventions:
   Checkpoints stop for a human between phases; never close a milestone without confirmation.
   Before working from a plan's beads IDs: bd context; bd show <beads_epic from tasks.md>; bd stats. Stop if the epic does not resolve.
 ORIENTATION
-  # map summary (Phase 3)
   cat <<'ORIENTATION'
+What each stage needs from you (long form: /wb:help):
+  create_research: the question, or confirm the one derived from the Goal
+  create_design: approve the approach and the refined metrics
+  create_tasks: confirm the phases and checkpoints
+  implementation: a go-ahead at each phase checkpoint
+  validate_execution: the manual checks only you can run
 Long form: /wb:help. Replace this text for a repository with .claude/wb/PRIME.md (print the default with hooks/wb-prime.sh --export).
 ORIENTATION
 }

@@ -11,6 +11,8 @@ Validates that a project's documentation structure follows the wb workflow corre
 
 ## Initial Response
 
+This stage needs from you: nothing up front; read the findings and choose which to fix.
+
 When invoked, check for arguments:
 
 1. **If directory provided** (e.g., `/wb:validate_project docs/plans/2025-01-08-my-project/`):

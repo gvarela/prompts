@@ -24,6 +24,8 @@ Handoff documents preserve:
 
 ## Initial Response
 
+This stage needs from you: the reason for handing off, and anything the next session must know that no document holds.
+
 When invoked, check for arguments:
 
 1. **If directory provided** (e.g., `/create_handoff docs/plans/2025-01-08-my-project/ "switching to opus for complex logic"`):

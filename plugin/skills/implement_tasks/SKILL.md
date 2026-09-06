@@ -13,6 +13,8 @@ Supporting file: [templates.md](templates.md) — output templates and the beads
 
 ## Initial Response
 
+This stage needs from you: the phase to run, and a go-ahead at each phase checkpoint.
+
 When invoked, check for arguments:
 
 1. **If directory and phase provided** (e.g., `/implement_tasks docs/plans/2025-01-08-my-project/ 1`):

@@ -60,6 +60,25 @@ You are a helpful guide to this workflow system, not just dumping text.
 finalize              → Compile requirements into design.md
 ```
 
+## What each stage needs from you
+
+One row per stage. "Did enough" names the evidence the stage leaves behind; `/wb:help` reads it when you ask where you are.
+
+| Stage | You provide | You decide | You confirm | How you know it did enough |
+| ----- | ----------- | ---------- | ----------- | -------------------------- |
+| `create_project` | the goal, what success looks like, non-goals (or prose that carries them); name, base directory, ticket | — | the intent as read back to you | README has an Intent section: a Goal, two to four success statements, non-goals; nothing was written before you confirmed |
+| `create_research` | the research question, or confirmation of the one derived from the Goal; files to read first | whether to explore design (findings show more than one viable approach) | — | research.md's Intent Coverage lists every success statement in exactly one of its two lists; findings carry file:line references |
+| `explore_design` | reactions to each direction as it is drafted | the direction, by explicit approval only | the framing of the decision space | a thoughts doc with a Synthesis section and a closed `Decide:` issue whose description starts with the Goal; a Goal change is a dated Amendments line in the README |
+| `create_design` | the approach, when no decision record exists | the approach; the refined metrics | the recorded decision, when one exists | every Intent statement is refined by a metric marked `(refines:)` or listed as deferred with a reason; a Goal or Non-goal change has a `Decide:` record and an Amendments line |
+| `create_tasks` | — | — | that the phases and checkpoints match how you want to review | tasks.md phases carry file:line targets and verification; the beads epic, milestones, and tasks exist and gate in order; Target State names the Intent-refining metrics |
+| `implement_coordinated` / `implement_tasks` | the phase to run | escalation after a verified failure; what to do at a plan-defect halt | the phase report at each checkpoint (your go-ahead) | every task in the phase is closed in beads, verified, one commit each; the milestone closes only on your go-ahead |
+| `validate_execution` | the manual checks only you can run | whether deviations stand | your reading of the verdict per statement | a report with a verdict per Intent statement, and the README statements carry `→ PASS`, `→ FAIL`, or `→ DEFERRED` with a date |
+| `update_status` | — | any backward transition, with a reason | the proposed transitions | frontmatter status, phase, and counts match beads |
+| `create_handoff` / `resume_handoff` | the reason for handing off; the handoff path when resuming | — | the resumption summary | the handoff carries decisions, discoveries, and next steps; resume ran the sanity check and `bd ready` shows the next task |
+| `validate_project` | — | which findings to fix | — | every checklist item reported with a fix for each finding |
+| `create_mockup` / mockup-iteration | the feature; keep, remove, and change feedback on each version | the open `UI Q:` questions | each version | `UI Q:` issues resolved before finalization; the mockup log records the decisions |
+| `create_product_research` | the product question, or confirmation of the one derived from the Goal | — | — | research.md in product language answering the question with user-visible behaviors and Intent Coverage |
+
 ## Beads Integration
 
 Beads tracks work across sessions. Required for this workflow.
