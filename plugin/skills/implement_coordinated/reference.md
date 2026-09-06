@@ -32,8 +32,7 @@ const contextPackage = {
   // From tasks.md frontmatter
   beads: {
     epicId: "beads-xxx",
-    phaseMilestoneId: "beads-yyy",
-    mode: "$BEADS_MODE"
+    phaseMilestoneId: "beads-yyy"
   },
 
   // Test commands

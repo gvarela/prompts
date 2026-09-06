@@ -155,9 +155,9 @@ bd info    # Check beads is working
 
 If beads is not initialized, prompt user: "Run `bd init` to initialize beads tracking for this project."
 
-#### 5a1. Note Beads Mode
+#### 5a1. Beads Persistence
 
-Mode is already detected: read `$BEADS_MODE` (set by the SessionStart hook). For stealth vs git semantics, see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md).
+Persistence: see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md); nothing to detect. The local database is the source of truth; a Dolt remote or `bd backup` carries it across machines.
 
 #### 5b. Create Epic for the Project
 

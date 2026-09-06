@@ -128,9 +128,9 @@ bd info    # Check beads is initialized
 
 **If beads is not initialized or has errors**: follow [docs/reference/beads-not-initialized.md](../../docs/reference/beads-not-initialized.md) — present its standard message and stop until the user initializes beads.
 
-#### Note Beads Mode
+#### Beads Persistence
 
-Mode is already detected: read `$BEADS_MODE` (set by the SessionStart hook). For stealth vs git semantics, see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md).
+Persistence: see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md); nothing to detect. The local database is the source of truth; a Dolt remote or `bd backup` carries it across machines.
 
 #### Verify Beads Tracking Configuration
 
@@ -368,17 +368,17 @@ After phase completion:
    bd remember --key <project>-<slug> "<one sentence: the fact, then why it matters>"
    ```
 
-   Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating.
+   Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating. Memories are workspace-wide, shared across every plan in this repository. They are excluded from `bd export` by default, so only a Dolt remote or `bd backup` carries them to another machine.
 
-5. **Persist beads state** (git mode needs `export.auto` on; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
+5. **Persist beads state** (one question; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
 
    ```bash
-   # In git mode, commit the beads state
-   if [ "$BEADS_MODE" != "stealth" ]; then
-     git add .beads/
-     git commit -m "Update beads state after Phase ${phase} (coordinated execution)"
-   fi
+   # Persist beads state (see plugin/docs/reference/beads-mode.md)
+   if bd config get sync.remote 2>/dev/null | grep -qv "not set"; then bd dolt push; fi
+   if [ "$(bd config get backup.enabled 2>/dev/null)" = "true" ]; then bd backup sync; fi
    ```
+
+   Nothing else: the Dolt directory under `.beads/` is never committed.
 
 ## Resume Logic
 
