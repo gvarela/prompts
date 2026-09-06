@@ -41,7 +41,7 @@ A missing `.beads/metadata.json` makes bd 1.1.0 open an empty default database n
 
 ## A bd command fails
 
-1. **Diagnose**: `bd info` (initialization), `bd context` (which database is open), `bd doctor` (installation health), `bd status` (overview)
+1. **Diagnose**: `bd info` (initialization), `bd context` (which database is open), `bd doctor` (installation health; server mode only in 1.1.0, a no-op in embedded mode), `bd status` (overview)
 2. **Report** the specific error to the user
 3. **Common fixes**: "issue not found" → `bd list -n 0` to find the right ID; "database locked" → wait and retry (parallel sessions share one embedded database)
 4. **Retry** the failed command after fixing

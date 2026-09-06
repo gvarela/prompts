@@ -215,7 +215,7 @@ bd close <id>         # Complete work
 
 See the Session Completion section at the end of this file for the full session close protocol. Key points:
 
-1. **Before ending**: run `bd doctor` and act on what it reports; close completed issues with `bd close`
+1. **Before ending**: run `bd doctor` where it is supported (server mode; in embedded mode it is a no-op in bd 1.1.0, so run `bd stale` and `bd orphans` instead) and act on what it reports; close completed issues with `bd close`
 2. **Persist**: one question — `bd config get sync.remote`; a configured remote means `bd dolt push`, otherwise nothing (this repository has none; see `plugin/docs/reference/beads-mode.md`)
 3. **Push**: Commit and push the code and docs
 

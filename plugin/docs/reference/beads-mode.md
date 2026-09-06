@@ -49,8 +49,7 @@ Why the check matters: a missing `.beads/metadata.json` makes bd open an empty d
 
 ## Hygiene
 
-- `bd doctor` at session close — checks the `.beads/` directory, database version and migrations, schema, file permissions, circular dependencies, git hooks, and metadata.json version tracking.
-- `bd doctor --check=conventions` before a PR — convention drift (lint warnings, stale issues, orphans) in one advisory pass. (`bd preflight` is beads' own contributor checklist for its Go repository, not a check on your workspace.)
+- `bd doctor` at session close — checks the `.beads/` directory, database version and migrations, schema, file permissions, circular dependencies, git hooks, and metadata.json version tracking. In bd 1.1.0 it runs only against a Dolt server (`bd init --server`); in the default embedded mode it prints a not-supported note and does nothing, so run the three commands below directly. (`bd preflight` is beads' own contributor checklist for its Go repository, not a check on your workspace.)
 - `bd stale` — issues not updated in 30 days (`--days` to change).
 - `bd orphans` — open or in-progress issues that commit messages already reference: work that landed but was never closed; `--fix` closes them with confirmation.
 - `bd lint` — open issues missing the sections their type expects (acceptance criteria for tasks, steps to reproduce for bugs).

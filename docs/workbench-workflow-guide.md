@@ -497,8 +497,9 @@ bd list --status=open | grep -E "UI Q:|UI Assumption:"
 # 1. Close completed tasks
 bd close [task-id] --reason "..."
 
-# 2. Hygiene
-bd doctor
+# 2. Hygiene (bd doctor is server-mode only in 1.1.0; embedded mode: run these two)
+bd stale
+bd orphans
 
 # 3. Persist only if a Dolt remote is configured
 bd dolt push
