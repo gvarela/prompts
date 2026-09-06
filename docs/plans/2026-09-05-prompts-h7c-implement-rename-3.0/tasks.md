@@ -546,6 +546,7 @@ bd blocked
 
 ### Implementation Notes
 
+- 2026-09-06: Phase 1 implemented by coordinated sonnet workers (six tasks, six verifier passes, one FAIL that was the coordinator's own tasks.md edit landing in the worker's diff; separated into its own commit). Discoveries: the pre-existing `lint --all` backlog is 27 files, not the ~58 the previous plan estimated; the lint-hook check mutates the malformed fixture because it runs `lint --fix`, so use the clean fixture for the hook test and recreate `bad.md` before each run; the PostToolUse hook normalizes table separator rows on any save (reduces MD060 findings, never adds); `help/SKILL.md:158` carried an "auto-imports" claim the site list missed, rewritten in task 1.3; `grep -c "Issues found in"` (without the ⚠ glyph) is the reliable count because ANSI codes sit between the glyph and the text. Headless `/wb:help` ran to completion with one skill event and no permission prompt.
 - 2026-09-06: Plan written from research.md and design.md with three analysis agents (dependency inventory, verification recipes, before-text). Corrections folded in: `implement` has four supporting files, so the alias carries four pointer files (design.md D2 said five, counting SKILL.md); CLAUDE.md has two name occurrences (lines 13, 86), not the 104 research §4 cited; the 67-line inventory separates dated narrative from current mentions per file.
 
 ---
