@@ -300,6 +300,28 @@ Rewrite the beads reference and playbook around beads' own model; remove every c
 - `plugin/hooks/wb-prime.sh` (new), `plugin/hooks/beads-drift-check.sh`, `plugin/hooks/compact-recovery.sh` (deleted), `plugin/hooks/setup-beads-mode.sh` (deleted), `plugin/.claude-plugin/plugin.json`
 - `CLAUDE.md`, `README.md`, `docs/commands-reference.md`, `docs/workbench-workflow-guide.md`, `CHANGELOG.md`
 
+#### 📝 Modified Files (Phase 2, as landed)
+
+Ten task commits, c472ce0 through 44581ea, 25 files, +380/−267. No test files (docs plugin).
+
+- `plugin/docs/reference/beads-mode.md` - rewritten: seven sections (Setup, Persistence, What a session does at close, Worktrees, Session-start sanity check, Hygiene, Memory)
+- `plugin/docs/reference/beads-not-initialized.md` - three cases (Beads not initialized, Wrong database, A bd command fails); bd 1.1.0 floor
+- `plugin/hooks/wb-prime.sh` - new; `plugin/hooks/compact-recovery.sh` and `plugin/hooks/setup-beads-mode.sh` - deleted; `plugin/hooks/beads-drift-check.sh` - remote-or-silence; `plugin/.claude-plugin/plugin.json` - SessionStart (wb-prime, no matcher), PreCompact (wb-prime), SessionEnd unchanged
+- `plugin/skills/implement_tasks/SKILL.md`, `plugin/skills/implement_coordinated/SKILL.md`, `plugin/skills/implement_coordinated/reference.md`, `plugin/skills/create_tasks/SKILL.md` - sweep A plus the sanity check
+- `plugin/skills/create_handoff/SKILL.md`, `plugin/skills/resume_handoff/SKILL.md`, `plugin/skills/update_status/SKILL.md`, `plugin/skills/status-sync/SKILL.md`, `plugin/skills/help/SKILL.md` - sweep B; resume_handoff and update_status also carry the sanity check
+- `plugin/skills/validate_execution/SKILL.md` - sanity check; `plugin/skills/validate_project/SKILL.md` - sanity check, unignored-`.beads/` warning, `bd orphans`; `plugin/skills/doc-adherence/SKILL.md` - wb-prime reference
+- `CLAUDE.md`, `README.md`, `docs/commands-reference.md`, `docs/workbench-workflow-guide.md` - three-tier model, setup rule, hook names, `bd doctor`, `--claim`
+- `CHANGELOG.md` - Unreleased: Breaking / Requirements, Added, Changed, Fixed
+- `docs/plans/2026-09-05-prompts-h7c-implement-rename-3.0/tasks.md` - discoveries and notes
+
+**Quick verification commands:**
+
+```bash
+grep -rn "BEADS_MODE\|git add .beads\|setup-beads-mode\|compact-recovery" plugin CLAUDE.md README.md docs | grep -v docs/plans   # one historical learnings line only
+echo '{"hook_event_name":"SessionStart","source":"startup"}' | time plugin/hooks/wb-prime.sh
+./plugin/scripts/lint --all | grep -c "Issues found in"   # 27, the pre-existing backlog
+```
+
 ### ⛔ CHECKPOINT: Phase 2 Complete
 
 1. ✅ All Phase 2 task beads issues closed; milestone `prompts-tq7.1` closed
@@ -680,7 +702,9 @@ Things to determine during implementation:
 - Resolved 2026-09-06 (bd 1.1.0): `bd config get sync.remote` prints `sync.remote (not set in config.yaml)` and exits 0 when unset; a set key prints the bare value (`bd config get backup.enabled` prints `false`). The drift hook's `grep -qv "not set"` condition is sound.
 - Whether help's broadened description over-triggers on ordinary questions about the plugin (the negative routing case in 3.9)
 - Whether git detects the Phase 5 directory moves as renames after Phases 2 to 4 edited the files (`git show --stat -M` on the 5.1 commit)
-- The exact count of pre-existing `lint --all` findings after each phase (27 after Phase 1)
+- The exact count of pre-existing `lint --all` findings after each phase (27 after Phase 1; 27 after Phase 2)
+- Resolved 2026-09-06 (bd 1.1.0 `--help`, issue prompts-hsa2): `bd orphans` reports open or in-progress issues that commit messages already reference (landed but never closed), not broken dependencies and not frontmatter orphans; `bd preflight` is a checklist for contributors to the beads Go repository, not a workspace check; `bd doctor --check=conventions` is the lint-stale-orphans pass. Phase 2 kept validate_project's frontmatter orphan check and added `bd orphans` under its real meaning; beads-mode.md Hygiene lists `bd doctor --check=conventions` in place of `bd preflight`. Phase 4's contract audit inherits this correction.
+- Resolved 2026-09-06: a headless `-p "/wb:validate_project <dir>"` run emits no `"skill":"wb:..."` event (slash-command prompts do not route through a Skill tool call; prose prompts do, as the wrong-database recipe showed with `wb:implement_coordinated`), and it needs about 40 turns plus `Bash(git *)` in `--allowedTools` to reach its report. Grep the assistant lines, not the whole stream, for mode vocabulary: the stream's dump of this plan's own tasks.md contains the old words by design.
 
 Note: update this section with findings as you implement.
 
@@ -704,6 +728,7 @@ bd blocked
 
 ### Implementation Notes
 
+- 2026-09-06: Phase 2 implemented by coordinated sonnet workers: ten workers, ten verifier passes (all PASS on first verification), one verification worker, sequential, main context never compacted. Deviations: (1) `bd orphans` and `bd preflight` do not mean what design D16 assumed (see Implementation Discoveries; decision issue prompts-hsa2 open for Gabe at this checkpoint); (2) the workflow guide's Basic Workflow `bd update --status in_progress` at line 301 was changed to `--claim` alongside the two planned sites, pulling a Phase 4 audit correction forward; (3) the CHANGELOG per-file lint delta is +2 MD024 duplicate-heading findings of the pre-existing kind (every release section repeats Added/Changed/Fixed; the baseline had 11), because `.markdownlintrc` sets `allow_different_nesting` rather than `siblings_only`; changing lint rules is out of scope. Coordinator-level corrections landed in task commits: the Hygiene lines in beads-mode.md (task 2.1). Harness findings: the worktree Bash guard refuses `env -C` and `env PATH=` prefixes; a wrapper script under the job tmp dir (`cd`, `export PATH`, `exec`) is the working form; a plain single-file delete is accepted; one worker used `git stash` and `git stash pop` to lint a baseline, harmless only because the shared stack was empty, so worker prompts now forbid stash and prescribe `git show <rev>:<file>` to a scratch path inside the repo. The two Phase 2 unknowns were resolved from the Claude Code hooks reference (a guide agent) and `bd config get` on 1.1.0 before any worker ran. Verification worker: headless orientation prompt answered with the orientation's first line; the wrong-database fixture made `wb:implement_coordinated` stop before spawning workers; the headless validate_project recipe was rewritten (turns, git allowed, assistant-text grep) after its first run exhausted 12 turns reading the plan documents.
 - 2026-09-06: Plan restructured after Phase 1 into five phases on one branch and one PR (design D9 revised): the beads-model realignment with wb-prime (D11-D16, D18), the intent model with stateful help (D19-D20), and the beads guide (D17) were added; the rename moved to Phase 5. PR #27 is held as the running review surface. Three inventory agents (sonnet, sonnet, haiku) supplied the line-level sites, the verification recipes, and the bd command inventory; corrections folded in: `bd status` exists in 1.1.0 and is not stale; `bd daemon` at help:241 and `.beads/daemon.lock` at beads-not-initialized.md:25 are; the workflow guide and commands reference still show `bd update --status in_progress` where the skills use `--claim`.
 - 2026-09-06: Phase 1 implemented by coordinated sonnet workers (six tasks, six verifier passes, one FAIL that was the coordinator's own tasks.md edit landing in the worker's diff; separated into its own commit). Discoveries: the pre-existing `lint --all` backlog is 27 files, not the ~58 the previous plan estimated; the lint-hook check mutates the malformed fixture because it runs `lint --fix`, so use the clean fixture for the hook test and recreate `bad.md` before each run; the PostToolUse hook normalizes table separator rows on any save (reduces MD060 findings, never adds); `help/SKILL.md:158` carried an "auto-imports" claim the site list missed, rewritten in task 1.3; `grep -c "Issues found in"` (without the ⚠ glyph) is the reliable count because ANSI codes sit between the glyph and the text. Headless `/wb:help` ran to completion with one skill event and no permission prompt.
 - 2026-09-06: Plan written from research.md and design.md with three analysis agents (dependency inventory, verification recipes, before-text). Corrections folded in: `implement` has four supporting files, so the alias carries four pointer files (design.md D2 said five, counting SKILL.md); CLAUDE.md has two name occurrences (lines 13, 86), not the 104 research §4 cited; the 67-line inventory separates dated narrative from current mentions per file.
