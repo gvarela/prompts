@@ -144,6 +144,12 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - Decision: the session-close protocol (CLAUDE.md, status-sync, create_handoff) runs `bd doctor` once and acts on what it reports; validate_project's orphan check calls `bd orphans` instead of its own grep; the reference doc lists `bd doctor`, `bd preflight`, `bd stale`, `bd orphans`, `bd lint` with one line each on when they apply. The memory guidance from v2.4.0 gains two facts: memories are workspace-wide across every plan in the repository, and they are excluded from `bd export` by default, so only a Dolt remote carries them to another machine.
 - Rationale: beads ships these checks and `bd prime` lists them; the plugin reimplements one and ignores the rest. `bd doctor` checks the metadata version tracking that failed in D14's incident.
 
+### D17: A maintainer guide to beads, with a contract inventory and an upgrade protocol
+
+- Decision: a new maintainer document, `docs/beads-guide.md`, becomes the place where the workbench's understanding of beads lives. It carries five things. The model wb relies on (database as truth, the three tiers, stealth, worktrees), in a page. The contract inventory: every bd subcommand, flag, and config key any skill, agent, or hook depends on, with the files that use it and the bd version it was last verified on; the inventory is built by auditing the roughly twenty subcommands the plugin references today against `bd <cmd> --help`, and references that no longer exist (`bd daemon`, `bd state`, `bd invocations`, `bd process`, `bd status` are candidates) are removed from the skills in the same task. The supported bd version and the upgrade protocol: when `bd version` changes, run `bd doctor`, diff `--help` for every inventoried command, run the headless smoke set for the skills that use beads, update the inventory's verified-on column, and record the requirement change in README and CHANGELOG (RELEASING.md already classes a new bd requirement as major). Interpretation notes: the facts a maintainer needs to read bd's behavior correctly (`no-git-ops`, embedded versus server, `metadata.json`, throttled export, the beads plugin's own docs lagging its CLI). A doc map stating which file is the source of truth for what: `plugin/docs/reference/` for what installers and skills read at runtime, `docs/beads-guide.md` for maintainers, beads memories for operational facts about this workspace, and `docs/beads-integration-learnings.md` kept as dated history linked from the guide. CLAUDE.md gains a one-line rule beside the update_status sole-writer rule: a change that adds, removes, or alters a bd command in any shipped file updates the inventory. The D14 sanity check compares `bd version` against the minimum the playbook states and stops below it.
+- Rationale: beads moved from SQLite to embedded Dolt, dropped `bd sync`, changed export semantics, and grew a role model, and each time the plugin found out by breaking or by a stale claim surviving for weeks. The workbench's knowledge of beads should be a maintained artifact with a version column, not memories of sessions. A contract inventory is also what makes the upgrade protocol mechanical enough to delegate.
+- Trade-off: one more document to keep current; the CLAUDE.md rule and the verified-on column are what keep it from becoming another diary.
+
 ## Scope Definition
 
 ### In Scope
@@ -153,6 +159,7 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - D9: the RELEASING.md amendment, including the one-PR-per-plan rule
 - D10: the 3.0.0 cut and tag
 - D11 through D16: the beads-model realignment across the reference docs, the mode-conditional steps in every skill, removal of the SessionStart mode hook and its manifest entry, the SessionEnd drift hook's new behavior, validate_project, CLAUDE.md's protocol, and a CHANGELOG migration note for installers who committed `.beads/` or referenced `BEADS_MODE`
+- D17: the maintainer guide, the contract inventory audit with removal of stale bd references from shipped files, the upgrade protocol, the CLAUDE.md inventory rule, and the version floor in the sanity check
 
 ### Out of Scope
 
@@ -182,6 +189,7 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - [ ] `grep -rn "git add .beads" plugin CLAUDE.md docs | grep -v docs/plans` → none; `grep -rn "BEADS_MODE" plugin CLAUDE.md docs | grep -v docs/plans` → none; `plugin/hooks/setup-beads-mode.sh` absent and unreferenced in `plugin.json`
 - [ ] beads-mode.md has sections for the setup decision, persistence tiers, worktrees, the sanity check, and hygiene; beads-not-initialized.md has the wrong-database case
 - [ ] Every stage that reads plan beads IDs runs the sanity check and stops on a missing epic (verified by pointing a headless run at a plan whose epic does not exist)
+- [ ] `docs/beads-guide.md` exists with the model, the contract inventory (every bd subcommand referenced under `plugin/` appears in it with a verified-on version), the upgrade protocol, interpretation notes, and the doc map; no bd subcommand referenced under `plugin/` is absent from `bd --help`
 
 ### Non-Functional Requirements
 
