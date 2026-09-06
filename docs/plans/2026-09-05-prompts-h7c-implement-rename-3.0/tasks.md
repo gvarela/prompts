@@ -675,9 +675,9 @@ Both manifests: `"version": "3.0.0"`.
 
 Things to determine during implementation:
 
-- Whether the SessionStart payload for `clear` and `resume` carries a `source` field wb-prime can branch on, or whether "not compact" is the only reliable test (check the hook input JSON on a real run)
-- Whether a PreCompact hook's stdout is model-visible the way SessionStart's is; if not, wb-prime's PreCompact registration still returns 0 and the compact-trigger SessionStart carries the recovery
-- Whether `bd config get sync.remote` prints "not set" text or exits non-zero when unset (the drift hook's condition depends on it)
+- Resolved 2026-09-06 (Claude Code hooks reference, "SessionStart input"): the SessionStart payload always carries `source`, with values `startup`, `resume`, `clear`, `compact`, and `fork` (forks reported `resume` before 2.1.214). wb-prime branches on `source` and treats `fork` like `startup`. Plain-text stdout is added to the model's context; `hookSpecificOutput.additionalContext` is the JSON alternative.
+- Resolved 2026-09-06 (same reference, "PreCompact input"): PreCompact receives `trigger` (`manual` or `auto`) and `custom_instructions`; its stdout is not added to the model's context (only UserPromptSubmit, UserPromptExpansion, SessionStart, and PostModelSwitch stdout is), and its `systemMessage` is discarded. wb-prime's PreCompact registration returns 0 and the compact-trigger SessionStart carries the recovery.
+- Resolved 2026-09-06 (bd 1.1.0): `bd config get sync.remote` prints `sync.remote (not set in config.yaml)` and exits 0 when unset; a set key prints the bare value (`bd config get backup.enabled` prints `false`). The drift hook's `grep -qv "not set"` condition is sound.
 - Whether help's broadened description over-triggers on ordinary questions about the plugin (the negative routing case in 3.9)
 - Whether git detects the Phase 5 directory moves as renames after Phases 2 to 4 edited the files (`git show --stat -M` on the 5.1 commit)
 - The exact count of pre-existing `lint --all` findings after each phase (27 after Phase 1)
