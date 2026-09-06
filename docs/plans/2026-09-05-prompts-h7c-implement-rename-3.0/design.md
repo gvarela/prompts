@@ -156,6 +156,24 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - Rationale: since v2.6.0 the model can invoke every stage from prose, and the only thing it sees at session start is fourteen skill descriptions written as trigger text. Nothing tells it the order, the gates between stages, or where plans live; this repository's CLAUDE.md does, but CLAUDE.md is not shipped, so an installer's session in another repository starts blind. Each skill checks its own prerequisites at invocation, which catches a wrong-order call after the fact; orientation prevents it. Following `bd prime`'s shape rather than inventing one gives the hook a proven trigger set (PreCompact means the orientation is present when the summary is written, not only after), an override path for repositories with their own conventions, and a single script instead of two.
 - Trade-off: a few hundred tokens of baseline context in every session in every repository with wb installed; `bd prime`'s full mode runs one to two thousand tokens and has not been a problem, so the forty-line cap is conservative. Merging compact-recovery into the new script retires a hook that shipped in v2.3.0; its behavior is preserved as a mode, and the CHANGELOG names the file change.
 
+### D19: A plan states its intent at creation, and every stage owes it something (the staged charter)
+
+Formalizes decision record prompts-k0ub (closed 2026-09-06; exploration in [thoughts/2026-09-06-plan-intent-and-human-input.md](thoughts/2026-09-06-plan-intent-and-human-input.md)).
+
+- Decision: the README gains an Intent section at the top, written by create_project, with three parts: a Goal sentence; two to four "success looks like" statements in observable, non-numeric terms; and Non-goals. Constraints are not asked for at creation; research supplies them. create_project takes the intent from the prose request that invoked it when one is present and confirms it in one exchange, and asks for it otherwise; it does not proceed with the section empty. Each later stage has a named obligation to the section. create_research derives its research question from the Goal and, at completion, names any success statement its findings never touch. explore_design frames the decision space against the Goal. create_design refines the statements into measurable Success Metrics, tracing each metric to a statement; if that refinement changes the Goal or a Non-goal, the change is a Decide: record and a dated amendment line under the Intent section. create_tasks copies the metrics as the Target State. validate_execution reports against the current metrics and writes the verdict back beside each README statement. Ownership: create_project writes the section; create_design and explore_design may amend it, only with a dated line; design.md owns the measurable form; update_status touches neither.
+- Rationale: today the first intent-bearing input is the research question, and the goal first appears in design.md after research, so nothing upstream of design can be judged against it and drift between what a plan was for and what it became goes unrecorded; this plan itself drifted from a rename to a release in a day with no top-level record. Goal and non-goals are cheap to state early and are the scope-creep guard the workers already enforce. Measurable success cannot honestly precede examining the codebase, so refinement at design is the plan working, and only a goal change is loud enough to deserve a record. Validation checks the current objective because design.md is the yardstick and the README echoes it.
+- Trade-off: two artifacts carry a version of success, so the skills enforce who writes which. A plan whose goal genuinely shifts pays a decision record each time. Plans created before 3.0.0 have no Intent section; the stages treat its absence as "no obligation" rather than an error, and stateful help (D20) says so.
+- Pattern reference: the update_status sole-writer rule; the explore_design Decide: record; `plugin/skills/create_project/templates.md:14` (the Overview the section replaces); `plugin/skills/create_design/SKILL.md:134` (the Success Metrics step that now refines rather than originates).
+
+### D20: The workflow explains its human inputs, and help knows where you are
+
+Formalizes the fifth axis of prompts-k0ub.
+
+- Decision: a map of the workflow's human inputs, one row per stage: what you provide, what you decide, what you confirm, and how you know the stage did enough. It is rendered in full in the help skill, summarized in the orientation hook (D18), and stated in one line in each stage's Initial Response ("This stage needs from you: …"). The help skill becomes stateful: invoked in a repository with an active plan, or by a prose request such as "where am I" or "what's next", it reports the plan's position (which documents exist and their status, epic and milestone state, open Q: and Decide: issues), what the next stage needs from the human per the map, and what the previous stage left undone, read from the evidence D19's obligations leave behind (untouched success statements, untraced metrics, unreported statements); with no active plan, or a plan without an Intent section, it renders the reference card and says which case it is in. The stage-readiness checks reuse validate_project's structural checks rather than duplicating them.
+- Rationale: since v2.6.0 the model can run any stage from prose, so the human is the one who needs to know what each stage will ask and when architecture is discussed; the questions Gabe raised ("is intent pre-start or part of design", "how do we know we researched the right things", "when do we discuss architecture") are exactly the map's columns. A separate tutor skill was rejected in exploration: the map already lives in help, the obligations already produce the evidence a tutor would read, and one skill adds no baseline context.
+- Trade-off: help's description must carry the new triggers without over-firing on ordinary questions about the plugin (the negative case in the routing test); the "did enough" column is judgment written once and maintained with the skills it describes.
+- Pattern reference: `plugin/skills/help/SKILL.md:31-51` (the command diagrams the map extends); `plugin/skills/validate_project/SKILL.md` (the structural checks reused).
+
 ## Scope Definition
 
 ### In Scope
@@ -167,6 +185,8 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - D11 through D16: the beads-model realignment across the reference docs, the mode-conditional steps in every skill, removal of the SessionStart mode hook and its manifest entry, the SessionEnd drift hook's new behavior, validate_project, CLAUDE.md's protocol, and a CHANGELOG migration note for installers who committed `.beads/` or referenced `BEADS_MODE`
 - D17: the maintainer guide, the contract inventory audit with removal of stale bd references from shipped files, the upgrade protocol, the CLAUDE.md inventory rule, and the version floor in the sanity check
 - D18: the session-start orientation hook and its manifest entry
+- D19: the Intent section in the generated README, create_project's intake, and the per-stage obligations in create_research, explore_design, create_design, create_tasks, and validate_execution
+- D20: the human-input map in help, the orientation hook, and each stage's intake; help made stateful
 
 ### Out of Scope
 
@@ -197,6 +217,9 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - [ ] beads-mode.md has sections for the setup decision, persistence tiers, worktrees, the sanity check, and hygiene; beads-not-initialized.md has the wrong-database case
 - [ ] Every stage that reads plan beads IDs runs the sanity check and stops on a missing epic (verified by pointing a headless run at a plan whose epic does not exist)
 - [ ] A fresh `--plugin-dir` session's first context carries the orientation text; in a repository with an active plan it names the plan directory; the hook runs under 100ms with no bd call (verified with `time` and by grepping the script)
+- [ ] A project created by create_project has an Intent section with Goal, success statements, and Non-goals; a headless create_project run with intent in the prompt writes it without asking, and one without intent asks before writing
+- [ ] research.md written by create_research names the success statements its findings do not touch; design.md traces each Success Metric to a statement; validate_execution's report lists a verdict per statement
+- [ ] help renders the map; a headless "where am I" in a repository with an active plan reports position, next-stage input, and previous-stage gaps; the same prompt in a repository without plans renders the reference card
 - [ ] `docs/beads-guide.md` exists with the model, the contract inventory (every bd subcommand referenced under `plugin/` appears in it with a verified-on version), the upgrade protocol, interpretation notes, and the doc map; no bd subcommand referenced under `plugin/` is absent from `bd --help`
 
 ### Non-Functional Requirements
@@ -267,7 +290,9 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 
 ## Pending Decisions
 
-None. The bundle, the names, and the release shape were confirmed in conversation on 2026-09-05 and 2026-09-06 before this document was written.
+None. The bundle, the names, and the release shape were confirmed in conversation on 2026-09-05 and 2026-09-06 before this document was written; the beads realignment, the orientation hook, and the intent model were decided on 2026-09-06 (prompts-my1i, prompts-k0ub).
+
+Deferred to execution planning, from the exploration record: the Intent section's exact shape and amendment line; how create_project phrases confirmation of an inferred intent; each stage's intake wording and the map's "did enough" column; whether validate_execution's per-statement echo is written into the README or only reported.
 
 ## References
 
