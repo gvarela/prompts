@@ -426,7 +426,7 @@ Beads provides persistent, git-backed task tracking that survives context compac
 - `.beads/` added to `.git/info/exclude`
 - Beads state stays local
 - Good for work repos where you don't want to expose task tracking
-- beads auto-flushes `.beads/issues.jsonl` locally
+- beads state lives in the local database under `.beads/`
 - State doesn't persist across machines
 
 **Git Mode** (`.beads/` tracked in git):
@@ -434,7 +434,7 @@ Beads provides persistent, git-backed task tracking that survives context compac
 - `.beads/` committed like normal code
 - Beads state persists across machines
 - Good for personal projects
-- commit `.beads/` to push state (issues.jsonl is auto-flushed)
+- commit `.beads/` to push state (with `export.auto` on; see [beads-mode.md](../plugin/docs/reference/beads-mode.md))
 - Full team collaboration on task state
 
 **Auto-detection**: SessionStart hook (`.claude/hooks/setup-beads-mode.sh`) checks:
@@ -492,7 +492,7 @@ bd update [task-id] --status in_progress
 # Complete it
 bd close [task-id] --reason "Done"
 
-# beads auto-flushes .beads/issues.jsonl after mutations
+# git mode: export.auto on before committing (see plugin/docs/reference/beads-mode.md)
 
 # Git mode: commit beads state
 git add .beads/
@@ -517,7 +517,7 @@ bd list --status=open | grep -E "UI Q:|UI Assumption:"
 # 1. Close completed tasks
 bd close [task-id] --reason "..."
 
-# 2. Beads state is auto-flushed to .beads/issues.jsonl
+# 2. Git mode: ensure export.auto is on (see plugin/docs/reference/beads-mode.md)
 
 # 3. Git mode: commit and push
 git add .beads/
@@ -841,7 +841,7 @@ Tasks come ONLY from plans.
 **At session end**:
 
 - Close completed beads issues
-- Git mode: commit .beads/ (issues.jsonl is auto-flushed)
+- Git mode: commit .beads/ (with `export.auto` on; see [beads-mode.md](../plugin/docs/reference/beads-mode.md))
 - Create handoff if needed
 
 **At session start**:

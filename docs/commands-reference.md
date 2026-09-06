@@ -72,8 +72,7 @@ bd show [id]                                # Review task details
 bd update [id] --status in_progress         # Claim task
 # ... implement ...
 bd close [id] --reason "..."                # Complete task
-# beads auto-flushes .beads/issues.jsonl after mutations
-# Git mode: commit .beads/ to persist across machines
+# git mode: export.auto on, then commit .beads/ (see plugin/docs/reference/beads-mode.md)
 # Stealth mode: .beads/ stays uncommitted (local only)
 ```
 

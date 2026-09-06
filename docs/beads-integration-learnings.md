@@ -187,7 +187,7 @@ This maintains human-readable markdown while using beads for reliable cross-sess
 **Documentation structure with beads**:
 
 | File | Purpose | Audience |
-|------|---------|----------|
+| ------ | --------- | ---------- |
 | README.md | Overview, quick start | New users |
 | CLAUDE.md | Agent instructions | Claude Code |
 | wb/README.md | Command reference | Users of wb commands |
@@ -255,7 +255,7 @@ Not addressed yet:
 
 The learnings above were written against the SQLite-era beads CLI. bd 1.0.2 changed the persistence model; references to `bd sync` and `bd doctor` in the historical sections above no longer reflect the current CLI:
 
-- **`bd sync` removed**. Beads now uses an embedded Dolt backend that auto-commits mutations and auto-flushes `.beads/issues.jsonl`. There is no manual export step; in git mode, just commit `.beads/` at session end. Remote database sync (separate from git) is `bd dolt push` / `bd dolt pull` when a Dolt remote is configured.
+- **`bd sync` removed**. Beads uses an embedded Dolt backend that auto-commits mutations. `.beads/issues.jsonl` is an export written only with `export.auto` on (`bd config set export.auto true`) or an explicit `bd export`; in git mode, turn `export.auto` on once per clone and commit `.beads/` at session end (corrected 2026-09-05, prompts-vwo: the export had been five weeks stale). Remote database sync (separate from git) is `bd dolt push` / `bd dolt pull` when a Dolt remote is configured.
 - **`bd doctor` unsupported in embedded mode**. Use `bd info` (initialization check) or `bd status` (overview, aliased as `bd stats`).
 - **Git hooks installed by `bd init`** (`.beads/hooks/prepare-commit-msg`, `pre-push`) keep the JSONL consistent at commit time. A broken/half-migrated database will abort `git commit` via these hooks — the fix is `bd export` (backup), then `bd init --force --prefix <prefix>`, then `bd import`.
 - **Issue IDs are hash-style** (`prompts-a3f2`) in 1.0.2; sequential IDs from older versions are re-keyed on import.
