@@ -4,11 +4,30 @@ All notable changes to the wb plugin. Versions are release cuts — installers r
 
 ## [Unreleased]
 
+### ⚠️ Breaking / Requirements
+
+- **Requires bd 1.1.0 or later.** The session-start sanity check compares `bd version` against this floor.
+- **`BEADS_MODE` and `hooks/setup-beads-mode.sh` removed.** No skill, hook, or doc branches on a beads "mode" any more; the variable was never documented as user-facing, and any local settings that referenced it stop resolving.
+- **The commit-`.beads/` guidance is gone from every skill, hook, and doc.** Beads' Dolt directory is never committed. If you committed `.beads/` in any repository: stop; exclude it (`bd init --setup-exclude` or `bd init --stealth`); set up `bd backup init <url>` or a Dolt remote if you need cross-machine continuity. The old `issues.jsonl` stays importable with `bd import`. Full model: `plugin/docs/reference/beads-mode.md`.
+- **`hooks/compact-recovery.sh` replaced by `hooks/wb-prime.sh`.** Same recovery text on compact; the new script also runs on startup, resume, clear, fork, and PreCompact.
+
+### Added
+
+- `hooks/wb-prime.sh`, modeled on `bd prime`: on SessionStart `startup`, `resume`, `clear`, and `fork` it prints a session orientation (the stage chain and what each stage requires, the `docs/plans/<date>-<name>/` layout, beads holds status and markdown holds the plan, checkpoints stop for a human, the session-start sanity check, the active plans in the repository, a pointer to `/wb:help`); on `compact` and on PreCompact it prints the compaction recovery text. A repository replaces the orientation with `.claude/wb/PRIME.md`; `wb-prime.sh --export` prints the default. Under 100ms, no bd calls.
+- Session-start sanity check (`bd context`, `bd show <beads_epic>`, `bd stats`, `bd version`) in every stage that reads a plan's beads IDs: resume_handoff, implement_tasks, implement_coordinated, update_status, validate_execution, and create_tasks on a re-run. A plan whose epic does not resolve stops with the new Wrong database case in `plugin/docs/reference/beads-not-initialized.md`.
+- `bd doctor` in the session close protocol (CLAUDE.md, the reference doc's Hygiene section); `bd orphans` reported by validate_project's beads check, alongside its existing frontmatter orphan check.
+- Handoffs state what is portable: without a Dolt remote or backup, the handoff document is the only artifact that crosses machines and the plan's beads IDs will not resolve elsewhere (create_handoff). Memory facts in both implementation skills and create_handoff: `bd remember` memories are workspace-wide and excluded from `bd export` by default.
+
 ### Changed
 
 - `RELEASING.md` Process: non-breaking phases merge unbumped under Unreleased; a cut happens when a plan completes; the breaking phase goes last and carries the bump; every cut is tagged; majors get a three-session canary on the release branch.
 - Beads persistence: `plugin/docs/reference/beads-mode.md` is the single statement. `issues.jsonl` is written only with `export.auto` on or an explicit `bd export`; the auto-flush claim is removed from ten skill and doc sites (prompts-vwo).
 - `implement_coordinated/reference.md` "Worker Model Selection" points at the SKILL.md Step 5 tier list instead of restating it with opus as the default when unsure.
+- `plugin/docs/reference/beads-mode.md` rewritten around beads' model: the setup rule (`bd init --stealth` for any repository with collaborators who do not use beads; plain `bd init` only for a repository you own, still with `.beads/` excluded), three persistence tiers (local database; Dolt remote or `bd backup`; JSONL for interchange), the one-question close step, worktree facts, the sanity check, hygiene commands, memory facts. `beads-not-initialized.md` shows `bd init --stealth` first and gains the Wrong database case and the bd 1.1.0 floor.
+- Every skill's persist step is one question: `bd config get sync.remote` set → `bd dolt push`; `backup.enabled` true → `bd backup sync`; otherwise nothing. help's "Beads + Git Workflow" block is now "Beads persistence" (the three tiers).
+- `hooks/beads-drift-check.sh` (SessionEnd) reminds to `bd dolt push` only when a Dolt remote is configured; it no longer inspects git for `.beads/` changes.
+- validate_project's beads check warns when `.beads/` is neither excluded nor ignored instead of validating a mode.
+- Root and maintainer docs (README, CLAUDE.md, commands reference, workflow guide) render the three-tier model and the stealth-first setup rule; `bd update --claim` replaces `--status in_progress` in the examples.
 
 ### Fixed
 
