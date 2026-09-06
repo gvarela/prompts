@@ -42,6 +42,8 @@ Do NOT block — if the user chooses to continue, proceed.
 
 ## Initial Response
 
+This stage needs from you: confirmation that the phases and checkpoints match how you want to review the work.
+
 When invoked, check for arguments:
 
 1. **If directory provided** (e.g., `/create_tasks docs/plans/2025-01-08-my-project/`):

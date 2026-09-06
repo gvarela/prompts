@@ -30,6 +30,8 @@ Run this AFTER implementation to ensure quality before merging or deployment.
 
 ## Initial Response
 
+This stage needs from you: the manual checks only you can run, and your reading of the verdict per Intent statement.
+
 When invoked, check for arguments:
 
 1. **If directory provided** (e.g., `/validate_execution docs/plans/2025-01-08-my-project/`):
@@ -80,12 +82,14 @@ const tasksFile = `${projectDir}/tasks.md`;
 
 2. **Read design.md** to understand:
    - Original design decisions
-   - Success metrics defined
+   - Success metrics defined, and which Intent statement each refines (`(refines: ...)`), plus the Deferred list
    - Scope boundaries
 
 3. **Read research.md** to understand:
    - Original state of the codebase
    - Patterns that should be followed
+
+4. **Read README.md** in the project directory. If it has an `## Intent` section, list its "Success looks like" statements; each gets a verdict in Step 5 and an echo in Step 6. If it has none, the verdict table carries one row: "no Intent section (plan predates 3.0.0)".
 
 **Compare what was supposed to be built with what exists**
 
@@ -153,6 +157,8 @@ For each phase in tasks.md:
 Read [templates.md](templates.md) NOW and create the validation report using its "Validation Report Template" — match its structure exactly.
 
 ### Step 6: Update Documentation
+
+**Verdict echo** (always, pass or fail): for each "Success looks like" statement in the README's `## Intent` section, append `→ PASS (YYYY-MM-DD)` or `→ FAIL (YYYY-MM-DD)` to the end of the statement's line, replacing an earlier `→ ...` suffix if one exists, so the README carries the latest verdict. The verdict for a statement is PASS only when every metric that refines it passed; a statement whose metrics were all deferred is written `→ DEFERRED (YYYY-MM-DD)`. Skip the echo when there is no Intent section.
 
 If validation passes with minor issues:
 
