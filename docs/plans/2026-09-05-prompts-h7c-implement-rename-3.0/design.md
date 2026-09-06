@@ -150,6 +150,12 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - Rationale: beads moved from SQLite to embedded Dolt, dropped `bd sync`, changed export semantics, and grew a role model, and each time the plugin found out by breaking or by a stale claim surviving for weeks. The workbench's knowledge of beads should be a maintained artifact with a version column, not memories of sessions. A contract inventory is also what makes the upgrade protocol mechanical enough to delegate.
 - Trade-off: one more document to keep current; the CLAUDE.md rule and the verified-on column are what keep it from becoming another diary.
 
+### D18: A session-start orientation hook (wb prime)
+
+- Decision: a SessionStart hook for the `startup` and `resume` triggers prints a compact orientation, the way `bd prime` does for beads: the stage chain and what each stage requires from the previous one; the `docs/plans/<date>-<name>/` convention and the three documents; beads holds status and markdown holds the plan; checkpoints stop for a human; the D14 sanity check; and, using the scan compact-recovery already performs, the active plans in this repository. It ends with a pointer to `/wb:help`. It takes the SessionStart slot the removed mode hook leaves; compact-recovery keeps its own trigger and text. Contract: under 100ms, no bd invocations, plain-text stdout, under forty lines, printed in every session where the plugin is installed.
+- Rationale: since v2.6.0 the model can invoke every stage from prose, and the only thing it sees at session start is fourteen skill descriptions written as trigger text. Nothing tells it the order, the gates between stages, or where plans live; this repository's CLAUDE.md does, but CLAUDE.md is not shipped, so an installer's session in another repository starts blind. Each skill checks its own prerequisites at invocation, which catches a wrong-order call after the fact; orientation prevents it. The mechanism is proven: the beads plugin's `bd prime` and the plugin's own compact-recovery hook both use model-visible SessionStart stdout.
+- Trade-off: a few hundred tokens of baseline context in every session in every repository with wb installed. The forty-line cap and the rule that it never calls bd keep the cost fixed; the help skill remains the long form.
+
 ## Scope Definition
 
 ### In Scope
@@ -160,6 +166,7 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - D10: the 3.0.0 cut and tag
 - D11 through D16: the beads-model realignment across the reference docs, the mode-conditional steps in every skill, removal of the SessionStart mode hook and its manifest entry, the SessionEnd drift hook's new behavior, validate_project, CLAUDE.md's protocol, and a CHANGELOG migration note for installers who committed `.beads/` or referenced `BEADS_MODE`
 - D17: the maintainer guide, the contract inventory audit with removal of stale bd references from shipped files, the upgrade protocol, the CLAUDE.md inventory rule, and the version floor in the sanity check
+- D18: the session-start orientation hook and its manifest entry
 
 ### Out of Scope
 
@@ -189,6 +196,7 @@ Rename by directory move plus deprecated alias stubs, exactly as v2.2.0 did, and
 - [ ] `grep -rn "git add .beads" plugin CLAUDE.md docs | grep -v docs/plans` → none; `grep -rn "BEADS_MODE" plugin CLAUDE.md docs | grep -v docs/plans` → none; `plugin/hooks/setup-beads-mode.sh` absent and unreferenced in `plugin.json`
 - [ ] beads-mode.md has sections for the setup decision, persistence tiers, worktrees, the sanity check, and hygiene; beads-not-initialized.md has the wrong-database case
 - [ ] Every stage that reads plan beads IDs runs the sanity check and stops on a missing epic (verified by pointing a headless run at a plan whose epic does not exist)
+- [ ] A fresh `--plugin-dir` session's first context carries the orientation text; in a repository with an active plan it names the plan directory; the hook runs under 100ms with no bd call (verified with `time` and by grepping the script)
 - [ ] `docs/beads-guide.md` exists with the model, the contract inventory (every bd subcommand referenced under `plugin/` appears in it with a verified-on version), the upgrade protocol, interpretation notes, and the doc map; no bd subcommand referenced under `plugin/` is absent from `bd --help`
 
 ### Non-Functional Requirements
