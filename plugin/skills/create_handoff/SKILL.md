@@ -106,7 +106,7 @@ Determine the current implementation state:
    - Gotchas encountered
    - Solutions to tricky problems
    - Performance considerations discovered
-   - Run `bd memories <project>` and list the entries this session added with `bd remember`; keep the ones that still qualify, `bd forget` the ones that were task-specific
+   - Run `bd memories <project>` and list the entries this session added with `bd remember`; keep the ones that still qualify, `bd forget` the ones that were task-specific. Memories are workspace-wide across every plan in this repository and are excluded from `bd export` by default; only a Dolt remote or `bd backup` carries them to another machine.
 
 3. **Deviations and Decisions**:
    - Where we deviated from plan and why
@@ -121,15 +121,9 @@ Determine the current implementation state:
 ### Step 3: Persist Beads and Check Git State
 
 ```bash
-# Stealth mode: nothing to run. Git mode: export.auto must be on (see plugin/docs/reference/beads-mode.md)
-
-# Mode semantics: see beads-mode.md in this plugin's docs/reference/ ($BEADS_MODE set by SessionStart hook)
-if [ "$BEADS_MODE" != "stealth" ]; then
-  # Git mode: commit beads state (part of handoff protocol)
-  git status    # Should show .beads/issues.jsonl as modified
-  git add .beads/
-  git commit -m "Sync beads state before handoff"
-fi
+# Persist beads state (see plugin/docs/reference/beads-mode.md)
+if bd config get sync.remote 2>/dev/null | grep -qv "not set"; then bd dolt push; fi
+if [ "$(bd config get backup.enabled 2>/dev/null)" = "true" ]; then bd backup sync; fi
 
 # Check for uncommitted code changes
 git diff
@@ -145,8 +139,8 @@ Document any uncommitted work and its purpose.
 
 **Beads persistence**:
 
-- **Git mode** (personal projects): Beads state committed to git, persists across sessions
-- **Stealth mode** (work repos): Beads state local-only, document next steps manually for handoff
+- The local database under `.beads/` is the source of truth and is never committed; a Dolt remote or `bd backup` carries it across machines (see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md))
+- Without a remote or backup, this handoff document is the only artifact that crosses machines, and the plan's beads IDs will not resolve elsewhere; see beads-mode.md to set up continuity
 
 ### Step 4: Create Handoff Document
 

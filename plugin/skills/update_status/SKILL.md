@@ -55,10 +55,10 @@ bd list                         # All issues with status
 bd list --status=in_progress    # Active work
 bd list --status=closed         # Completed work
 
-# Mode semantics: see beads-mode.md in this plugin's docs/reference/ ($BEADS_MODE set by SessionStart hook)
+# Persistence: see plugin/docs/reference/beads-mode.md
 ```
 
-**Note**: Beads mode doesn't affect status updates — only persistence.
+**Note**: Persistence does not affect status updates; the local database is always current.
 
 Check tasks.md for beads phase IDs:
 
@@ -232,25 +232,15 @@ After all updates:
 
 ### Step 8: Persist Beads State
 
-After updating status, persist beads state (git mode needs `export.auto` on; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
+After updating status, persist beads state (one question; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
 
 ```bash
-# In git mode, commit the beads state if needed
-if [ "$BEADS_MODE" != "stealth" ]; then
-  if git diff --quiet .beads/ 2>/dev/null; then
-    echo "No beads changes to commit"
-  else
-    git add .beads/
-    git commit -m "Sync beads state after status update"
-  fi
-fi
+# Persist beads state (see plugin/docs/reference/beads-mode.md)
+if bd config get sync.remote 2>/dev/null | grep -qv "not set"; then bd dolt push; fi
+if [ "$(bd config get backup.enabled 2>/dev/null)" = "true" ]; then bd backup sync; fi
 ```
 
-**Why this matters**:
-
-- **Stealth mode**: beads state lives in the local database; nothing to commit
-- **Git mode**: Persists beads state to git for cross-machine sync
-- Both modes: Ensures beads database is up-to-date
+**Why this matters**: The local database is always current; the push or sync only matters for another machine.
 
 ## Status Transition Logic
 

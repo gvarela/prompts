@@ -101,7 +101,7 @@ bd ready                              # Find available work
 bd update [phase-id] --claim          # Claim it
 # ... implement ...
 bd close [phase-id] --reason "Done"   # Complete it
-# git mode: export.auto on, then commit .beads/ (see plugin/docs/reference/beads-mode.md)
+# push to the Dolt remote if one is configured (see plugin/docs/reference/beads-mode.md)
 ```
 
 ### Beads Slash Commands
@@ -146,20 +146,15 @@ bd close prompts-abc --reason "Done"
 /beads:close prompts-abc
 ```
 
-### Beads + Git Workflow
+### Beads persistence
 
 ```bash
-# End of session (git mode: export.auto on, see plugin/docs/reference/beads-mode.md)
-git add .beads/      # Stage beads changes (git mode)
-git commit           # Commit everything
-git push             # Push to remote
-
-# Start of session (after git pull)
-bd ready             # See what's available (beads imports changed issues.jsonl)
-
-# If a Dolt remote is configured:
-bd dolt push         # Push beads database to Dolt remote
-bd dolt pull         # Pull beads database from Dolt remote
+# Three tiers (see plugin/docs/reference/beads-mode.md)
+# 1. Local: the embedded Dolt database under .beads/ is the source of truth; never committed
+# 2. Cross-machine: a Dolt remote (bd dolt push / bd dolt pull) or bd backup (bd backup init <url>, bd backup sync)
+# 3. Interchange: bd export writes issues.jsonl for viewers only (export.auto is off by default)
+bd config get sync.remote    # a URL means a remote is configured; "not set" means local only
+bd dolt push                 # end of session, only when a remote is configured
 ```
 
 ## Command Details

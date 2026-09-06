@@ -67,7 +67,7 @@ const handoffPath = $1 || /* prompt for it */;
 3. **Pull latest from remote**:
 
    ```bash
-   git pull    # Get latest commits (and beads state if in git mode)
+   git pull    # Get latest commits
    ```
 
 4. **Validate handoff currency**:
@@ -83,18 +83,16 @@ const handoffPath = $1 || /* prompt for it */;
 5. **Sync and check beads state**:
 
    ```bash
-   # Mode semantics: see beads-mode.md in this plugin's docs/reference/ ($BEADS_MODE
-   # set by SessionStart hook). Git mode: beads imports issues.jsonl after git pull (export.auto governs the reverse direction).
+   # Persistence: see plugin/docs/reference/beads-mode.md (the local database is the source of truth)
 
-   # Check beads state regardless of mode
+   # Check beads state
    bd stats                        # Current beads statistics
    bd list --status=in_progress    # Check active work
    bd ready                        # See what's available
    ```
 
    Compare with handoff's `beads_in_progress`:
-   - **Git mode**: Should match if no work done since handoff
-   - **Stealth mode**: May differ (beads is local, handoff is document-based)
+   - Counts should match if no work was done since the handoff; a large mismatch or zero issues means the session-start sanity check in beads-mode.md applies (`bd context`, `bd show <beads_epic>`, `bd stats`)
 
 **Absorb the context and discoveries documented**
 
