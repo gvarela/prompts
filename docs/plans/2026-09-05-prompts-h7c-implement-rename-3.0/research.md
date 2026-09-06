@@ -330,6 +330,32 @@ This alias works through 2.x and will be removed at 3.0.0.
 
 **Dedicated release-cut commit** (31b2a38, v2.5.0): both manifests and CHANGELOG only, merged as its own PR after the phase PR.
 
+## Follow-up Research 2026-09-06 18:40
+
+Scope added after Phase 1: how beads 1.1.0 documents its own persistence model, and how the plugin frames it (beads issue prompts-my1i). Sources: `bd init --help`, `bd config --help`, `bd export --help`, `bd backup --help`, `bd doctor --help`, `bd config show`, `bd context`, `bd prime`; the installed beads plugin docs at `~/.claude/plugins/cache/beads-marketplace/beads/1.1.0/`; the plugin files quoted.
+
+### 13. What beads 1.1.0 says about persistence
+
+- Stealth: `bd init --stealth` "configures per-repository git settings for invisible beads usage: .git/info/exclude to prevent beads files from being committed. Perfect for personal use without affecting repo collaborators." `--setup-exclude` does the exclude step alone "(for forks)"; init auto-configures the exclude when a fork is detected. `--role` sets `beads.role` to `maintainer` or `contributor` without prompting; `--contributor` runs a wizard. `bd config show` lists `routing.contributor = ~/.beads-planning` and `routing.maintainer = .` (both default), and `beads.role = maintainer` sourced from git config in this repo.
+- Cross-machine: `bd init --help` and `bd config --help` both state "Cross-machine sync and backups use Dolt remotes/backups, not JSONL import/export." `bd dolt push` / `bd dolt pull` work against a configured remote (`sync.remote`); `bd backup init <url>`, `bd backup sync`, `bd backup restore` are "a Dolt-native database backup" that "preserves the database state, including tables, branches, commit history, and working-set data", with DoltHub recommended; `bd config set dolt.local-only true` skips wiring a remote at init.
+- JSONL: "Optional JSONL export to .beads/issues.jsonl after write commands (throttled). Useful for viewers (bv), interchange, and issue-level migration; not a backup. It is not cross-machine sync." Keys: `export.auto` (default false), `export.interval` (60s), `export.path`, `export.git-add` (default false). `import.auto` defaults to true. `bd export` excludes memories by default "because they may contain sensitive agent context".
+- Hygiene: `bd doctor` checks the `.beads/` directory, database version and migrations, schema, CLI and plugin currency, file permissions, circular dependencies, git hooks, `.beads/.gitignore`, and "Metadata.json version tracking". `bd prime` lists `bd doctor`, `bd preflight`, `bd stale`, `bd orphans`, `bd lint`.
+- `bd prime` in this repo renders "Git workflow: stealth mode (no git ops)" and a session-close checklist containing only `bd close <ids>`. The installed beads plugin's own docs pin `version: "0.60.0"`; none of them describe committing `.beads/` as a close step.
+
+### 14. Worktrees
+
+From `plugin/skills/implement_coordinated/`'s worktree (`git worktree list` shows five worktrees of this repo, two auto-created under `.claude/worktrees/`): `bd context` reports `beads dir: /Users/gabevarela/Development/Tools/workbench/.beads`, `repo root` the main checkout, `worktree: yes`, `database: prompts`. `git rev-parse --git-path info/exclude` resolves to the common dir's file, shared by every worktree; that file is empty here (the repo ignores `.beads/` in the committed `.gitignore` instead, line 9). A worktree has no `.beads/` of its own. The SessionStart hook exports `BEADS_MODE` once from `git check-ignore -q .beads/` in the starting cwd (`plugin/hooks/setup-beads-mode.sh:5-10`). The harness refuses file writes outside a worktree-isolated session's own worktree, which includes the shared `.beads/` (observed 2026-09-05 when `metadata.json` had to be restored by hand; recorded in beads memory `wb-beads-metadata-json-not-in-git`).
+
+### 15. How the plugin frames beads today
+
+- `plugin/docs/reference/beads-mode.md`: two modes keyed on whether `.beads/` is gitignored (lines 5-15); Persistence Mechanics rewritten in Phase 1 (17-22); "The Only Mode-Conditional Action Skills Need" prescribes `git add .beads/ && git commit` in git mode (24-35); "Validating Mode Configuration" (39-51).
+- Mode-conditional commit steps: `create_handoff/SKILL.md:124-131, 148-149`; `resume_handoff/SKILL.md:70, 87, 96-97`; `update_status/SKILL.md:235-246, 251-252`; `help/SKILL.md:104, 152-163` ("Beads + Git Workflow"); `implement_tasks/SKILL.md:399-404`; `implement_coordinated/SKILL.md:373-378`; `status-sync/SKILL.md:30, 48`.
+- `plugin/hooks/beads-drift-check.sh:10-16`: silent when `.beads/` is gitignored; otherwise emits "run git add .beads/ && git commit before ending the session."
+- `plugin/skills/validate_project/SKILL.md:153-171`: treats "git mode correctly configured" as `.beads/` not gitignored and warns on a `BEADS_MODE` mismatch.
+- `plugin/docs/reference/beads-not-initialized.md:11-14`: offers `bd init` "(git mode, .beads/ committed)" or `bd init --stealth` with no selection rule.
+- No plugin file mentions `bd backup`, `bd doctor`, `bd context`, worktrees, `.git/info/exclude` as the stealth mechanism, the contributor role, or that memories are excluded from exports. `CLAUDE.md:209-218` (this repo's own protocol) already says nothing is committed for beads.
+- Session-start checks that exist: `create_tasks` Step 5a and `implement_*` Step 2 run `bd info`; `resume_handoff` compares `bd stats` with the handoff's counts (lines 80-96). None reads `bd context` or checks the database name.
+
 ## Open Questions
 
 Questions that require resolution before proceeding are tracked in beads, NOT in this document.
