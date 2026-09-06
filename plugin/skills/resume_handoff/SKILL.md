@@ -84,7 +84,7 @@ const handoffPath = $1 || /* prompt for it */;
 
    ```bash
    # Mode semantics: see beads-mode.md in this plugin's docs/reference/ ($BEADS_MODE
-   # set by SessionStart hook). Git mode: beads auto-imports issues.jsonl after git pull.
+   # set by SessionStart hook). Git mode: beads imports issues.jsonl after git pull (export.auto governs the reverse direction).
 
    # Check beads state regardless of mode
    bd stats                        # Current beads statistics

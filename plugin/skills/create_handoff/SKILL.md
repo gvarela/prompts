@@ -121,7 +121,7 @@ Determine the current implementation state:
 ### Step 3: Persist Beads and Check Git State
 
 ```bash
-# Beads auto-flushes .beads/issues.jsonl after mutations — nothing to run
+# Stealth mode: nothing to run. Git mode: export.auto must be on (see plugin/docs/reference/beads-mode.md)
 
 # Mode semantics: see beads-mode.md in this plugin's docs/reference/ ($BEADS_MODE set by SessionStart hook)
 if [ "$BEADS_MODE" != "stealth" ]; then

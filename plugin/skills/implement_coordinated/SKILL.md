@@ -370,7 +370,7 @@ After phase completion:
 
    Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating.
 
-5. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
+5. **Persist beads state** (git mode needs `export.auto` on; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
 
    ```bash
    # In git mode, commit the beads state

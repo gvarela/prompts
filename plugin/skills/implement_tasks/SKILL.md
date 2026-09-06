@@ -396,7 +396,7 @@ After phase completion and verification:
 
    Qualifies: constraints and conventions. Does not qualify: task outcomes (beads has them), plan deviations (Implementation Notes has them), anything specific to one task. Search first with `bd memories <keyword>` and update in place rather than duplicating.
 
-5. **Persist beads state** (beads auto-flushes `.beads/issues.jsonl` after mutations):
+5. **Persist beads state** (git mode needs `export.auto` on; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
 
    ```bash
    # In git mode, commit the beads state
@@ -527,7 +527,7 @@ npm test src/feature/*.test.ts tests/integration/feature.test.ts
 9. Run verification at phase boundaries
 10. If phase milestone complete: close it with `bd close [milestone-id]`
 11. Add implementation notes to tasks.md if needed
-12. Commit .beads/ (git mode) to persist state — issues.jsonl is auto-flushed
+12. Commit .beads/ (git mode) to persist state — export.auto must be on
 ```
 
 ## Error Handling
@@ -563,7 +563,7 @@ If automated verification fails after implementation:
 - ✅ Track modified files for easier testing
 - ✅ Generate phase-specific test commands
 - ✅ Document any deviations in Implementation Notes
-- ✅ Commit .beads/ at session end (git mode) — beads auto-flushes issues.jsonl
+- ✅ Commit .beads/ at session end (git mode) — with export.auto on
 
 ### DON'T (ABSOLUTELY FORBIDDEN)
 

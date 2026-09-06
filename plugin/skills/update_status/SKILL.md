@@ -232,7 +232,7 @@ After all updates:
 
 ### Step 8: Persist Beads State
 
-After updating status, persist beads state (beads auto-flushes `.beads/issues.jsonl` after mutations):
+After updating status, persist beads state (git mode needs `export.auto` on; see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
 
 ```bash
 # In git mode, commit the beads state if needed
@@ -248,7 +248,7 @@ fi
 
 **Why this matters**:
 
-- **Stealth mode**: beads state is auto-flushed locally; nothing to commit
+- **Stealth mode**: beads state lives in the local database; nothing to commit
 - **Git mode**: Persists beads state to git for cross-machine sync
 - Both modes: Ensures beads database is up-to-date
 

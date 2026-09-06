@@ -101,7 +101,7 @@ bd ready                              # Find available work
 bd update [phase-id] --claim          # Claim it
 # ... implement ...
 bd close [phase-id] --reason "Done"   # Complete it
-# beads auto-flushes .beads/issues.jsonl; commit .beads/ in git mode
+# git mode: export.auto on, then commit .beads/ (see plugin/docs/reference/beads-mode.md)
 ```
 
 ### Beads Slash Commands
@@ -149,13 +149,13 @@ bd close prompts-abc --reason "Done"
 ### Beads + Git Workflow
 
 ```bash
-# End of session (.beads/issues.jsonl is auto-flushed by beads)
+# End of session (git mode: export.auto on, see plugin/docs/reference/beads-mode.md)
 git add .beads/      # Stage beads changes (git mode)
 git commit           # Commit everything
 git push             # Push to remote
 
 # Start of session (after git pull)
-bd ready             # See what's available (beads auto-imports changed issues.jsonl)
+bd ready             # See what's available (beads imports changed issues.jsonl)
 
 # If a Dolt remote is configured:
 bd dolt push         # Push beads database to Dolt remote

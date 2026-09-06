@@ -45,7 +45,7 @@ bd list --status=in_progress    # What's claimed
 ```
 📍 Beads sync reminder:
 - [X] issues updated this session
-- Commit .beads/ before ending session (git mode) — issues.jsonl is auto-flushed
+- Commit .beads/ before ending session (git mode) — with export.auto on
 - Run `bd dolt push` if a Dolt remote is configured
 
 Or if phase complete:
