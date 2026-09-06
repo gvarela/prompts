@@ -159,6 +159,19 @@ If beads is not initialized, prompt user: "Run `bd init` to initialize beads tra
 
 Persistence: see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md); nothing to detect. The local database is the source of truth; a Dolt remote or `bd backup` carries it across machines.
 
+#### 5a2. Session-Start Sanity Check (re-runs only)
+
+On a re-run, when tasks.md frontmatter already carries `beads_epic`: confirm the right database is open before doing any work (see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
+
+```bash
+bd context            # resolved database name and beads dir
+bd show [epic-id]     # the plan's epic; must resolve
+bd stats              # total issue count
+bd version            # requires bd 1.1.0 or later
+```
+
+If `bd show [epic-id]` fails, present the Wrong database case from [docs/reference/beads-not-initialized.md](../../docs/reference/beads-not-initialized.md) and stop. On a first run (no `beads_epic` yet) skip this check.
+
 #### 5b. Create Epic for the Project
 
 ```bash

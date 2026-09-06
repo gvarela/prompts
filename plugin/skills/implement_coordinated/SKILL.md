@@ -132,6 +132,19 @@ bd info    # Check beads is initialized
 
 Persistence: see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md); nothing to detect. The local database is the source of truth; a Dolt remote or `bd backup` carries it across machines.
 
+#### Session-Start Sanity Check
+
+Read `beads_epic` from tasks.md frontmatter. If it is present, confirm the right database is open before doing any work (see [docs/reference/beads-mode.md](../../docs/reference/beads-mode.md)):
+
+```bash
+bd context            # resolved database name and beads dir
+bd show [epic-id]     # the plan's epic; must resolve
+bd stats              # total issue count
+bd version            # requires bd 1.1.0 or later
+```
+
+If `bd show [epic-id]` fails, present the Wrong database case from [docs/reference/beads-not-initialized.md](../../docs/reference/beads-not-initialized.md) and stop. If the frontmatter has no `beads_epic`, note "plan predates beads tracking, sanity check skipped" and continue.
+
 #### Verify Beads Tracking Configuration
 
 Check that tasks.md frontmatter has beads tracking:
