@@ -245,7 +245,7 @@ CHANGELOG insert after line 3:
 - Replace the tier paragraph in `plugin/skills/implement_coordinated/reference.md:60` with the pointer → `[beads:phase1_impl_5]`
   - Verify: `grep -n "default when unsure" plugin/skills/implement_coordinated/reference.md` → none; `grep -c "Step 5 item 4" plugin/skills/implement_coordinated/reference.md` → 1
 - Amend the RELEASING.md Process list and add the CHANGELOG Unreleased section → `[beads:phase1_impl_6]`
-  - Verify: `grep -c "^[0-9]\. \*\*" RELEASING.md` → 6; `grep -n "Every cut is tagged\|three real sessions\|not the gate" RELEASING.md` → 3 lines; `grep -n "^## \[Unreleased\]" CHANGELOG.md` → line 5
+  - Verify: `sed -n '27,32p' RELEASING.md | grep -c "^[0-9]\. \*\*"` → 6 (the whole-file count is 8: lines 14-15 are the two numbered facts under The channel model); `grep -n "Every cut is tagged\|three real sessions\|not the gate" RELEASING.md` → 3 lines; `grep -n "^## \[Unreleased\]" CHANGELOG.md` → line 5
 
 #### Phase 1 Testing Tasks
 
