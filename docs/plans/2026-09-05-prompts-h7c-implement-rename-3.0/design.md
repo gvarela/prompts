@@ -3,10 +3,10 @@ project: implement-rename-3.0
 ticket: prompts-h7c
 created: 2026-09-05
 created_timestamp: 2026-09-06T00:23:23Z
-status: draft
+status: approved
 last_updated: 2026-09-06
 designer: gabe@vare.la
-status_note: approved by Gabe via /wb:create_tasks invocation 2026-09-06; revised 2026-09-06 after Phase 1 to add the beads-model realignment (D11-D16, prompts-my1i) and the single-PR release shape (D9 revised); re-approval pending
+status_note: approved by Gabe 2026-09-06 (first pass via /wb:create_tasks); revised after Phase 1 to add the beads-model realignment (D11-D16, prompts-my1i), the single-PR release shape (D9 revised), the maintainer guide (D17), wb-prime (D18), and the intent model with stateful help (D19-D20, prompts-k0ub); re-approved by Gabe 2026-09-06 with a five-phase structure
 git_commit: 447a1c618f330ec439547f4c564a7bce364be90b
 git_branch: worktree-implement-rename-3.0
 repository: gvarela/workbench
