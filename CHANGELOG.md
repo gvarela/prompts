@@ -2,6 +2,18 @@
 
 All notable changes to the wb plugin. Versions are release cuts — installers receive a version only when it's bumped here AND they run `claude plugin update wb@gvarela-workbench`. See [RELEASING.md](RELEASING.md) for the process.
 
+## [Unreleased]
+
+### Changed
+
+- `RELEASING.md` Process: non-breaking phases merge unbumped under Unreleased; a cut happens when a plan completes; the breaking phase goes last and carries the bump; every cut is tagged; majors get a three-session canary on the release branch.
+- Beads persistence: `plugin/docs/reference/beads-mode.md` is the single statement. `issues.jsonl` is written only with `export.auto` on or an explicit `bd export`; the auto-flush claim is removed from ten skill and doc sites (prompts-vwo).
+- `implement_coordinated/reference.md` "Worker Model Selection" points at the SKILL.md Step 5 tier list instead of restating it with opus as the default when unsure.
+
+### Fixed
+
+- `plugin/scripts/lint` exits 1 when markdownlint reports an error, in named-file, changed-files, and `--all` modes, and exits 1 from `--fix` when findings remain; it had always exited 0 (prompts-3ke). The PostToolUse hook still exits 0.
+
 ## [2.6.0] — 2026-09-05
 
 Every wb workflow skill is now model-invocable. A prose request to plan, research, design, break down, implement, validate, sync status, or hand off is honored without a typed `/wb:` command; the slash commands still work as before.
