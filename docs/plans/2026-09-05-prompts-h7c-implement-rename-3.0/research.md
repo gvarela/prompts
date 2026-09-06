@@ -6,7 +6,7 @@ created_timestamp: 2026-09-06T00:23:23Z
 status: complete
 last_updated: 2026-09-06
 researcher: gabe@vare.la
-git_commit: 447a1c618f330ec439547f4c564a7bce364be90b
+git_commit: f0292a1d227da1deb5babe24c3cb3c210eb67d52
 git_branch: worktree-implement-rename-3.0
 repository: gvarela/workbench
 tags: [research, codebase, implement-rename-3.0]

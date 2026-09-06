@@ -9,8 +9,8 @@ assignee: gabe@vare.la
 # progress fields below are maintained by /wb:update_status — do not hand-edit
 current_phase: 2
 total_tasks: 42
-completed_tasks: 8
-git_commit: 447a1c618f330ec439547f4c564a7bce364be90b
+completed_tasks: 19
+git_commit: f0292a1d227da1deb5babe24c3cb3c210eb67d52
 git_branch: worktree-implement-rename-3.0
 repository: gvarela/workbench
 tags: [tasks, tracking, implement-rename-3.0]
@@ -127,7 +127,7 @@ bd ready                    # See available work
 **Phase status**:
 
 - Phase 1: milestone `prompts-1ng` - 8 tasks, all closed
-- Phase 2: milestone `prompts-tq7.1` - 11 tasks
+- Phase 2: milestone `prompts-tq7.1` - 11 tasks, all closed; milestone open pending Gabe's checkpoint go-ahead
 - Phase 3: milestone `prompts-tq7.2` - 9 tasks
 - Phase 4: milestone `prompts-tq7.3` - 5 tasks
 - Phase 5: milestone `prompts-h1y` - 9 tasks
@@ -729,6 +729,7 @@ bd blocked
 
 ### Implementation Notes
 
+- 2026-09-06: Status reconciled via update_status after Phase 2 verification: tasks.md stays in-progress at phase 2 with 19 of 42 tasks closed (Phase 2's eleven tasks closed in beads; milestone prompts-tq7.1 open for the checkpoint); design.md moves from approved to implementing; git metadata at f0292a1. The nine Phase 5 beads issues that still said "Phase 2" from before the re-plan were corrected in beads (descriptions, and the prompts-84lh title).
 - 2026-09-06: Phase 2 implemented by coordinated sonnet workers: ten workers, ten verifier passes (all PASS on first verification), one verification worker, sequential, main context never compacted. Deviations: (1) `bd orphans` and `bd preflight` do not mean what design D16 assumed (see Implementation Discoveries; decision issue prompts-hsa2 open for Gabe at this checkpoint); (2) the workflow guide's Basic Workflow `bd update --status in_progress` at line 301 was changed to `--claim` alongside the two planned sites, pulling a Phase 4 audit correction forward; (3) the CHANGELOG per-file lint delta is +2 MD024 duplicate-heading findings of the pre-existing kind (every release section repeats Added/Changed/Fixed; the baseline had 11), because `.markdownlintrc` sets `allow_different_nesting` rather than `siblings_only`; changing lint rules is out of scope. Coordinator-level corrections landed in task commits: the Hygiene lines in beads-mode.md (task 2.1). Harness findings: the worktree Bash guard refuses `env -C` and `env PATH=` prefixes; a wrapper script under the job tmp dir (`cd`, `export PATH`, `exec`) is the working form; a plain single-file delete is accepted; one worker used `git stash` and `git stash pop` to lint a baseline, harmless only because the shared stack was empty, so worker prompts now forbid stash and prescribe `git show <rev>:<file>` to a scratch path inside the repo. The two Phase 2 unknowns were resolved from the Claude Code hooks reference (a guide agent) and `bd config get` on 1.1.0 before any worker ran. Verification worker: headless orientation prompt answered with the orientation's first line; the wrong-database fixture made `wb:implement_coordinated` stop before spawning workers; the headless validate_project recipe was rewritten (turns, git allowed, assistant-text grep) after its first run exhausted 12 turns reading the plan documents.
 - 2026-09-06: Plan restructured after Phase 1 into five phases on one branch and one PR (design D9 revised): the beads-model realignment with wb-prime (D11-D16, D18), the intent model with stateful help (D19-D20), and the beads guide (D17) were added; the rename moved to Phase 5. PR #27 is held as the running review surface. Three inventory agents (sonnet, sonnet, haiku) supplied the line-level sites, the verification recipes, and the bd command inventory; corrections folded in: `bd status` exists in 1.1.0 and is not stale; `bd daemon` at help:241 and `.beads/daemon.lock` at beads-not-initialized.md:25 are; the workflow guide and commands reference still show `bd update --status in_progress` where the skills use `--claim`.
 - 2026-09-06: Phase 1 implemented by coordinated sonnet workers (six tasks, six verifier passes, one FAIL that was the coordinator's own tasks.md edit landing in the worker's diff; separated into its own commit). Discoveries: the pre-existing `lint --all` backlog is 27 files, not the ~58 the previous plan estimated; the lint-hook check mutates the malformed fixture because it runs `lint --fix`, so use the clean fixture for the hook test and recreate `bad.md` before each run; the PostToolUse hook normalizes table separator rows on any save (reduces MD060 findings, never adds); `help/SKILL.md:158` carried an "auto-imports" claim the site list missed, rewritten in task 1.3; `grep -c "Issues found in"` (without the ⚠ glyph) is the reliable count because ANSI codes sit between the glyph and the text. Headless `/wb:help` ran to completion with one skill event and no permission prompt.

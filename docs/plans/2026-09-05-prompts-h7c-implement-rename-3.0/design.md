@@ -3,11 +3,11 @@ project: implement-rename-3.0
 ticket: prompts-h7c
 created: 2026-09-05
 created_timestamp: 2026-09-06T00:23:23Z
-status: approved
+status: implementing
 last_updated: 2026-09-06
 designer: gabe@vare.la
 status_note: approved by Gabe 2026-09-06 (first pass via /wb:create_tasks); revised after Phase 1 to add the beads-model realignment (D11-D16, prompts-my1i), the single-PR release shape (D9 revised), the maintainer guide (D17), wb-prime (D18), and the intent model with stateful help (D19-D20, prompts-k0ub); re-approved by Gabe 2026-09-06 with a five-phase structure
-git_commit: 447a1c618f330ec439547f4c564a7bce364be90b
+git_commit: f0292a1d227da1deb5babe24c3cb3c210eb67d52
 git_branch: worktree-implement-rename-3.0
 repository: gvarela/workbench
 tags: [design, architecture, implement-rename-3.0]
@@ -301,3 +301,10 @@ Deferred to execution planning, from the exploration record: the Intent section'
 - Related issues: `prompts-h7c`, `prompts-vwo`, `prompts-3ke`
 - Release process: `RELEASING.md`; precedent entries `CHANGELOG.md` 2.0.0 and 2.2.0
 - Prior plan: [../2026-09-01-fable-5-1-rebaseline/](../2026-09-01-fable-5-1-rebaseline/)
+
+## Implementation Notes
+
+Started: 2026-09-06
+
+- Implementation began on Phase 1 (non-breaking corrections) and reached the Phase 2 checkpoint the same day; status moved from `approved` to `implementing` at that checkpoint (update_status is the writer)
+- Phase 2 found that `bd orphans`, `bd preflight`, and `bd doctor` do not behave as D16 assumed on bd 1.1.0 (see tasks.md Implementation Discoveries and decision issue prompts-hsa2); D16's intent is kept with the commands described by what they do
