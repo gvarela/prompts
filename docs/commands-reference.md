@@ -50,9 +50,9 @@ For multi-session work:
 These commands require [beads](https://github.com/steveyegge/beads):
 
 ```bash
-# Initialize (choose mode)
-bd init --stealth   # Stealth: .beads/ not committed (work repos)
-bd init             # Git: .beads/ tracked in git (personal projects)
+# Initialize
+bd init --stealth   # any repository with collaborators who do not use beads (writes the shared .git/info/exclude)
+bd init             # only a repository you own outright; .beads/ is still excluded, never committed
 ```
 
 **How commands use beads**:
@@ -69,14 +69,13 @@ bd init             # Git: .beads/ tracked in git (personal projects)
 ```bash
 bd ready                                    # Find available work (no blockers)
 bd show [id]                                # Review task details
-bd update [id] --status in_progress         # Claim task
+bd update [id] --claim                      # Claim task
 # ... implement ...
 bd close [id] --reason "..."                # Complete task
-# git mode: export.auto on, then commit .beads/ (see plugin/docs/reference/beads-mode.md)
-# Stealth mode: .beads/ stays uncommitted (local only)
+# end of session: bd dolt push only if a Dolt remote is configured (see plugin/docs/reference/beads-mode.md)
 ```
 
-**Mode Detection**: SessionStart hook auto-detects stealth vs git mode, sets `$BEADS_MODE` environment variable.
+**Persistence**: the local Dolt database under `.beads/` is the source of truth and is never committed; see `plugin/docs/reference/beads-mode.md` for the three tiers and the session-start sanity check.
 
 **Note**: For markdown-only tracking, use the `v1.0.0` tag.
 
